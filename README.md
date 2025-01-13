@@ -1,6 +1,6 @@
 
-[Production](https://kreetn.vercel.app)
-[Testing](testing-kreetn.vercel.app)
+- [Production](https://kreetn.vercel.app)
+- [Testing](testing-kreetn.vercel.app)
 
 # React + TypeScript + Vite
 
