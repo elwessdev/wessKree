@@ -1,0 +1,42 @@
+#header{
+    // background: #FFF;
+    background-image: url(https://filesblog.technavio.org/wp-content/webp-express/webp-images/uploads/2018/12/Online-House-Rental-Sites-672x372.jpg.webp);
+    padding: 90px 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    &:after{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgb(112 101 239 / 30%);
+        backdrop-filter: blur(1px);
+    }
+    .content{
+        position: relative;
+        width: fit-content;
+        margin: 0 auto;
+        z-index: 30;
+        h1{
+            font-size: 50px;
+            font-weight: 800;
+            text-transform: capitalize;
+            margin: 0;
+            color: #FFF;
+        }
+        h3{
+            width: 375px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 22px;
+            // color: #726f6c;
+            color: #FFF;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+    }
+}
