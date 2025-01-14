@@ -1,0 +1,10 @@
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+@import url("https://necolas.github.io/normalize.css/8.0.1/normalize.css");
+body{
+    font-family: "Nunito Sans", serif;
+    background-color: rgb(248 247 254);
+    height: 3000px;
+}
