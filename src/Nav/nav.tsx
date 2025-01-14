@@ -27,6 +27,10 @@ const options = [
         value: '6',
         label: 'Cancelled',
     },
+    {
+        value: '6',
+        label: 'Cancelled',
+    },
 ]
 
 export default function Nav(){
