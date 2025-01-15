@@ -1,6 +1,6 @@
 
 import Filter from "./filter"
-import Property from "./property"
+import PropertyItem from "./property-item"
 import "./properties.scss"
 
 export default function Properties(){
@@ -8,7 +8,7 @@ export default function Properties(){
         <div id="properties">
             <Filter />
             <div className="items">
-                {new Array(12).fill(0).map(()=>(<Property />))}
+                {new Array(8).fill(0).map(()=>(<PropertyItem />))}
             </div>
         </div>
     )

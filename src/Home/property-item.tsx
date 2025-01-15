@@ -3,10 +3,11 @@ import { LuBedSingle } from "react-icons/lu";
 import { BiBath } from "react-icons/bi";
 import { PiRectangleDashedBold } from "react-icons/pi";
 import { Button } from 'antd';
-import { Image } from 'antd';
+import { FaRegHeart } from "react-icons/fa";
+// import { Image } from 'antd';
 
 
-export default function Property(){
+export default function PropertyItem(){
     return (
         <div id="property">
             <div className="photos">
@@ -37,7 +38,8 @@ export default function Property(){
                     <span><PiRectangleDashedBold /> 2x7.5 m2</span>
                 </div>
                 <hr />
-                <Button type="primary" block>Explore</Button>
+                <Button className="explore">Explore</Button>
+                <Button className="favorite"><FaRegHeart /></Button>
             </div>
         </div>
     )

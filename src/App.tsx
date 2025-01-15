@@ -1,17 +1,16 @@
-// import reactLogo from './assets/react.svg'
-import Logo from '/logo.jpeg'
-// import './App.css'
-
-import Header from "./Header/header"
-import Properties from "./Items/properties"
-import Nav from "./Nav/nav"
+// import Logo from '/logo.jpeg'
+import Nav from "./Nav/nav";
+import Footer from "./Footer/footer";
+import Home from './Home/Home'
+import Property from "./Property/property";
 
 function App() {
   return (
     <div className="App">
       <Nav />
-      <Header />
-      <Properties />
+      {/* <Home /> */}
+      <Property />
+      {/* <Footer /> */}
     </div>
   )
 }

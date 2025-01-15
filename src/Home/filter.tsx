@@ -1,6 +1,6 @@
 import { Select, Slider, Button } from 'antd';
-import { useState } from 'react';
-import { TbHomeSearch } from "react-icons/tb";
+// import { useState } from 'react';
+// import { TbHomeSearch } from "react-icons/tb";
 
 const options = [
     {
@@ -34,11 +34,11 @@ const options = [
 ]
 
 export default function Filter(){
-    const [priceValue, setPriceValue] = useState<number>(1);
-    const handlePrice = (newAvarage: number) => {
-        setPriceValue(newAvarage as number);
-        console.log(newAvarage);
-    }
+    // const [priceValue, setPriceValue] = useState<number>(1);
+    // const handlePrice = (newAvarage: number) => {
+    //     setPriceValue(newAvarage as number);
+    //     console.log(newAvarage);
+    // }
     return(
         <div id="properties_filter">
             <div className="p_s">

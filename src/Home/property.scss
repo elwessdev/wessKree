@@ -24,6 +24,7 @@
     }
     .details{
         padding: 15px 15px 15px;
+        position: relative;
         .price{
             display: flex;
             p{
@@ -76,7 +77,7 @@
                 }
             }
         }
-        button{
+        .explore{
             width: 115px;
             margin: 0 auto;
             display: block;
@@ -85,7 +86,33 @@
             font-weight: 700;
             font-size: 13px;
             border-radius: 30px;
+            color: #FFF;
             background: #7065ef;
+            border: 0;
+        }
+        .favorite{
+            position: absolute;
+            top: 16px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-color: #7065ef5c;
+            &:hover{
+                background-color: #7065ef;
+                svg{
+                    color: #FFF;
+                }
+            }
+            svg{
+                font-size: 15px;
+                position: absolute;
+                color: #7065ef;
+                transition: all .2s;
+            }
         }
     }
 }
