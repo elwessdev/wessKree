@@ -1,9 +1,9 @@
 // import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
+import Logo from '/logo.jpeg'
 // import './App.css'
 
 import Header from "./Header/header"
-import Items from "./Items/items"
+import Properties from "./Items/properties"
 import Nav from "./Nav/nav"
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
     <div className="App">
       <Nav />
       <Header />
-      <Items />
+      <Properties />
     </div>
   )
 }
