@@ -1,7 +1,7 @@
 // import Logo from '/logo.jpeg'
 import Nav from "./Nav/nav";
 import Footer from "./Footer/footer";
-// import Home from './Home/Home'
+import Home from './Home/Home'
 import Property from "./Property/property";
 
 function App() {
@@ -15,4 +15,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

@@ -1,5 +1,5 @@
 
-import Filter from "./filter"
+import Filter from "../Filter/filter"
 import PropertyItem from "./property-item"
 import "./properties.scss"
 

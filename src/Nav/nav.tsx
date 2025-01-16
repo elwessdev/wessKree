@@ -1,7 +1,11 @@
 import "./nav.scss"
+import { Select, Button } from 'antd';
+import { useState } from "react";
+
 import { TbHomeSearch } from "react-icons/tb";
-import { Select } from 'antd';
+
 import Logo from '../assets/logo.jpeg'
+import Login from "../Auth/Login/login";
 
 const options = [
     {
@@ -35,6 +39,11 @@ const options = [
 ]
 
 export default function Nav(){
+    const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
+
+    const showModal = () => {
+        setIsLoginOpen(true);
+    };
     return(
         <div id="nav" className="container mx-auto">
             <div className="l-s">
@@ -79,10 +88,11 @@ export default function Nav(){
             </div>
             <div className="r-s">
                 <div className="btns">
-                    <a>Login</a>
-                    <a>Sign up</a>
+                    <Button onClick={showModal}>Login</Button>
+                    <Button>Sign up</Button>
                 </div>
             </div>
+            <Login open={isLoginOpen} cancel={setIsLoginOpen} />
         </div>
     )
 }
