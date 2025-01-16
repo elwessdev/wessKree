@@ -2,8 +2,6 @@ import "./property.scss"
 
 // import { TbPhotoSquareRounded } from "react-icons/tb";
 
-
-
 import Gallery from "./gallery.tsx";
 import Title from "./title.tsx";
 import Details from "./details.tsx";
