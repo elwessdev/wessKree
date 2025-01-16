@@ -1,15 +1,16 @@
 import "./property.scss"
-import { LuBedSingle } from "react-icons/lu";
-import { BiBath } from "react-icons/bi";
-import { PiRectangleDashedBold } from "react-icons/pi";
 import { Button } from 'antd';
-import { FaRegHeart } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 // import { Image } from 'antd';
 
+import { FaRegHeart } from "react-icons/fa";
+import { PiRectangleDashedBold } from "react-icons/pi";
+import { BiBath } from "react-icons/bi";
+import { LuBedSingle } from "react-icons/lu";
 
 export default function PropertyItem(){
     return (
-        <div id="property">
+        <div className="property-item">
             <div className="photos">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyyAOex46_9dDFriss9eUEfykai0Q5FKYgIw&s" />
             </div>
@@ -27,7 +28,7 @@ export default function PropertyItem(){
                     <span><PiRectangleDashedBold /> 2x7.5 m2</span>
                 </div>
                 <hr />
-                <Button className="explore">Explore</Button>
+                <NavLink to={"/property"} className="explore">Explore</NavLink>
                 <Button className="favorite"><FaRegHeart /></Button>
             </div>
         </div>

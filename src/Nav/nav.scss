@@ -111,12 +111,12 @@
         .btns{
             display: flex;
             grid-gap: 10px;
-            a{
-                padding: 8px 17px;
+            button{
+                padding: 15px 19px;
                 border-radius: 5px;
                 border: 2px solid rgba(112, 101, 239, 0.3490196078);
                 font-weight: 600;
-                font-size: 14px;
+                font-size: 13px;
                 color: #7065ef;
                 cursor: pointer;
                 &:last-of-type{

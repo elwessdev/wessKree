@@ -1,6 +1,6 @@
 
-import Header from "./header";
-import Properties from "./properties";
+import Header from "./Header/header";
+import Properties from "./Properties/properties";
 
 function Home() {
     return (
