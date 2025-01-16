@@ -1,6 +1,7 @@
 import "./nav.scss"
 import { TbHomeSearch } from "react-icons/tb";
 import { Select } from 'antd';
+import Logo from '../assets/logo.jpeg'
 
 const options = [
     {
@@ -38,7 +39,7 @@ export default function Nav(){
         <div id="nav" className="container mx-auto">
             <div className="l-s">
                 <div className="logo">
-                    KreeTN
+                    <img src={Logo} alt="KreeTN" />
                 </div>
             </div>
             <div className="c-s">

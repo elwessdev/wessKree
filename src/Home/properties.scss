@@ -1,0 +1,91 @@
+#properties{
+    padding: 20px;
+    width: 85%;
+    margin: 0 auto;
+    #properties_filter{
+        height: 40px;
+        border: 1px solid rgba(112, 101, 239, 0.24);
+        border-radius: 5px;
+        background: #FFF;
+        padding: 15px 0;
+        margin: 0 auto;
+        display: flex;
+        width: fit-content;
+        .p_s{
+            width: 150px;
+            position: relative;
+            border-right: 1px solid #EEE;
+            .subTitle{
+                position: absolute;
+                left: 20px;
+                font-size: 13px;
+                font-weight: 600;
+                top: 2px;
+            }
+            .ant-select{
+                height: 45px !important;
+                .ant-select-selector{
+                    border-color: transparent;
+                    background: none;
+                    box-shadow: none;
+                    input::placeholder{
+                        color: #7065ef !important;
+                    }
+                    .ant-select-selection-placeholder,.ant-select-selection-item{
+                        position: relative;
+                        top: 9px;
+                        left: 8px;
+                        font-weight: 600;
+                    }
+                    input{
+                        cursor: auto;
+                        color: inherit;
+                        height: 20px;
+                        position: relative;
+                        top: 12px;
+                        left: 9px;
+                    }
+                }
+            }
+            .ant-slider{
+                margin: 0 23px;
+                margin-top: 25px;
+                .ant-slider-track {
+                    background-color: #7065ef;
+                }
+                .ant-slider-handle::after {
+                    box-shadow: 0 0 0 2px #7065ef;
+                }
+                .ant-slider-handle:hover::after,.ant-slider-handle:active::after,.ant-slider-handle:focus::after{
+                    outline: 6px solid rgb(112 101 239 / 20%);
+                }
+            }
+            &.price{
+                width: 200px;
+            }
+            &.last{
+                border: 0;
+            }
+        }
+        button{
+            width: 115px;
+            margin: 0 auto;
+            display: block;
+            height: 40px;
+            font-weight: 700;
+            font-size: 15px;
+            border-radius: 4px;
+            background: #7065ef;
+            margin-left: 5px;
+            margin-right: 15px;
+        }
+    }
+    .items{
+        width: 100%;
+        margin-top: 25px;
+        display: flex;
+        flex-wrap: wrap;
+        grid-gap: 25px;
+        justify-content: center;
+    }
+}
