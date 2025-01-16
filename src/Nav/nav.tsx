@@ -1,6 +1,7 @@
 import "./nav.scss"
-import { Select, Button } from 'antd';
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { Select, Button } from 'antd';
 
 import { TbHomeSearch } from "react-icons/tb";
 
@@ -47,9 +48,9 @@ export default function Nav(){
     return(
         <div id="nav" className="container mx-auto">
             <div className="l-s">
-                <div className="logo">
+                <NavLink to={"/"} className="logo">
                     <img src={Logo} alt="KreeTN" />
-                </div>
+                </NavLink>
             </div>
             <div className="c-s">
                 <div className="search-bar">
