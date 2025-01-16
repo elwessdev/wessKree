@@ -101,7 +101,7 @@ export default function Filter(){
                 />
             </div>
             <div className="p_s last">
-                <span className="subTitle">Deals</span>
+                <span className="subTitle">Category</span>
                 <Select
                     style={{ width: "100%" }}
                     placeholder="Select..."
