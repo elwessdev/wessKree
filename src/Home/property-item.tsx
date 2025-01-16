@@ -11,17 +11,6 @@ export default function PropertyItem(){
     return (
         <div id="property">
             <div className="photos">
-            {/* <Image.PreviewGroup
-                items={[
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyyAOex46_9dDFriss9eUEfykai0Q5FKYgIw&s',
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyyAOex46_9dDFriss9eUEfykai0Q5FKYgIw&s',
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyyAOex46_9dDFriss9eUEfykai0Q5FKYgIw&s',
-                ]}
-            >
-                <Image
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyyAOex46_9dDFriss9eUEfykai0Q5FKYgIw&s"
-                />
-            </Image.PreviewGroup> */}
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyyAOex46_9dDFriss9eUEfykai0Q5FKYgIw&s" />
             </div>
             <div className="details">
