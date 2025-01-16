@@ -1,7 +1,4 @@
-import { useState } from "react";
 import "./property.scss"
-import { Button } from 'antd';
-import { DatePicker } from 'antd';
 
 // import { TbPhotoSquareRounded } from "react-icons/tb";
 
