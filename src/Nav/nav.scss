@@ -7,19 +7,21 @@
     display: flex;
     .l-s{
         // float: left;
-        width: 100px;
+        width: 170px;
         .logo{
+            display: flex;
+            padding: 3px 0;
             // color: #7065ef;
             // font-weight: 700;
             // font-size: 24px;
             // margin: 10px 0;
             img{
-                width: 155px;
+                width: 175px;
             }
         }
     }
     .c-s{
-        width: calc(100% - 282px);
+        width: calc(100% - 352px);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -113,16 +115,27 @@
             grid-gap: 10px;
             button{
                 padding: 15px 19px;
-                border-radius: 5px;
+                border-radius: 4px;
                 border: 2px solid rgba(112, 101, 239, 0.3490196078);
                 font-weight: 600;
                 font-size: 13px;
                 color: #7065ef;
                 cursor: pointer;
-                &:last-of-type{
-                    background-color: #7065ef;
-                    color: #FFF;
-                }
+            }
+            a{
+                background-color: #7065ef;
+                padding: 0 19px;
+                border-radius: 4px;
+                border: 2px solid rgba(112, 101, 239, 0.3490196078);
+                font-weight: 600;
+                font-size: 13px;
+                color: #FFF;
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                line-height: 1.9;
+                text-decoration: none;
             }
         }
     }
