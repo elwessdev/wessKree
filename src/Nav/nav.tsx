@@ -5,7 +5,7 @@ import { Select, Button } from 'antd';
 
 import { TbHomeSearch } from "react-icons/tb";
 
-import Logo from '../assets/logo.jpeg'
+import Logo from '../assets/logo2.jpeg'
 import Login from "../Auth/Login/login";
 
 const options = [
@@ -90,7 +90,7 @@ export default function Nav(){
             <div className="r-s">
                 <div className="btns">
                     <Button onClick={showModal}>Login</Button>
-                    <Button>Sign up</Button>
+                    <NavLink to={"/signup"}>Sign up</NavLink>
                 </div>
             </div>
             <Login open={isLoginOpen} cancel={setIsLoginOpen} />
