@@ -70,7 +70,12 @@ export default function Signup(){
                     </p>
                 </Form>
             </div>
-            <div className="l-s"></div>
+            <div className="l-s">
+                <div className="txt">
+                    <h3>Welcome to wessKree</h3>
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos recusandae beatae saepe consectetur ut illum expedita modi excepturi, ab obcaecati et commodi blanditiis officia nesciunt consequatur est consequuntur. Quasi, exercitationem!</p>
+                </div>
+            </div>
         </div>
     )
 }
