@@ -4,6 +4,8 @@ import App from "./App";
 import Home from './Home/Home'
 import Property from "./Property/property";
 import Signup from './Auth/Signup/signup';
+import Profile from './Profile/profile';
+import PostPerperty from './Post-Property/post-property';
 
 
 const router = createBrowserRouter([
@@ -15,6 +17,8 @@ const router = createBrowserRouter([
             { path: "", element: <Home /> },
             { path: "property", element: <Property /> },
             { path: "signup", element: <Signup /> },
+            { path: "profile", element: <Profile /> },
+            { path: "post-property", element: <PostPerperty /> },
         ],
     },
 ]);
