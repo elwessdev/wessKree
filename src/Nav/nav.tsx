@@ -3,7 +3,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Select, Button } from 'antd';
 
-import { TbHomeSearch } from "react-icons/tb";
+import { TbHomeSearch, TbHomePlus } from "react-icons/tb";
 
 import Logo from '../assets/logo2.jpeg'
 import Login from "../Auth/Login/login";
@@ -89,9 +89,13 @@ export default function Nav(){
             </div>
             <div className="r-s">
                 <div className="btns">
+                    <NavLink to={"/post-property"}><TbHomePlus /> Post Property</NavLink>
                     <Button onClick={showModal}>Login</Button>
                     <NavLink to={"/signup"}>Sign up</NavLink>
                 </div>
+                {/* <div className="btns">
+                    <Button>Logout</Button>
+                </div> */}
             </div>
             <Login open={isLoginOpen} cancel={setIsLoginOpen} />
         </div>

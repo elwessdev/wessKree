@@ -1,0 +1,89 @@
+#profile{
+    margin: 0 auto;
+    display: flex;
+    gap: 70px;
+    padding: 50px 60px;
+    .l-s{
+        width: 230px;
+        border: 2px solid rgba(112, 101, 239, 0.21);
+        padding: 20px;
+        border-radius: 4px;
+        background: #FFF;
+        height: fit-content;
+        position: relative;
+        box-shadow: 0 0 3px 2px rgb(112 101 239 / 16%);
+        img{
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            display: block;
+            border-radius: 50%;
+        }
+        h3{
+            margin: 0;
+            text-align: center;
+            margin-top: 12px;
+            font-weight: 600;
+            font-size: 17px;
+            color: #0d133a;
+        }
+        p{
+            margin: 0;
+            text-align: center;
+            color: #7f7f80;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 3px;
+            svg{
+                position: relative;
+                top: 2px;
+            }
+        }
+        .ask{
+            display: block;
+            height: 35px;
+            font-weight: 700;
+            font-size: 13px;
+            border-radius: 4px;
+            background: rgb(112 101 239);
+            color: #FFF;
+            padding: 0 20px;
+            line-height: 2;
+            transition: all 0.2s;
+            margin-top: 20px;
+            width: 100%;
+            border-color: #7065ef;
+            svg{
+                font-size: 16px;
+                position: relative;
+                top: 3px;
+                transition: color .2s;
+            }
+        }
+        .notif{
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            border-radius: 50%;
+            width: 31px;
+            height: 31px;
+            border-color: #7065ef;
+            color: #7065ef;
+            &:hover{
+                background-color: #7065ef;
+                color: #FFF;
+            }
+            svg{
+                font-size: 19px;
+                position: absolute;
+            }
+        }
+    }
+    .r-s{
+        width: calc(100% - 230px);
+        display: flex;
+        flex-wrap: wrap;
+        grid-gap: 25px;
+        justify-content: left;
+    }
+}

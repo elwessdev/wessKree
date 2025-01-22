@@ -107,7 +107,8 @@
         }
     }
     .r-s{
-        width: 182px;
+        width: 396px;
+        // width: 182px;
         display: flex;
         align-items: center;
         .btns{
@@ -136,6 +137,12 @@
                 align-items: center;
                 line-height: 1.9;
                 text-decoration: none;
+                svg{
+                    font-size: 13px;
+                    position: relative;
+                    top: -2px;
+                    margin-right: 3px;
+                }
             }
         }
     }

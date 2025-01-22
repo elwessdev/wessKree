@@ -5,7 +5,19 @@
 @import url("https://necolas.github.io/normalize.css/8.0.1/normalize.css");
 body{
     background-color: rgb(248 247 254);
-    // height: 3000px;
+    &::-webkit-scrollbar {
+        width: 7px;
+    }
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #9b9b9b;
+        border-radius: 5px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
 }
 *{
     font-family: "Nunito Sans", serif;
