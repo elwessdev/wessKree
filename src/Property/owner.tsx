@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { Button } from 'antd';
 import { LuBadgeInfo } from "react-icons/lu";
 import { TbHomeQuestion } from "react-icons/tb";
+import { NavLink } from 'react-router-dom';
 
 const Owner = () => {
     return (
@@ -18,9 +19,9 @@ const Owner = () => {
                 <Button>
                     <TbHomeQuestion /> Ask a question
                 </Button>
-                <Button>
+                <NavLink to={"/profile"}>
                     <LuBadgeInfo /> Get more info
-                </Button>
+                </NavLink>
             </div>
         </div>
     )
