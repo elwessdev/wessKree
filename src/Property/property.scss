@@ -237,20 +237,24 @@
                     bottom: 14px;
                     display: flex;
                     grid-gap: 10px;
-                    button{
+                    button,a{
                         width: fit-content;
                         margin: 0 auto;
-                        display: block;
+                        display: flex;
                         height: 35px;
                         font-weight: 700;
                         font-size: 12px;
                         border-radius: 4px;
                         border: 1px solid #d6d5df;
-                        background: #7065ef21;
+                        background: rgba(112, 101, 239, 0.1294117647);
                         color: #7065ef;
                         padding: 0 20px;
                         line-height: 2;
-                        transition: all .2s;
+                        transition: all 0.2s;
+                        align-items: center;
+                        justify-content: center;
+                        text-decoration: none;
+                        gap: 4px;
                         &:hover{
                             background-color: #7065ef;
                             border-color: #7065ef;
@@ -262,8 +266,8 @@
                         svg{
                             font-size: 15px;
                             position: relative;
-                            top: 3px;
-                            transition: all .2s;
+                            top: -1px;
+                            transition: all 0.2s;
                         }
                     }
                 }

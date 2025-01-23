@@ -5,22 +5,24 @@ import { Button, message, Steps, theme } from 'antd';
 
 import Step1 from "./steps/step1";
 import Step2 from "./steps/step2";
+import Step3 from "./steps/step3";
+import Step4 from "./steps/step4";
 
 
 const steps = [
     {
-        title: 'Basic info',
+        title: 'Details',
         content: <Step1 />,
     },
     {
-        title: 'Photos',
+        title: 'Location',
         content: <Step2 />,
     },
     {
-        title: 'Price',
-        content: <Step1 />,
-    },
-  ];
+        title: 'Images/Features',
+        content: <Step3 />,
+    }, 
+];
 
 export default function PostPerperty(){
     // Steps
@@ -49,6 +51,11 @@ export default function PostPerperty(){
                 {steps[current].content}
             </div>
             <div className="btns">
+                {current > 0 && (
+                    <Button onClick={() => prev()}>
+                        Previous
+                    </Button>
+                )}
                 {current < steps.length - 1 && (
                     <Button type="primary" onClick={() => next()}>
                         Next
@@ -57,11 +64,6 @@ export default function PostPerperty(){
                 {current === steps.length - 1 && (
                     <Button type="primary" onClick={() => message.success('Processing complete!')}>
                         Done
-                    </Button>
-                )}
-                {current > 0 && (
-                    <Button onClick={() => prev()}>
-                        Previous
                     </Button>
                 )}
             </div>
