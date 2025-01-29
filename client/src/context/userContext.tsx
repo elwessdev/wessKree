@@ -14,7 +14,8 @@ interface User {
 interface UserContextType {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
-    userDetails: () => void
+    userDetails: () => void,
+    logout: () => void
 }
 interface UserProviderProps {
     children: ReactNode;
@@ -32,7 +33,18 @@ export const UserProvider = ({children}:UserProviderProps) => {
             console.log("getUser: ", res.data);
             setUser(res.data);
         } catch (err) {
-            console.log("getUser error:", err.response);
+            console.log("getUser error:", err.response.data.message);
+        }
+    };
+
+    const logout = async () => {
+        try {
+            const res = await axios.get("/api/auth/logout", { withCredentials: true });
+            if(res.status == 200){
+                setUser(null);
+            }
+        } catch (err) {
+            console.log("logout error:", err.response);
         }
     };
 
@@ -47,7 +59,7 @@ export const UserProvider = ({children}:UserProviderProps) => {
     // }, [user, navigate]);
 
     return (
-    <UserContext.Provider value={{ user, setUser, userDetails }}>
+    <UserContext.Provider value={{ user, setUser, userDetails, logout }}>
         {children}
     </UserContext.Provider>
     );

@@ -15,7 +15,7 @@ import { RiImageEditLine } from "react-icons/ri";
 
 export default function SetupProfile(){
     // User Context
-    const {user} = useUser();
+    const {user,userDetails} = useUser();
     const capitalize = (text: string) => {
         return text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
     };
@@ -61,6 +61,7 @@ export default function SetupProfile(){
                     if(resServer.status!=200){
                         throw new Error('Something went wrong! Try again');
                     }
+                    userDetails();
                     setUploading(false);
                     messageApi.open({
                         type: 'success',

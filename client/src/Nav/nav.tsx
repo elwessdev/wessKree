@@ -1,6 +1,6 @@
 import "./nav.scss"
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Select, Button, Dropdown,MenuProps } from 'antd';
 import Login from "../Auth/Login/login";
 import { useUser } from "../context/userContext";
@@ -48,44 +48,48 @@ const options = [
     },
 ]
 
-const profile: MenuProps['items'] = [
-    {
-        key: '1',
-        label: (
-            <NavLink to={"/profile"}><FaHouseUser /> Profile</NavLink>
-        ),
-    },
-    {
-        key: '2',
-        label: (
-            <NavLink to={"/settings"}><FaUserCog /> Settings</NavLink>
-        ),
-    },
-    {
-        key: '3',
-        label: (
-            <a><RiLogoutCircleRFill /> Logout</a>
-        ),
-    },
-];
-const notifications: MenuProps['items'] = [
-    {
-        key: '1',
-        label: (<p>test</p>),
-    },
-    {
-        key: '2',
-        label: (<p>test</p>),
-    },
-    {
-        key: '3',
-        label: (<p>test</p>),
-    },
-];
-
 export default function Nav(){
-    const {user} = useUser();
+    const {user, logout} = useUser();
     const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
+    const navigate = useNavigate();
+
+    const profile: MenuProps['items'] = [
+        {
+            key: '1',
+            label: (
+                <NavLink to={"/profile"}><FaHouseUser /> Profile</NavLink>
+            ),
+        },
+        {
+            key: '2',
+            label: (
+                <NavLink to={"/settings"}><FaUserCog /> Settings</NavLink>
+            ),
+        },
+        {
+            key: '3',
+            label: (
+                <Button onClick={()=>{
+                    logout();
+                    navigate("/");
+                }}><RiLogoutCircleRFill /> Logout</Button>
+            ),
+        },
+    ];
+    const notifications: MenuProps['items'] = [
+        {
+            key: '1',
+            label: (<p>test</p>),
+        },
+        {
+            key: '2',
+            label: (<p>test</p>),
+        },
+        {
+            key: '3',
+            label: (<p>test</p>),
+        },
+    ];
 
     const showModal = () => {
         setIsLoginOpen(true);
@@ -134,13 +138,13 @@ export default function Nav(){
             </div>
             <div className="r-s">
                 <div className="btns">
-                    {!user?.isActive &&
+                    {user?.isActive==false &&
                         <>
                             <NavLink to={"/setup-profile"}><FaUserCheck />Setup Profile</NavLink>
-                            <Button>Logout</Button>
+                            <Button onClick={logout}>Logout</Button>
                         </>
                     }
-                    {user?.isActive && (
+                    {user?.isActive==true && (
                         <>
                             <NavLink to={"/post-property"}><TbHomeHand /> Post Property</NavLink>
                             <NavLink to={"/post-property"}><TbHomeStats /> Requests</NavLink>

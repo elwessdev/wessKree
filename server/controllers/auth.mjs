@@ -92,15 +92,23 @@ export const setupProfile = async(req,res) => {
         res.status(500).send({ message: 'setupProfile server error' });
     }
 }
+// Logout
+export const logout = async(req,res)=>{
+    res.clearCookie('authToken', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'prod',
+    });
+    res.status(200).json({ message: 'Logged out successfully' });
+}
+
+
 
 export const signin = async (req,res)=>{
     res.send("signin done")
 }
-
 export const forgotpwd = (req,res)=>{
     res.send("forgotpassword done")
 }
-
 export const settings = (req,res)=>{
     res.send("settings done")
 }
