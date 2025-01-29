@@ -1,38 +1,54 @@
 import "./signup.scss"
-import {Form,Input,Button} from "antd";
-import {Navigate, NavLink} from "react-router-dom"
+import {Form,Input,Button,message, Spin} from "antd";
+import {NavLink, useNavigate} from "react-router-dom"
 import axios from "axios";
+import { useUser } from "../../context/userContext";
+import { useState } from "react";
 
+// Icons
 import { TbLockPassword } from "react-icons/tb";
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdOutlineAlternateEmail } from "react-icons/md";
-import { useUser } from "../../context/userContext";
+import { LoadingOutlined } from '@ant-design/icons';
+
 
 
 export default function Signup(){
+    const navigate = useNavigate();
+    const [messageApi, contextHolder] = message.useMessage();
+    const [loading, setLoading]=useState<boolean>(false);
     const [form] = Form.useForm();
     const {userDetails} = useUser();
 
     // Handle Signup
     const handleSignup = async (values: { username: string; email: string, password: string,  }) => {
+        setLoading(true);
         try{
             const res = await axios.post("/api/auth/signup",{
                 username: values.username,
                 email: values.email,
                 password: values.password
             })
-            console.log(res);
+            // console.log(res);
             if(res.status == 200){
                 userDetails();
-                // Navigate("")
+                navigate("/setup-profile");
+            } else {
+                throw new Error('Something went wrong! Try again');
             }
+            setLoading(false);
         } catch(err){
-            console.log("signup error: ",err);
+            setLoading(false);
+            messageApi.open({
+                type: 'error',
+                content: `Something went wrong! Try again`,
+            });
         }
     }
 
     return (
         <div className="signup">
+            {contextHolder}
             <div className="r-s">
                 <h3>Sign up</h3>
                 <Form
@@ -92,7 +108,7 @@ export default function Signup(){
                     </Form.Item>
                     <Form.Item>
                         <Button htmlType="submit" block>
-                            Signup
+                            {loading ?<Spin indicator={<LoadingOutlined spin />} /> :"Signup"}
                         </Button>
                     </Form.Item>
                     <p className="lnk">
