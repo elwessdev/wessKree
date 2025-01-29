@@ -18,6 +18,10 @@ const userSchema = new Schema({
         type: String,
         default: ""
     },
+    pfpId: {
+        type: String,
+        default: ""
+    },
     state: {
         type: String,
         default: ""

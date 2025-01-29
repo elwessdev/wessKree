@@ -1,0 +1,77 @@
+.setup-profile{
+    max-width: 440px;
+    background-color: #FFF;
+    margin: 0 auto;
+    margin-top: 70px;
+    border-radius: 5px;
+    border: 2px solid rgba(112, 101, 239, 0.12);
+    display: flex;
+    overflow: hidden;
+    padding: 30px;
+    flex-wrap: wrap;
+    .pfp{
+        width: 140px;
+        height: 140px;
+        position: relative;
+        margin: 0 auto;
+        .ant-avatar{
+            width: 100%;
+            height: 100%;
+            border: 1px solid #7165efa1;
+            background: #7065ef24;
+        }
+        .ant-upload-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            .ant-upload{
+                display: flex;
+                width: 100%;
+                height: 100%;
+                justify-content: center;
+                align-items: center;
+            }
+            svg{
+                font-size: 26px;
+                position: relative;
+                top: 5px;
+                color: #7165ef;
+            }
+            &.edit{
+                width: 30px;
+                height: 30px;
+                right: 11px;
+                left: auto;
+                background: #7065ef;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                svg{
+                    color: #FFF;
+                    font-size: 19px;
+                }
+            }
+        }
+    }
+    .ant-form{
+        width: 100%;
+        margin-top: 23px;
+        .ant-form-vertical .ant-form-item:not(.ant-form-item-horizontal) .ant-form-item-label{
+            padding: 0 !important;
+            font-size: 15px;
+        }
+        .ant-form-item {
+            margin-bottom: 0;
+        }
+        .ant-btn.ant-btn-block {
+            margin-top: 18px;
+        }
+        .ant-select-selector {
+            border-radius: 3px;
+        }
+    }
+}

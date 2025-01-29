@@ -6,6 +6,7 @@ import Property from "./Property/property";
 import Signup from './Auth/Signup/signup';
 import Profile from './Profile/profile';
 import PostPerperty from './Post-Property/post-property';
+import SetupProfile from './Auth/Setup-profile/setup';
 
 
 const router = createBrowserRouter([
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
             { path: "signup", element: <Signup /> },
             { path: "profile", element: <Profile /> },
             { path: "post-property", element: <PostPerperty /> },
+            { path: "setup-profile", element: <SetupProfile /> },
         ],
     },
 ]);

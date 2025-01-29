@@ -1,21 +1,17 @@
 import "./signup.scss"
 import {Form,Input,Button} from "antd";
-import {NavLink} from "react-router-dom"
+import {Navigate, NavLink} from "react-router-dom"
 import axios from "axios";
 
 import { TbLockPassword } from "react-icons/tb";
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdOutlineAlternateEmail } from "react-icons/md";
-import { useEffect } from "react";
+import { useUser } from "../../context/userContext";
 
 
 export default function Signup(){
     const [form] = Form.useForm();
-
-    // const handleFinish = (values: { username: string; password: string }) => {
-    //     console.log("Login values:", values);
-    //     form.resetFields();
-    // };
+    const {userDetails} = useUser();
 
     // Handle Signup
     const handleSignup = async (values: { username: string; email: string, password: string,  }) => {
@@ -26,17 +22,12 @@ export default function Signup(){
                 password: values.password
             })
             console.log(res);
+            if(res.status == 200){
+                userDetails();
+                // Navigate("")
+            }
         } catch(err){
             console.log("signup error: ",err);
-        }
-    }
-
-    const test = async() => {
-        try{
-            const res = await axios.get("/api/auth/getUser",{withCredentials:true});
-            console.log(res);
-        } catch(err){
-            console.log("getUser error: ",err);
         }
     }
 
@@ -44,7 +35,6 @@ export default function Signup(){
         <div className="signup">
             <div className="r-s">
                 <h3>Sign up</h3>
-                <button onClick={test}>test cookie</button>
                 <Form
                     form={form}
                     layout="vertical"

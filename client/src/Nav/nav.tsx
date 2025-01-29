@@ -1,12 +1,21 @@
 import "./nav.scss"
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Select, Button } from 'antd';
-
-import { TbHomeSearch, TbHomePlus } from "react-icons/tb";
-
-import Logo from '../assets/logo2.jpeg'
+import { Select, Button, Dropdown,MenuProps } from 'antd';
 import Login from "../Auth/Login/login";
+import { useUser } from "../context/userContext";
+import Logo from '../assets/logo2.jpeg'
+
+// Icons
+import { TbHomeSearch, TbHomeHand } from "react-icons/tb";
+import { FaHouseUser } from "react-icons/fa";
+import { FaUserCog } from "react-icons/fa";
+import { RiLogoutCircleRFill } from "react-icons/ri";
+import { IoIosNotifications } from "react-icons/io";
+import { TbHomeStats } from "react-icons/tb";
+import { FaUserCheck } from "react-icons/fa";
+
+
 
 const options = [
     {
@@ -39,7 +48,43 @@ const options = [
     },
 ]
 
+const profile: MenuProps['items'] = [
+    {
+        key: '1',
+        label: (
+            <NavLink to={"/profile"}><FaHouseUser /> Profile</NavLink>
+        ),
+    },
+    {
+        key: '2',
+        label: (
+            <NavLink to={"/settings"}><FaUserCog /> Settings</NavLink>
+        ),
+    },
+    {
+        key: '3',
+        label: (
+            <a><RiLogoutCircleRFill /> Logout</a>
+        ),
+    },
+];
+const notifications: MenuProps['items'] = [
+    {
+        key: '1',
+        label: (<p>test</p>),
+    },
+    {
+        key: '2',
+        label: (<p>test</p>),
+    },
+    {
+        key: '3',
+        label: (<p>test</p>),
+    },
+];
+
 export default function Nav(){
+    const {user} = useUser();
     const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
 
     const showModal = () => {
@@ -89,13 +134,31 @@ export default function Nav(){
             </div>
             <div className="r-s">
                 <div className="btns">
-                    <NavLink to={"/post-property"}><TbHomePlus /> Post Property</NavLink>
-                    <Button onClick={showModal}>Login</Button>
-                    <NavLink to={"/signup"}>Sign up</NavLink>
+                    {!user?.isActive &&
+                        <>
+                            <NavLink to={"/setup-profile"}><FaUserCheck />Setup Profile</NavLink>
+                            <Button>Logout</Button>
+                        </>
+                    }
+                    {user?.isActive && (
+                        <>
+                            <NavLink to={"/post-property"}><TbHomeHand /> Post Property</NavLink>
+                            <NavLink to={"/post-property"}><TbHomeStats /> Requests</NavLink>
+                            <Dropdown menu={{ items:notifications }} trigger={['click']} placement="bottom">
+                                <div className="notif"><IoIosNotifications /></div>
+                            </Dropdown>
+                            <Dropdown menu={{items:profile}} placement="bottomRight" arrow>
+                                <img className="profile" src={user?.photo} />
+                            </Dropdown>
+                        </>
+                    )}
+                    {user==null && (
+                        <>
+                            <Button onClick={showModal}>Login</Button>
+                            <NavLink to={"/signup"}>Sign up</NavLink>
+                        </>
+                    )}
                 </div>
-                {/* <div className="btns">
-                    <Button>Logout</Button>
-                </div> */}
             </div>
             <Login open={isLoginOpen} cancel={setIsLoginOpen} />
         </div>
