@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {signup,getUser,setupProfile,logout} from "../controllers/auth.mjs"
+import {signup,getUser,setupProfile,logout,signin} from "../controllers/auth.mjs"
 import verifyToken from "../middleware/JWT.mjs"
 
 const router = Router();
@@ -13,7 +13,8 @@ router.get("/getUser",verifyToken,getUser)
 router.put("/setupProfile",verifyToken,setupProfile)
 // Logout
 router.get("/logout",verifyToken,logout)
-
+// Signin
+router.post("/signin",signin)
 
 
 

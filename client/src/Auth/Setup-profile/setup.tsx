@@ -6,19 +6,20 @@ import ImgCrop from 'antd-img-crop';
 import { Form, Input, Select, Button, Flex, message, Upload, Avatar } from 'antd';
 import {StateCity} from "../../Data/state-municipality.ts";
 import { useUser } from "../../context/userContext.tsx";
-
 // Icons
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RiImageEditLine } from "react-icons/ri";
 
-// type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+
+
+
+type stateCityType = { value: string; label: string }[];
+
+const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 export default function SetupProfile(){
     // User Context
     const {user,userDetails} = useUser();
-    const capitalize = (text: string) => {
-        return text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
-    };
     // Upload PFP
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [fileToUpload, setFileToUpload] = useState<File | null>(null);
@@ -81,18 +82,14 @@ export default function SetupProfile(){
         }
     };
     // Handle Select
-    const [selectedState, setSelectedState] = useState("");
-    const [delegations, setDelegations] = useState([]);
-
+    const [delegations, setDelegations] = useState<stateCityType>([]);
     const stateOptions = StateCity.map(state => ({
         value: capitalize(state.Name),
         label: capitalize(state.Name),
     }));
-
     const handleStateChange = (value: string) => {
-        setSelectedState(value);
         const state = StateCity.find((s) => capitalize(s.Name) === value);
-        setDelegations(state ? state.Delegations.map((d) => ({ value: d.Value, label: capitalize(d.Name) })) : []);
+        setDelegations(state ?state.Delegations.map((d) => ({ value: d.Value, label: capitalize(d.Name) })) :[]);
     };
 
     return (

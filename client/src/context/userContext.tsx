@@ -23,25 +23,32 @@ interface UserProviderProps {
 
 const UserContext = createContext<UserContextType | null>(null);
 
-export const UserProvider = ({children}:UserProviderProps) => {
-    const [user, setUser] = useState<User | null>(null);
-    // const navigate = useNavigate();
+export const UserProvider = ({children}: UserProviderProps) => {
+    const [user, setUser] = useState<User|null>(null);
+    const navigate = useNavigate();
 
     const userDetails = async () => {
         try {
-            const res = await axios.get<User>("/api/auth/getUser", { withCredentials: true });
-            console.log("getUser: ", res.data);
+            const res = await axios.get<User>("/api/auth/getUser", { 
+                withCredentials: true 
+            });
             setUser(res.data);
+            console.log("get user",res.data);
+            if (res.data) navigate(res.data.isActive ? "/" : "/setup-profile");
         } catch (err) {
-            console.log("getUser error:", err.response.data.message);
+            console.log("getUser error:", err.response?.data?.message);
+            // navigate("/");
         }
     };
 
     const logout = async () => {
         try {
-            const res = await axios.get("/api/auth/logout", { withCredentials: true });
-            if(res.status == 200){
+            const res = await axios.get("/api/auth/logout", { 
+                withCredentials: true 
+            });
+            if (res.status === 200) {
                 setUser(null);
+                navigate("/");
             }
         } catch (err) {
             console.log("logout error:", err.response);
@@ -51,18 +58,19 @@ export const UserProvider = ({children}:UserProviderProps) => {
     useEffect(() => {
         userDetails();
     }, []);
-    // useEffect(() => {
-    //     if (user && !user.isActive) {
-    //         navigate("/setup-profile");
-    //         console.log("test");
-    //     }
-    // }, [user, navigate]);
 
     return (
-    <UserContext.Provider value={{ user, setUser, userDetails, logout }}>
-        {children}
-    </UserContext.Provider>
+        <UserContext.Provider value={{ user, setUser, userDetails, logout }}>
+            {children}
+        </UserContext.Provider>
     );
 };
 
-export const useUser = () => useContext(UserContext);
+// eslint-disable-next-line react-refresh/only-export-components
+export function useUser(): UserContextType {
+    const context = useContext(UserContext);
+    if (!context) {
+        throw new Error("useUser must be used within a UserProvider");
+    }
+    return context;
+}

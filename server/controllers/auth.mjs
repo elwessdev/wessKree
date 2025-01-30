@@ -93,19 +93,50 @@ export const setupProfile = async(req,res) => {
     }
 }
 // Logout
-export const logout = async(req,res)=>{
+export const logout = (req,res)=>{
     res.clearCookie('authToken', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'prod',
     });
     res.status(200).json({ message: 'Logged out successfully' });
 }
+// Signin
+export const signin = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
 
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
 
+        const token = jwt.sign(
+            { id: user._id}, 
+            process.env.SECRET_KEY,
+            { expiresIn: '8h' }
+        );
 
-export const signin = async (req,res)=>{
-    res.send("signin done")
+        res.cookie('authToken', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'prod',
+            maxAge: new Date(Date.now() + 8 * 60 * 60 * 1000),
+            path: '/',
+        });
+
+        res.status(200).json({message: 'Login successful'});
+
+    } catch (err) {
+        console.error("Signin error:", err.message); // Log only the error message
+        res.status(500).json({ message: 'Server error' });
+    }
 }
+
+
+
 export const forgotpwd = (req,res)=>{
     res.send("forgotpassword done")
 }
