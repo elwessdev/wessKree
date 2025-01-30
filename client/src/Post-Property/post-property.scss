@@ -6,6 +6,7 @@
         margin: 0 auto;
         display: flex;
         gap: 10px;
+        margin-top: 20px;
         button{
             padding: 15px 20px;
             border-radius: 4px;
@@ -60,6 +61,12 @@
         margin: 30px 0;
         .step{
             padding: 20px;
+            .ant-input-number-outlined {
+                width: 100%;
+            }
+            .ant-input-number-compact-item:not(.ant-input-number-compact-first-item):not(.ant-input-number-compact-last-item) {
+                border-radius: 3px !important;
+            }
             .ant-form-vertical .ant-form-item:not(.ant-form-item-horizontal) .ant-form-item-label{
                 padding: 0;
             }
@@ -75,9 +82,7 @@
             }
             .ant-input-affix-wrapper > input.ant-input{
                 color: #0d133a;
-                position: relative;
-                top: 1px;
-                font-size: 14px;
+                font-size: 13px;
             }
             .ant-input-affix-wrapper .ant-input-prefix {
                 position: relative;
@@ -85,10 +90,7 @@
                 color: #0d133a;
             }
             .ant-form-item {
-                margin-bottom: 15px;
-                &.lst{
-                    margin-bottom: 5px;
-                }
+                margin-bottom: 0;
             }
             .ant-form-item .ant-form-item-label >label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before{
                 display: none;
@@ -147,7 +149,7 @@
             .numsInfo{
                 display: flex;
                 gap: 10px;
-                padding-top: 10px;
+                padding-top: 0;
                 input{
                     border-radius: 0 3px 3px 0;
                 }
@@ -156,7 +158,7 @@
                     color: #7065ef;
                 }
                 svg{
-                    font-size: 18px;
+                    font-size: 14px;
                     position: relative;
                     top: 2px;
                 }
@@ -223,6 +225,11 @@
                 margin: 0 auto;
                 display: block;
                 margin-top: 20px;
+            }
+            .con{
+                svg{
+                    font-size: 14px;
+                }
             }
         }
         .step3{

@@ -8,25 +8,32 @@ import Step3 from "./steps/step3";
 
 export default function PostPerperty(){
     // Steps
-    const [current, setCurrent] = useState(0);
+    const [current, setCurrent] = useState(1);
+    
     const next = () => {
         setCurrent(current + 1);
     };
+
     const prev = () => {
         setCurrent(current - 1);
     };
+
+    const done = () => {
+        message.success('Processing complete!')
+    }
+
     const steps = [
         {
             title: 'Details',
-            content: <Step1 />,
+            content: <Step1 next={next} />,
         },
         {
             title: 'Location',
-            content: <Step2 />,
+            content: <Step2 next={next} prev={prev} />,
         },
         {
             title: 'Images/Features',
-            content: <Step3 />,
+            content: <Step3 done={done} prev={prev}/>,
         }, 
     ];
 
@@ -35,23 +42,6 @@ export default function PostPerperty(){
             <Steps current={current} items={steps.map((step) => ({ key: step.title, title: step.title }))} />
             <div className="steps">
                 {steps[current].content}
-            </div>
-            <div className="btns">
-                {current > 0 && (
-                    <Button onClick={() => prev()}>
-                        Previous
-                    </Button>
-                )}
-                {current < steps.length - 1 && (
-                    <Button type="primary" onClick={() => next()}>
-                        Next
-                    </Button>
-                )}
-                {current === steps.length - 1 && (
-                    <Button type="primary" onClick={() => message.success('Processing complete!')}>
-                        Done
-                    </Button>
-                )}
             </div>
         </div>
     )

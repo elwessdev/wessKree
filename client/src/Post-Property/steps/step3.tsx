@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Form, message, Upload } from 'antd';
+import { Form, message, Upload, Button } from 'antd';
 import type { GetProp, UploadProps } from 'antd';
 import { VscQuestion } from "react-icons/vsc";
 
@@ -17,16 +17,20 @@ import { GiGasStove } from "react-icons/gi";
 import { MdBalcony } from "react-icons/md";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 
-// const { TextArea } = Input;
-
+// Type
+type props = {
+    done: () => void,
+    prev: () => void
+}
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
+
+// Functions
 const getBase64 = (img: FileType, callback: (url: string) => void) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result as string));
     reader.readAsDataURL(img);
 };
-
 const beforeUpload = (file: FileType) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
@@ -40,9 +44,8 @@ const beforeUpload = (file: FileType) => {
 };
 
 
-export default function Step3(){
+export default function Step3({done,prev}:props){
     const [form] = Form.useForm();
-
     const [checkedFeatures, setCheckedFeatures] = useState<Record<string, boolean>>({
         wifi: false,
         backyard: false,
@@ -56,6 +59,8 @@ export default function Step3(){
         stove: false,
         balcony: false,
     });
+    const [loading, setLoading] = useState(false);
+    const [imageUrl, setImageUrl] = useState<string>();
 
     const handleCheckboxChange = (feature: string) => {
         setCheckedFeatures((prev) => ({
@@ -64,16 +69,12 @@ export default function Step3(){
         }));
     };
 
-    const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState<string>();
-
     const handleChange: UploadProps['onChange'] = (info) => {
         if (info.file.status === 'uploading') {
             setLoading(true);
             return;
         }
         if (info.file.status === 'done') {
-        // Get this url from response in real world.
         getBase64(info.file.originFileObj as FileType, (url) => {
             setLoading(false);
             setImageUrl(url);
@@ -88,12 +89,18 @@ export default function Step3(){
         </button>
     );
 
+    const handleSubmit = () => {
+        console.log("Done");
+        done();
+    }
+
     return (
         <div className="step step3">
             <Form
                 form={form}
                 layout="vertical"
                 requiredMark='optional'
+                onFinish={handleSubmit}
                 >
                     <Form.Item style={{ flex: 1 }} label="Images" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
                         <div className="gallery">
@@ -245,6 +252,15 @@ export default function Step3(){
                             </div>
                         </div>
                     </Form.Item>
+
+                    <div className='btns'>
+                        <Button type="primary" onClick={prev}>
+                            Previous
+                        </Button>
+                        <Button type="primary" htmlType="submit">
+                            Done
+                        </Button>
+                    </div>
             </Form>
         </div>
     )

@@ -1,14 +1,15 @@
 import { useState } from "react";
-import {StateCity} from "../Data/state-municipality.ts";
 import { Select } from 'antd';
+import {StateCity} from "../Data/state-municipality.ts";
 
 // Icons
 import { TbHomeSearch } from "react-icons/tb";
 
-const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-
+// Type
 type selectValues = {state: string | null, city: string | null};
 type stateCityType = { value: string; label: string }[];
+
+const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 export default function SearchNav(){
     const [selectValues, setSelectValues] = useState<selectValues>({
