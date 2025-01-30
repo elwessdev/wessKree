@@ -34,7 +34,9 @@ export const UserProvider = ({children}: UserProviderProps) => {
             });
             setUser(res.data);
             console.log("get user",res.data);
-            if (res.data) navigate(res.data.isActive ? "/" : "/setup-profile");
+            if (res.data&&!res.data.isActive){
+                navigate("/setup-profile");
+            }
         } catch (err) {
             console.log("getUser error:", err.response?.data?.message);
             // navigate("/");

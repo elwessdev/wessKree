@@ -1,33 +1,50 @@
 // import { useState } from 'react';
 // import { InfoCircleOutlined } from '@ant-design/icons';
-import { Form, Input, Select, Space, Flex, DatePicker, Checkbox, CheckboxProps, Button } from 'antd';
-import { VscQuestion } from "react-icons/vsc";
+import { Form, Input, Select, Space, Flex, InputNumber, Button } from 'antd';
+// import { VscQuestion } from "react-icons/vsc";
+
+// Icons
 import { TbMeterSquare } from "react-icons/tb";
 import { MdPhone } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
 import { useState } from 'react';
 
-const onChange = (value: string) => {
-    console.log(`selected ${value}`);
-};
-// const onSearch = (value: string) => {
-//     console.log('search:', value);
-// };
-
 const { TextArea } = Input;
 
+// Type
+type props = {
+    next: () => void,
+}
+interface values {
+    title: string,
+    type: string,
+    category: string[],
+    area:{
+        width: number,
+        length: number
+    }
+    rooms: string,
+    bathrooms: string,
+    bedrooms: string,
+    kitchen: string,
+    furnishingStatus: string,
+    leaseDuration: string[],
+    contact:{
+        phone: string,
+        whatsapp: string | undefined
+    }
+    description: string,
+}
 
 
-
-export default function Step1(){
+export default function Step1({next}:props){
     const [form] = Form.useForm();
-    const [addContactInfo, setAddContactInfo]=useState<boolean>(false);
-    const onChangeCheck: CheckboxProps['onChange'] = (e) => {
-        setAddContactInfo(e.target.checked)
-    };
-
-    const handleSubmit = () => {
-        console.log(form);
+    const [setpOneData, setStepOneData] = useState<values|null>(null);
+    
+    const handleSubmit = (values:values) => {
+        console.log("Step one data:", values);
+        setStepOneData(values);
+        next();
     }
 
     return (
@@ -38,38 +55,48 @@ export default function Step1(){
                 requiredMark='optional'
                 onFinish={handleSubmit}
                 >
-                <Flex gap={5} vertical>
+                <Flex gap={18} vertical>
                     <Flex>
-                        <Form.Item style={{ flex: 1 }} label="Title" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
-                            <Input placeholder="title of the post" />
+                        <Form.Item 
+                            style={{ flex: 1 }} 
+                            label="Title" 
+                            name="title"
+                            rules={[{ required: true, message: "Please enter rent title" }]}
+                            // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
+                        >
+                            <Input placeholder="Enter title" />
                         </Form.Item>
                     </Flex>
 
-                    <Flex gap={8}>
-                        <Form.Item style={{ flex: 1 }} label="Type" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
+                    <Flex gap={15}>
+                        <Form.Item
+                            style={{ flex: 1 }} 
+                            label="Type" 
+                            name="type"
+                            rules={[{ required: true, message: "Please choose type" }]}
+                            // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
+                        >
                             <Select
-                                placeholder="choose"
+                                placeholder="Choose type"
                                 options={[
                                     { value: 'Apartment', label: 'Apartment' },
                                     { value: 'House', label: 'House' },
                                     { value: 'Villa', label: 'Villa' },
-                                    { value: 'Office', label: 'Office', },
+                                    // { value: 'Office', label: 'Office', },
                                 ]}
                             />
                         </Form.Item>
-                        {/* <Form.Item style={{ flex: 1 }} label="Listing Type" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
+                        <Form.Item
+                            style={{ flex: 1 }}
+                            label="Category"
+                            name="category"
+                            rules={[{ required: true, message: "Please choose category" }]}
+                            // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
+                        >
                             <Select
-                                placeholder="choose"
-                                options={[
-                                    { value: 'Rent', label: 'Rent' },
-                                    { value: 'Sale', label: 'Sale' },
-                                ]}
-                            />
-                        </Form.Item> */}
-                        <Form.Item style={{ flex: 1 }} label="Category" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
-                            <Select
-                                placeholder="choose"
+                                placeholder="Choose category"
                                 mode="multiple"
+                                showSearch={false}
                                 options={[
                                     { value: 'student', label: 'Student' },
                                     { value: 'Family', label: 'Family' },
@@ -77,42 +104,85 @@ export default function Step1(){
                             />
                         </Form.Item>
                     </Flex>
-                
-                    {/* <Form.Item label="Price" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
-                        <Input placeholder="" />
-                    </Form.Item> */}
 
-                    <Flex gap={8}>
-                        <Form.Item style={{ flex: 1 }} label="Square Area" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
-                            <Space.Compact>
-                                <Input style={{ width: '50%' }} placeholder="side" />
+                    <Flex gap={15}>
+                        <Form.Item 
+                            style={{ flex: 1 }} 
+                            label="Total Area (m²)"
+                            required
+                        >
+                            <Space.Compact style={{ flex: 1 }} >
+                                <Form.Item
+                                    style={{ flex: 1 }} 
+                                    name={["area","width"]}
+                                    rules={[{ required: true, message: "Please enter width" }]}
+                                >
+                                    <InputNumber placeholder="Enter width" />
+                                </Form.Item>
                                 <span className='x'>X</span>
-                                <Input style={{ width: '50%' }} placeholder="side" />
+                                <Form.Item
+                                    style={{ flex: 1 }} 
+                                    name={["area","length"]}
+                                    rules={[{ required: true, message: "Please enter length" }]}
+                                >
+                                    <InputNumber placeholder="Enter length" />
+                                </Form.Item>
                                 <span className='m2'><TbMeterSquare /></span>
                             </Space.Compact>
                         </Form.Item>
-                        <Form.Item style={{ flex: 1 }} label="Rooms" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
-                            <Input placeholder="number of rooms" />
+                        <Form.Item
+                            style={{ flex: 1 }} 
+                            label="Rooms" 
+                            name="rooms"
+                            rules={[{ required: true, message: "Please enter number of rooms" }]}
+                            // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
+                        >
+                            <Input type="number" placeholder="Number of rooms" />
                         </Form.Item>
                     </Flex>
 
-                    <Flex gap={8}>
-                        <Form.Item style={{ flex: 1 }} label="Bedrooms" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
-                            <Input placeholder="number of bedrooms" />
+                    <Flex gap={15}>
+                        <Form.Item
+                            style={{ flex: 1 }} 
+                            label="Bedrooms" 
+                            name="bedrooms"
+                            rules={[{ required: true, message: "Please enter number of bedrooms" }]}
+                            // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
+                        >
+                            <Input type="number" placeholder="Number of bedrooms" />
                         </Form.Item>
-                        <Form.Item style={{ flex: 1 }} label="Bathrooms" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
-                            <Input placeholder="number of bathrooms" />
+                        <Form.Item 
+                            style={{ flex: 1 }} 
+                            label="Bathrooms" 
+                            name="bathrooms"
+                            rules={[{ required: true, message: "Please enter number of bathrooms" }]}
+                            // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
+                        >
+                            <Input type="number" placeholder="Number of bathrooms" />
                         </Form.Item>
                     </Flex>
 
 
-                    <Flex gap={8}>
-                        <Form.Item style={{ flex: 1 }} label="Kitchen" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
-                            <Input placeholder="number of kitchen" />
+                    <Flex gap={15}>
+                        <Form.Item 
+                            style={{ flex: 1 }} 
+                            label="Kitchen" 
+                            name="kitchen"
+                            rules={[{ required: true, message: "Please enter number of kitchen" }]}
+                            // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
+                        >
+                            <Input type="number" placeholder="Number of kitchen" />
                         </Form.Item>
-                        <Form.Item style={{ flex: 1 }} label="Furnishing Status" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
+                        <Form.Item 
+                            style={{ flex: 1 }} 
+                            label="Furnishing Status" 
+                            name="furnishingStatus"
+                            rules={[{ required: true, message: "Please choose furnishing status" }]}
+                            // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
+                        >
                             <Select
-                                placeholder="choose"
+                                placeholder="Choose Furnishing Status"
+                                showSearch={false}
                                 options={[
                                     { value: 'Furnished', label: 'Furnished' },
                                     { value: 'Semi-Furnished', label: 'Semi-Furnished' },
@@ -122,12 +192,19 @@ export default function Step1(){
                         </Form.Item>
                     </Flex>
 
-                    <Flex gap={8}>
-                        <Form.Item style={{ flex: 1 }} label="Lease Duration" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
+                    <Flex gap={15}>
+                        <Form.Item
+                            style={{ flex: 1 }} 
+                            label="Lease Duration" 
+                            name="leaseDuration"
+                            rules={[{ required: true, message: "Please choose lease duration" }]}
+                            // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
+                        >
                             <Select
                                 mode="multiple"
                                 style={{ width: '100%' }}
                                 placeholder="please select"
+                                showSearch={false}
                                 options={[
                                     { value: 'month', label: 'Month' },
                                     { value: 'week', label: 'Week' },
@@ -135,43 +212,59 @@ export default function Step1(){
                                 ]}
                             />
                         </Form.Item>
-                        <Form.Item style={{ flex: 1 }} label="Available From" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
+                        {/* <Form.Item 
+                            style={{ flex: 1 }} 
+                            label="Available From" 
+                            required 
+                            tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
+                        >
                             <DatePicker onChange={onChange} style={{ width: '100%' }} />
+                        </Form.Item> */}
+
+                        <Form.Item
+                            style={{ flex: 1 }} 
+                            label="Contact"
+                            // tooltip={{ title: 'Tooltip with customize icon', icon: <VscQuestion /> }}
+                            >
+                                <Space.Compact className='con' style={{ flex: 1, gap: 5 }}  >
+                                    <Form.Item
+                                        style={{ flex: 1 }} 
+                                        name={["contact", "phone"]}
+                                    >
+                                        <Input prefix={<MdPhone />} placeholder='Phone'/>
+                                    </Form.Item>
+                                    <Form.Item
+                                        style={{ flex: 1 }} 
+                                        name={["contact", "whatsapp"]}
+                                    >
+                                        <Input prefix={<FaWhatsapp />} placeholder='WhatsApp'/>
+                                        
+                                    </Form.Item>
+                                </Space.Compact>
                         </Form.Item>
                     </Flex>
 
-                    <Form.Item
-                        label="Contact"
-                        required
-                        tooltip={{ title: 'Tooltip with customize icon', icon: <VscQuestion /> }}
-                    >
-                        <Checkbox onChange={onChangeCheck}>Add contact information</Checkbox>
-                        {addContactInfo && (
-                            <div className='numsInfo'>
-                                <Input prefix={<MdPhone />} placeholder='phone number'/>
-                                <Input prefix={<FaWhatsapp />} placeholder='whatsapp number'/>
-                            </div>
-                        )}
-                    </Form.Item>
-
-                    <Flex gap={8}>
+                    <Flex gap={15}>
                         <Form.Item
                             style={{ flex: 1 }}
                             label="Description"
-                            required
-                            tooltip={{ title: 'Tooltip with customize icon', icon: <VscQuestion /> }}
+                            name="description"
+                            rules={[{ required: true, message: "Please enter description" }]}
+                            // tooltip={{ title: 'Tooltip with customize icon', icon: <VscQuestion /> }}
                         >
                             <TextArea
-                                placeholder="Autosize height with minimum and maximum number of lines"
+                                placeholder="Enter description"
                                 autoSize={{ minRows: 4}}
                             />
                         </Form.Item>
                     </Flex>
 
                 </Flex>
-                    <Button type="primary">
+                <div className='btns'>
+                    <Button type="primary" htmlType="submit">
                         Next
                     </Button>
+                </div>
             </Form>
         </div>
     )
