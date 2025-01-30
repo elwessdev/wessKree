@@ -1,6 +1,6 @@
 // import { useState } from 'react';
 // import { InfoCircleOutlined } from '@ant-design/icons';
-import { Form, Input, Select, Space, Flex, DatePicker, Checkbox, CheckboxProps } from 'antd';
+import { Form, Input, Select, Space, Flex, DatePicker, Checkbox, CheckboxProps, Button } from 'antd';
 import { VscQuestion } from "react-icons/vsc";
 import { TbMeterSquare } from "react-icons/tb";
 import { MdPhone } from "react-icons/md";
@@ -22,10 +22,13 @@ const { TextArea } = Input;
 export default function Step1(){
     const [form] = Form.useForm();
     const [addContactInfo, setAddContactInfo]=useState<boolean>(false);
-
     const onChangeCheck: CheckboxProps['onChange'] = (e) => {
         setAddContactInfo(e.target.checked)
     };
+
+    const handleSubmit = () => {
+        console.log(form);
+    }
 
     return (
         <div className="step">
@@ -33,11 +36,9 @@ export default function Step1(){
                 form={form}
                 layout="vertical"
                 requiredMark='optional'
+                onFinish={handleSubmit}
                 >
-                
-
                 <Flex gap={5} vertical>
-
                     <Flex>
                         <Form.Item style={{ flex: 1 }} label="Title" required tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}>
                             <Input placeholder="title of the post" />
@@ -168,7 +169,9 @@ export default function Step1(){
                     </Flex>
 
                 </Flex>
-
+                    <Button type="primary">
+                        Next
+                    </Button>
             </Form>
         </div>
     )

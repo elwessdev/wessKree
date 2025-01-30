@@ -1,13 +1,14 @@
 import "./nav.scss"
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Select, Button, Dropdown,MenuProps } from 'antd';
+import { Button, Dropdown,MenuProps } from 'antd';
 import Login from "../Auth/Login/login";
 import { useUser } from "../context/userContext";
 import Logo from '../assets/logo2.jpeg'
+import SearchNav from "./search";
 
 // Icons
-import { TbHomeSearch, TbHomeHand } from "react-icons/tb";
+import { TbHomeHand } from "react-icons/tb";
 import { FaHouseUser } from "react-icons/fa";
 import { FaUserCog } from "react-icons/fa";
 import { RiLogoutCircleRFill } from "react-icons/ri";
@@ -15,38 +16,6 @@ import { IoIosNotifications } from "react-icons/io";
 import { TbHomeStats } from "react-icons/tb";
 import { FaUserCheck } from "react-icons/fa";
 
-
-
-const options = [
-    {
-        value: '1',
-        label: 'Not Identified',
-    },
-    {
-        value: '2',
-        label: 'Closed',
-    },
-    {
-        value: '3',
-        label: 'Communicated',
-    },
-    {
-        value: '4',
-        label: 'Identified',
-    },
-    {
-        value: '5',
-        label: 'Resolved',
-    },
-    {
-        value: '6',
-        label: 'Cancelled',
-    },
-    {
-        value: '6',
-        label: 'Cancelled',
-    },
-]
 
 export default function Nav(){
     const {user, logout} = useUser();
@@ -102,39 +71,7 @@ export default function Nav(){
                 </NavLink>
             </div>
             <div className="c-s">
-                <div className="search-bar">
-                    <div className="slc">
-                        <div className="sl">
-                            <span className="subTitle">State</span>
-                            <Select
-                                showSearch
-                                style={{ width: "100%" }}
-                                placeholder="Search..."
-                                optionFilterProp="label"
-                                filterSort={(optionA, optionB) =>
-                                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                                }
-                                options={options}
-                            />
-                        </div>
-                        <div className="sl">
-                            <span className="subTitle">City</span>
-                            <Select
-                                showSearch
-                                style={{ width: "100%" }}
-                                placeholder="Search..."
-                                optionFilterProp="label"
-                                filterSort={(optionA, optionB) =>
-                                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                                }
-                                options={options}
-                            />
-                        </div>
-                    </div>
-                    <button>
-                        <TbHomeSearch />
-                    </button>
-                </div>
+                <SearchNav />
             </div>
             <div className="r-s">
                 <div className="btns">

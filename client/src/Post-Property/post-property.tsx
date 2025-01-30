@@ -1,48 +1,34 @@
-import { CSSProperties, useState } from "react";
 import "./post-property.scss"
-
-import { Button, message, Steps, theme } from 'antd';
-
+import { useState } from "react";
+import { Button, message, Steps } from 'antd';
 import Step1 from "./steps/step1";
 import Step2 from "./steps/step2";
 import Step3 from "./steps/step3";
-import Step4 from "./steps/step4";
 
-
-const steps = [
-    {
-        title: 'Details',
-        content: <Step1 />,
-    },
-    {
-        title: 'Location',
-        content: <Step2 />,
-    },
-    {
-        title: 'Images/Features',
-        content: <Step3 />,
-    }, 
-];
 
 export default function PostPerperty(){
     // Steps
     const [current, setCurrent] = useState(0);
-    // const { token } = theme.useToken();
     const next = () => {
         setCurrent(current + 1);
     };
     const prev = () => {
         setCurrent(current - 1);
     };
-    // const contentStyle: CSSProperties = {
-    //     lineHeight: '260px',
-    //     textAlign: 'center',
-    //     color: token.colorTextTertiary,
-    //     backgroundColor: token.colorFillAlter,
-    //     borderRadius: token.borderRadiusLG,
-    //     border: `1px dashed ${token.colorBorder}`,
-    //     marginTop: 16,
-    // };
+    const steps = [
+        {
+            title: 'Details',
+            content: <Step1 />,
+        },
+        {
+            title: 'Location',
+            content: <Step2 />,
+        },
+        {
+            title: 'Images/Features',
+            content: <Step3 />,
+        }, 
+    ];
 
     return (
         <div id="post-property">

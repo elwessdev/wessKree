@@ -1,18 +1,19 @@
 import { createBrowserRouter } from 'react-router-dom'
+import { UserProvider } from '../context/userContext.tsx';
 
-import App from "./App";
-import Home from './Home/Home'
-import Property from "./Property/property";
-import Signup from './Auth/Signup/signup';
-import Profile from './Profile/profile';
-import PostPerperty from './Post-Property/post-property';
-import SetupProfile from './Auth/Setup-profile/setup';
+import App from "../App";
+import Home from '../Home/Home'
+import Property from "../Property/property";
+import Signup from '../Auth/Signup/signup';
+import Profile from '../Profile/profile';
+import PostPerperty from '../Post-Property/post-property';
+import SetupProfile from '../Auth/Setup-profile/setup';
 
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
+        element: <UserProvider><App /></UserProvider>,
         errorElement: <h1>404 Not Found</h1>,
         children: [
             { path: "", element: <Home /> },
