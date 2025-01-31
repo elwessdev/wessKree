@@ -21,6 +21,7 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
+// Testing Endpoint
 app.get("/",(req,res)=>{
     res.status(200).send("Server work");
 })
