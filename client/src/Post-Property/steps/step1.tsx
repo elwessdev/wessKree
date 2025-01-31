@@ -1,4 +1,3 @@
-// import { useState } from 'react';
 // import { InfoCircleOutlined } from '@ant-design/icons';
 import { Form, Input, Select, Space, Flex, InputNumber, Button } from 'antd';
 // import { VscQuestion } from "react-icons/vsc";
@@ -7,46 +6,44 @@ import { Form, Input, Select, Space, Flex, InputNumber, Button } from 'antd';
 import { TbMeterSquare } from "react-icons/tb";
 import { MdPhone } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
-import { useState } from 'react';
 
 const { TextArea } = Input;
 
-// Type
-type props = {
-    next: () => void,
-}
 interface values {
-    title: string,
-    type: string,
+    title: string | null,
+    type: string | null,
     category: string[],
-    area:{
-        width: number,
-        length: number
-    }
-    rooms: string,
-    bathrooms: string,
-    bedrooms: string,
-    kitchen: string,
-    furnishingStatus: string,
+    rooms: string | null,
+    bathrooms: string | null,
+    bedrooms: string | null,
+    kitchen: string | null,
+    furnishingStatus: string | null,
     leaseDuration: string[],
-    contact:{
-        phone: string,
-        whatsapp: string | undefined
+    description: string | null,
+    area:{
+        width: number | null,
+        length: number | null
     }
-    description: string,
+    contact:{
+        phone: string | null,
+        whatsapp: string | null
+    }
+}
+type props = {
+    data: values | null,
+    setData: (par:values) => void,
+    next: () => void
 }
 
-
-export default function Step1({next}:props){
+export default function Step1({data,setData,next}:props){
     const [form] = Form.useForm();
-    const [setpOneData, setStepOneData] = useState<values|null>(null);
     
     const handleSubmit = (values:values) => {
-        console.log("Step one data:", values);
-        setStepOneData(values);
+        // console.log("step 1 data from child:", values);
+        setData(values);
         next();
     }
-
+    
     return (
         <div className="step">
             <Form
@@ -55,13 +52,14 @@ export default function Step1({next}:props){
                 requiredMark='optional'
                 onFinish={handleSubmit}
                 >
-                <Flex gap={18} vertical>
+                <Flex gap={15} vertical>
                     <Flex>
                         <Form.Item 
                             style={{ flex: 1 }} 
                             label="Title" 
                             name="title"
                             rules={[{ required: true, message: "Please enter rent title" }]}
+                            initialValue={data?.title}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
                         >
                             <Input placeholder="Enter title" />
@@ -74,6 +72,7 @@ export default function Step1({next}:props){
                             label="Type" 
                             name="type"
                             rules={[{ required: true, message: "Please choose type" }]}
+                            initialValue={data?.type}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
                         >
                             <Select
@@ -91,6 +90,7 @@ export default function Step1({next}:props){
                             label="Category"
                             name="category"
                             rules={[{ required: true, message: "Please choose category" }]}
+                            initialValue={data?.category}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
                         >
                             <Select
@@ -116,16 +116,18 @@ export default function Step1({next}:props){
                                     style={{ flex: 1 }} 
                                     name={["area","width"]}
                                     rules={[{ required: true, message: "Please enter width" }]}
+                                    initialValue={data?.area.width}
                                 >
-                                    <InputNumber placeholder="Enter width" />
+                                    <InputNumber type='number' placeholder="Enter width" />
                                 </Form.Item>
                                 <span className='x'>X</span>
                                 <Form.Item
                                     style={{ flex: 1 }} 
                                     name={["area","length"]}
                                     rules={[{ required: true, message: "Please enter length" }]}
+                                    initialValue={data?.area.length}
                                 >
-                                    <InputNumber placeholder="Enter length" />
+                                    <InputNumber type='number' placeholder="Enter length" />
                                 </Form.Item>
                                 <span className='m2'><TbMeterSquare /></span>
                             </Space.Compact>
@@ -135,6 +137,7 @@ export default function Step1({next}:props){
                             label="Rooms" 
                             name="rooms"
                             rules={[{ required: true, message: "Please enter number of rooms" }]}
+                            initialValue={data?.rooms}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
                         >
                             <Input type="number" placeholder="Number of rooms" />
@@ -147,6 +150,7 @@ export default function Step1({next}:props){
                             label="Bedrooms" 
                             name="bedrooms"
                             rules={[{ required: true, message: "Please enter number of bedrooms" }]}
+                            initialValue={data?.bedrooms}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
                         >
                             <Input type="number" placeholder="Number of bedrooms" />
@@ -156,6 +160,7 @@ export default function Step1({next}:props){
                             label="Bathrooms" 
                             name="bathrooms"
                             rules={[{ required: true, message: "Please enter number of bathrooms" }]}
+                            initialValue={data?.bathrooms}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
                         >
                             <Input type="number" placeholder="Number of bathrooms" />
@@ -169,6 +174,7 @@ export default function Step1({next}:props){
                             label="Kitchen" 
                             name="kitchen"
                             rules={[{ required: true, message: "Please enter number of kitchen" }]}
+                            initialValue={data?.kitchen}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
                         >
                             <Input type="number" placeholder="Number of kitchen" />
@@ -178,6 +184,7 @@ export default function Step1({next}:props){
                             label="Furnishing Status" 
                             name="furnishingStatus"
                             rules={[{ required: true, message: "Please choose furnishing status" }]}
+                            initialValue={data?.furnishingStatus}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
                         >
                             <Select
@@ -198,6 +205,7 @@ export default function Step1({next}:props){
                             label="Lease Duration" 
                             name="leaseDuration"
                             rules={[{ required: true, message: "Please choose lease duration" }]}
+                            initialValue={data?.leaseDuration}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
                         >
                             <Select
@@ -230,12 +238,14 @@ export default function Step1({next}:props){
                                     <Form.Item
                                         style={{ flex: 1 }} 
                                         name={["contact", "phone"]}
+                                        initialValue={data?.contact.phone}
                                     >
                                         <Input prefix={<MdPhone />} placeholder='Phone'/>
                                     </Form.Item>
                                     <Form.Item
                                         style={{ flex: 1 }} 
                                         name={["contact", "whatsapp"]}
+                                        initialValue={data?.contact.whatsapp}
                                     >
                                         <Input prefix={<FaWhatsapp />} placeholder='WhatsApp'/>
                                         
@@ -249,6 +259,7 @@ export default function Step1({next}:props){
                             style={{ flex: 1 }}
                             label="Description"
                             name="description"
+                            initialValue={data?.description}
                             rules={[{ required: true, message: "Please enter description" }]}
                             // tooltip={{ title: 'Tooltip with customize icon', icon: <VscQuestion /> }}
                         >

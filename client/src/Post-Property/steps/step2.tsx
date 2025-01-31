@@ -1,5 +1,5 @@
 import {Form, Input, Select, Flex, Button} from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MapPicker from './map';
 import {StateCity} from "../../Data/state-municipality.ts";
 // import { VscQuestion } from "react-icons/vsc";
@@ -7,44 +7,48 @@ import {StateCity} from "../../Data/state-municipality.ts";
 // Type
 type props = {
     next: () => void,
-    prev: () => void
+    prev: () => void,
+    data: values | null,
+    setData: (par:values) => void,
 }
-type stateCityType = { value: string; label: string }[];
 interface values {
     city: string | undefined,
-    "neighborhood/area": string | undefined,
+    neighborhood: string | undefined,
     state: string | undefined,
     zip: string | undefined
 }
+type stateCityType = { value: string; label: string }[];
+
 
 // Functions
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 
-export default function Step2({next,prev}:props){
+export default function Step2({data,setData,next,prev}:props){
     const [form] = Form.useForm();
     const [delegations, setDelegations] = useState<stateCityType>([]);
-    const [setpTwoData, setStepTwoData] = useState<values|null>(null);
     // const [delegationValue, setDelegationValue] = useState<string|null>(null);
-    
+
     const stateOptions = StateCity.map(state => ({
         value: capitalize(state.Name),
         label: capitalize(state.Name),
     }));
     
-    const handleStateChange = (value: string) => {
+    const handleStateChange = (value:string|undefined) => {
         // setDelegationValue(null);
         const state = StateCity.find((s) => capitalize(s.Name) === value);
-        setDelegations(state ?state.Delegations.map((d) => ({ value: d.Value, label: capitalize(d.Name) })) :[]);
+        setDelegations(state ?state.Delegations.map((d) => ({ value: capitalize(d.Value), label: capitalize(d.Name) })) :[]);
     };
+
+    useEffect(()=>handleStateChange(data?.state),[data])
 
     const handleLocationSelect = (location: { lat: number; lng: number }) => {
         console.log('Selected Location:', location);
     };
 
     const handleSubmit = (values:values) => {
-        setStepTwoData(values);
-        console.log("Step two data", values);
+        setData(values);
+        // console.log("Step 2 data from child", values);
         next();
     }
     
@@ -63,6 +67,7 @@ export default function Step2({next,prev}:props){
                             label="State"
                             name="state"
                             rules={[{ required: true, message: "Please choose state" }]}
+                            initialValue={data?.state}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
                         >
                             <Select
@@ -82,6 +87,7 @@ export default function Step2({next,prev}:props){
                             label="City"
                             name="city"
                             rules={[{ required: true, message: "Please choose city" }]}
+                            initialValue={data?.city}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
                         >
                             <Select
@@ -103,6 +109,7 @@ export default function Step2({next,prev}:props){
                             label="Zip/Postal Code"
                             name="zip"
                             rules={[{ required: true, message: "Please enter zip code" }]}
+                            initialValue={data?.zip}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
                         >
                             <Input type='number' placeholder='Enter zip code' />
@@ -110,7 +117,8 @@ export default function Step2({next,prev}:props){
                         <Form.Item 
                             style={{ flex: 1 }}
                             label="Neighborhood/Area"
-                            name="neighborhood/area"
+                            name="neighborhood"
+                            initialValue={data?.neighborhood}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
                         >
                             <Input placeholder='Enter the name of area or neighborhood' />
