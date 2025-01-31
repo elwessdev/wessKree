@@ -1,0 +1,187 @@
+.ant-modal{
+    width: 400px !important;
+    *{
+        font-family: "Nunito Sans", serif;
+    }
+    .ant-modal-title {
+        color: #7065ef;
+        text-align: center;
+        font-size: 40px !important;
+        font-weight: 700;
+    }
+    .ant-form-vertical .ant-form-item:not(.ant-form-item-horizontal) .ant-form-item-label{
+        padding: 0;
+        
+    }
+    .ant-form-item .ant-form-item-label > label{
+        font-size: 13px;
+        color: #0d133a;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+    .ant-input-affix-wrapper {
+        height: 40px;
+        border-radius: 4px;
+    }
+    .ant-input-affix-wrapper > input.ant-input{
+        font-size: 15px;
+        color: #0d133a;
+    }
+    .ant-input-affix-wrapper .ant-input-prefix {
+        position: relative;
+        top: -1px;
+    }
+    .ant-form-item {
+        margin-bottom: 15px;
+        &.check{
+            margin-bottom: 0;
+            margin-top: 5px;
+        }
+        &.password{
+            margin: 0;
+        }
+    }
+    .ant-form-item .ant-form-item-label >label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before{
+        display: none;
+    }
+    .ant-form{
+        margin-top: 20px;
+    }
+    .ant-input-outlined:hover {
+        border-color: #7065ef;
+    }
+    .ant-input-outlined:focus,.ant-input-outlined:focus-within {
+        border-color: #7065ef;
+        box-shadow: 0 0 0 2px #7165ef2e;
+    }
+    .ant-btn-variant-outlined:not(:disabled):not(.ant-btn-disabled):hover, :where(.css-dev-only-do-not-override-nqoqt9).ant-btn-variant-dashed:not(:disabled):not(.ant-btn-disabled):hover {
+        color: #FFF;
+        border-color: #7065ef;
+        background: #7065ef;
+    }
+    .ant-btn.ant-btn-block{
+        font-weight: 700;
+        font-size: 13px;
+        border-radius: 4px;
+        border: 1px solid #d6d5df;
+        background: rgb(112, 101, 239);
+        color: #FFF;
+        padding: 0;
+        height: 42px;
+        line-height: 2;
+        transition: all 0.2s;
+        width: 100%;
+        margin-top: 20px;
+        box-shadow: none;
+    }
+    .ant-checkbox-wrapper {
+        font-weight: 500;
+        user-select: none;
+        font-size: 13px;
+    }
+    .ant-checkbox-checked .ant-checkbox-inner {
+        background-color: #7065ef;
+        border-color: #7065ef;
+    }
+    .ant-checkbox-checked:hover .ant-checkbox-inner {
+        background-color: #7065ef;
+    }
+    .ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner {
+        background-color: #7065ef;
+        border-color: transparent;
+    }
+    .ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner, :where(.css-dev-only-do-not-override-nqoqt9).ant-checkbox:not(.ant-checkbox-disabled):hover .ant-checkbox-inner {
+        border-color: #7065ef;
+    }
+    .ant-checkbox+span {
+        padding-inline-start: 3px;
+        padding-inline-end: 0;
+        font-weight: 600;
+        position: relative;
+        top: 2px;
+    }
+    .lnk{
+        font-weight: 600;
+        margin-top: 25px;
+        margin-bottom: 0;
+        text-align: center;
+        a{
+            text-decoration: underline;
+            color: #7065ef;
+            margin-left: 2px;
+        }
+    }
+    .lnkP{
+        text-decoration: underline;
+        color: #7065ef;
+        margin-left: 2px;
+        float: right;
+        margin-top: 3px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+    .google-button {
+        all: unset;
+        margin: auto;
+        width: fit-content;
+        height: 40px;
+        background-color: #4285f4;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+        transition: all 300ms ease-in-out;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 4px;
+        user-select: none;
+        .google-icon-wrapper {
+            width: 32px;
+            height: 32px;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin: 4px 0;
+            border-radius: 5px;
+        }
+        .google-button-text {
+            display: flex;
+            color: #ffffff;
+            font-size: 14px;
+            letter-spacing: normal;
+            align-items: center;
+            font-weight: 700;
+            margin-left: 7px;
+            margin-right: 15px;
+        }
+        &:hover {
+            box-shadow: 0 0 3px 3px rgb(66 133 244 / 18%);
+            cursor: pointer;
+        }
+    }
+    .dvider{
+        margin: 20px auto 10px;
+        display: block;
+        width: fit-content;
+        font-weight: 600;
+        font-size: 13px;
+        color: #979797;
+        position: relative;
+        span{
+            padding: 0 10px;
+            background-color: #FFF;
+            z-index: 30;
+            display: flex;
+            position: relative;
+        }
+        &::after{
+            content: "";
+            width: 280px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            height: 1px;
+            background: rgb(165 163 163 / 53%);
+        }
+    }
+}
