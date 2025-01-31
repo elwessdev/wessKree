@@ -97,9 +97,8 @@ export default function SetupProfile(){
             {contextHolder}
             <div className="pfp">
                 <Avatar src={imageUrl} />
-                <ImgCrop rotationSlider>
+                    <ImgCrop rotationSlider>
                     <Upload
-                        // action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                         showUploadList={false}
                         onChange={onChange}
                         className={imageUrl ?"edit":""}
