@@ -21,5 +21,9 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
+app.get("/",(req,res)=>{
+    res.status(200).send("Server work");
+})
+
 // Routes
 app.use("/auth", authRoutes);
