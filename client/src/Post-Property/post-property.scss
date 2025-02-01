@@ -338,6 +338,20 @@
                     }
                 }
             }
+            .ant-btn-variant-outlined{
+                border-color: transparent;
+                background: transparent;
+                box-shadow: unset;
+                span{
+                    display: none;
+                }
+                .ant-btn-icon,.anticon{
+                    display: block;
+                    svg{
+                        font-size: 22px;
+                    }
+                }
+            }
         }
     }
 }
