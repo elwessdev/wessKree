@@ -106,6 +106,7 @@ export default function Step1({data,setData,next}:props){
                                 options={[
                                     { value: 'student', label: 'Student' },
                                     { value: 'Family', label: 'Family' },
+                                    { value: 'anyone', label: 'Anyone' },
                                 ]}
                             />
                         </Form.Item>
@@ -254,7 +255,6 @@ export default function Step1({data,setData,next}:props){
                                         initialValue={data?.contact.whatsapp}
                                     >
                                         <Input prefix={<FaWhatsapp />} placeholder='WhatsApp'/>
-                                        
                                     </Form.Item>
                                 </Space.Compact>
                         </Form.Item>

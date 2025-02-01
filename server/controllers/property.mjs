@@ -20,3 +20,13 @@ export const postProperty = async (req,res) => {
         res.status(500).send({ message: err });
     }
 }
+// Get Properties
+export const getProperties = async (req,res) => {
+    try {
+        const properties = await Property.find();
+        res.status(200).send({properties});
+    } catch(err){
+        console.error("postProperty error:",err);
+        res.status(500).send({ message: err });
+    }
+}

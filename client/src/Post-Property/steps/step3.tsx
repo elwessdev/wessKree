@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { LoadingOutlined, UploadOutlined, PlusOutlined } from '@ant-design/icons';
-import { Form, message, Upload, Button, Flex } from 'antd';
+import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
+import { Form, message, Upload, Button, Flex, Spin } from 'antd';
 import type { UploadProps } from 'antd';
 // import type { GetProp, UploadProps } from 'antd';
 import { VscQuestion } from "react-icons/vsc";
@@ -20,10 +20,11 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 
 // Type
 type props = {
-    done: () => void,
+    done: () => any,
     prev: () => void,
     setData: any,
-    data: any
+    data: any,
+    loading: boolean
 }
 
 const MAX_FILE_SIZE_MB = 2;
@@ -51,7 +52,7 @@ const FeatureItem = ({ feature, checked, onClick }: { feature: any; checked: boo
     </div>
 );
 
-export default function Step3({data,setData,done,prev}:props){
+export default function Step3({loading,data,setData,done,prev}:props){
     const [form] = Form.useForm();
 
     const [checkedFeatures, setCheckedFeatures] = useState<Record<string, boolean>>(
@@ -144,6 +145,7 @@ export default function Step3({data,setData,done,prev}:props){
                                         name="main"
                                         listType="picture-card"
                                         className="avatar-uploader"
+                                        progress={{ strokeWidth: 2, showInfo: false }}
                                         showUploadList={false}
                                         // action={undefined}
                                         // beforeUpload={() => {console.log("test")}}
@@ -208,9 +210,9 @@ export default function Step3({data,setData,done,prev}:props){
                             </div>
                         </Form.Item>
                         <Form.Item
-                        style={{ flex: 1 }}
-                        label="Features"
-                        tooltip={{ title: 'Click to select the feature', icon: <VscQuestion /> }}>
+                            style={{ flex: 1 }}
+                            label="Features"
+                            tooltip={{ title: 'Click to select the feature', icon: <VscQuestion /> }}>
                             <div className="features">
                                 {featuresList.map((feature) => (
                                     <FeatureItem
@@ -228,7 +230,7 @@ export default function Step3({data,setData,done,prev}:props){
                             Previous
                         </Button>
                         <Button type="primary" htmlType="submit">
-                            Done
+                            {loading ?<Spin indicator={<LoadingOutlined spin />} /> :"Post"}
                         </Button>
                     </div>
             </Form>

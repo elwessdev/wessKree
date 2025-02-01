@@ -54,6 +54,7 @@ interface step3Values {
 
 export default function PostPerperty(){
     const [current, setCurrent] = useState(0);
+    const [loading, setLoading]=useState<boolean>(false);
     const [step1Data, setStep1Data] = useState<step1Values|null>(null);
     const [step2Data, setStep2Data] = useState<step2Values|null>(null);
     const [step3Data, setStep3Data] = useState<step3Values|null>(null);
@@ -65,19 +66,18 @@ export default function PostPerperty(){
         // console.log({...step1Data,...step2Data,...step3Data});
         if(step3Data?.images!=undefined&&step3Data?.images.main!=undefined&&step3Data?.images.top!=undefined&&
             step3Data?.images.small1!=undefined&& step3Data?.images.small2!=undefined){
-
+            setLoading(true);
             const uploaders = Object.entries(step3Data?.images).map(img=>uploadImgs(img[1]));
             axios.all(uploaders).then(res=>{
-                const imgsURL = res.map(img=>(
-                    {
-                        cloudId:img.data.asset_id,
-                        url:img.data.secure_url
-                    }
-                ));
+                const imgsURL = res.map(img=>({
+                    cloudId:img.data.asset_id,
+                    url:img.data.secure_url
+                }));
                 // console.log(res);
                 // console.log(imgsURL);
                 handleSubmit(imgsURL);
             }).catch(err=>{
+                setLoading(false);
                 message.error(`Something wrong in upload images ${err}`);
             })
         } else {
@@ -112,9 +112,11 @@ export default function PostPerperty(){
                 imgs: imgsURL
             },{withCredentials: true});
             console.log(res);
+            setLoading(false);
             message.success('Post has been posted!');
         } catch(err){
             // console.log(err);
+            setLoading(false);
             message.error(`Something wrong ${err}`);
         }
     }
@@ -151,6 +153,7 @@ export default function PostPerperty(){
                 prev={()=>setCurrent(current - 1)}
                 data={step3Data}
                 setData={setStep3Data}
+                loading={loading}
             />,
         }, 
     ];
