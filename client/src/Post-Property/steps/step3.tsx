@@ -21,28 +21,42 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 // Type
 type props = {
     done: () => void,
-    prev: () => void
+    prev: () => void,
+    setData: any,
+    data: any
 }
 
 const MAX_FILE_SIZE_MB = 2;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/jpg"];
 
+const featuresList = [
+    { key: "wifi", label: "Internet/WiFi", icon: <FaWifi /> },
+    { key: "backyard", label: "Backyard", icon: <MdOutlineYard /> },
+    { key: "workspace", label: "Workspace", icon: <BsPersonWorkspace /> },
+    { key: "parking", label: "Parking", icon: <AiFillSafetyCertificate /> },
+    { key: "garage", label: "Garage", icon: <GiHomeGarage /> },
+    { key: "airConditioner", label: "Air Conditioner", icon: <TbAirConditioning /> },
+    { key: "swimmingPool", label: "Swimming Pool", icon: <FaSwimmingPool /> },
+    { key: "refrigerator", label: "Refrigerator", icon: <MdOutlineKitchen /> },
+    { key: "heating", label: "Heating", icon: <MdFireplace /> },
+    { key: "stove", label: "Stove", icon: <GiGasStove /> },
+    { key: "balcony", label: "Balcony", icon: <MdBalcony /> },
+];
+
+const FeatureItem = ({ feature, checked, onClick }: { feature: any; checked: boolean; onClick: () => void }) => (
+    <div className="f" onClick={onClick}>
+        <div className="icon">{feature.icon}</div>
+        <p>{feature.label}</p>
+        <div className="ok">{checked && <IoIosCheckmarkCircle />}</div>
+    </div>
+);
+
 export default function Step3({data,setData,done,prev}:props){
     const [form] = Form.useForm();
 
-    const [checkedFeatures, setCheckedFeatures] = useState<Record<string, boolean>>({
-        wifi: false,
-        backyard: false,
-        workspace: false,
-        parking: false,
-        garage: false,
-        airConditioner: false,
-        swimmingPool: false,
-        refrigerator: false,
-        heating: false,
-        stove: false,
-        balcony: false,
-    });
+    const [checkedFeatures, setCheckedFeatures] = useState<Record<string, boolean>>(
+        Object.fromEntries(featuresList.map(({ key }) => [key, false]))
+    );
 
     const [images, setImages] = useState<{ [key: string]: File | null }>({
         main: data?.images.main,
@@ -92,22 +106,23 @@ export default function Step3({data,setData,done,prev}:props){
     };
     
     const handleSubmit = () => {
-        // if(images.main && images.top && images.small1 && images.small2){
-        //     message.error("Please upload images")
-        //     return ;
-        // }
-        console.log(images);
+        // console.log(images);
         const features = Object.entries(checkedFeatures)
-        .filter(([feature, isChecked]) => isChecked)
+        .filter(([_, isChecked]) => isChecked)
         .map(([feature]) => feature);
-        console.log(features);
+        // console.log(features);
         setData({
-            features: ["test"],
+            features: features,
             images: images,
             previews: previews
         })
-        // console.log(checkedFeatures.filter(prev=>prev===true));
+        done();
     }
+
+    useEffect(() => {
+        const initialState = Object.fromEntries(featuresList.map(({ key }) => [key, data?.features.includes(key)]));
+        setCheckedFeatures(initialState);
+    }, [data]);
 
     return (
         <div className="step step3">
@@ -131,7 +146,7 @@ export default function Step3({data,setData,done,prev}:props){
                                         className="avatar-uploader"
                                         showUploadList={false}
                                         // action={undefined}
-                                        // beforeUpload={() => false}
+                                        // beforeUpload={() => {console.log("test")}}
                                         onChange={handleChange("main")}
                                     >
                                         {previews["main"]
@@ -192,103 +207,22 @@ export default function Step3({data,setData,done,prev}:props){
                                 </div>
                             </div>
                         </Form.Item>
-
                         <Form.Item
                         style={{ flex: 1 }}
                         label="Features"
                         tooltip={{ title: 'Click to select the feature', icon: <VscQuestion /> }}>
                             <div className="features">
-                                <div className="f" onClick={() => handleCheckboxChange('wifi')}>
-                                    <div className="icon"><FaWifi /></div>
-                                    <p>Internet/WiFi</p>
-                                    <div className="ok">
-                                    {checkedFeatures.wifi && <IoIosCheckmarkCircle />}
-                                    </div>
-                                </div>
-
-                                <div className="f" onClick={() => handleCheckboxChange('backyard')}>
-                                    <div className="icon"><MdOutlineYard /></div>
-                                    <p>Backyard</p>
-                                    <div className="ok">
-                                    {checkedFeatures.backyard && <IoIosCheckmarkCircle />}
-                                    </div>
-                                </div>
-
-                                <div className="f" onClick={() => handleCheckboxChange('workspace')}>
-                                    <div className="icon"><BsPersonWorkspace /></div>
-                                    <p>Workspace</p>
-                                    <div className="ok">
-                                    {checkedFeatures.workspace && <IoIosCheckmarkCircle />}
-                                    </div>
-                                </div>
-
-                                <div className="f" onClick={() => handleCheckboxChange('parking')}>
-                                    <div className="icon"><AiFillSafetyCertificate /></div>
-                                    <p>Parking</p>
-                                    <div className="ok">
-                                    {checkedFeatures.parking && <IoIosCheckmarkCircle />}
-                                    </div>
-                                </div>
-
-                                <div className="f" onClick={() => handleCheckboxChange('garage')}>
-                                    <div className="icon"><GiHomeGarage /></div>
-                                    <p>Garage</p>
-                                    <div className="ok">
-                                    {checkedFeatures.garage && <IoIosCheckmarkCircle />}
-                                    </div>
-                                </div>
-
-                                <div className="f" onClick={() => handleCheckboxChange('airConditioner')}>
-                                    <div className="icon"><TbAirConditioning /></div>
-                                    <p>Air Conditioner</p>
-                                    <div className="ok">
-                                    {checkedFeatures.airConditioner && <IoIosCheckmarkCircle />}
-                                    </div>
-                                </div>
-
-                                <div className="f" onClick={() => handleCheckboxChange('swimmingPool')}>
-                                    <div className="icon"><FaSwimmingPool /></div>
-                                    <p>Swimming Pool</p>
-                                    <div className="ok">
-                                    {checkedFeatures.swimmingPool && <IoIosCheckmarkCircle />}
-                                    </div>
-                                </div>
-
-                                <div className="f" onClick={() => handleCheckboxChange('refrigerator')}>
-                                    <div className="icon"><MdOutlineKitchen /></div>
-                                    <p>Refrigerator</p>
-                                    <div className="ok">
-                                    {checkedFeatures.refrigerator && <IoIosCheckmarkCircle />}
-                                    </div>
-                                </div>
-
-                                <div className="f" onClick={() => handleCheckboxChange('heating')}>
-                                    <div className="icon"><MdFireplace /></div>
-                                    <p>Heating</p>
-                                    <div className="ok">
-                                    {checkedFeatures.heating && <IoIosCheckmarkCircle />}
-                                    </div>
-                                </div>
-
-                                <div className="f" onClick={() => handleCheckboxChange('stove')}>
-                                    <div className="icon"><GiGasStove /></div>
-                                    <p>Stove</p>
-                                    <div className="ok">
-                                    {checkedFeatures.stove && <IoIosCheckmarkCircle />}
-                                    </div>
-                                </div>
-
-                                <div className="f" onClick={() => handleCheckboxChange('balcony')}>
-                                    <div className="icon"><MdBalcony /></div>
-                                    <p>Balcony</p>
-                                    <div className="ok">
-                                    {checkedFeatures.balcony && <IoIosCheckmarkCircle />}
-                                    </div>
-                                </div>
+                                {featuresList.map((feature) => (
+                                    <FeatureItem
+                                        key={feature.key}
+                                        feature={feature}
+                                        checked={checkedFeatures[feature.key]}
+                                        onClick={() => handleCheckboxChange(feature.key)}
+                                    />
+                                ))}
                             </div>
                         </Form.Item>
                     </Flex>
-
                     <div className='btns'>
                         <Button type="primary" onClick={prev}>
                             Previous

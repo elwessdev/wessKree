@@ -17,6 +17,4 @@ router.get("/logout",verifyToken,logout)
 router.post("/signin",signin)
 
 
-
-
 export default router;
