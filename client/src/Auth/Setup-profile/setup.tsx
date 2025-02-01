@@ -97,7 +97,7 @@ export default function SetupProfile(){
             {contextHolder}
             <div className="pfp">
                 <Avatar src={imageUrl} />
-                    <ImgCrop rotationSlider>
+                <ImgCrop rotationSlider>
                     <Upload
                         showUploadList={false}
                         onChange={onChange}

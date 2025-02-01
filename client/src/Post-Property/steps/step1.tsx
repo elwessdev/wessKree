@@ -13,10 +13,10 @@ interface values {
     title: string | null,
     type: string | null,
     category: string[],
-    rooms: string | null,
-    bathrooms: string | null,
-    bedrooms: string | null,
-    kitchen: string | null,
+    rooms: number | null,
+    bathrooms: number | null,
+    bedrooms: number | null,
+    kitchen: number | null,
     furnishingStatus: string | null,
     leaseDuration: string[],
     description: string | null,
@@ -30,8 +30,8 @@ interface values {
     }
 }
 type props = {
-    data: values | null,
-    setData: (par:values) => void,
+    data: values | any,
+    setData: any,
     next: () => void
 }
 
@@ -40,7 +40,13 @@ export default function Step1({data,setData,next}:props){
     
     const handleSubmit = (values:values) => {
         // console.log("step 1 data from child:", values);
-        setData(values);
+        setData({
+            ...values,
+            rooms: Number(values?.rooms),
+            bathrooms: Number(values?.bathrooms),
+            bedrooms: Number(values?.bedrooms),
+            kitchen: Number(values?.kitchen),
+        });
         next();
     }
     
