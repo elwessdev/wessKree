@@ -1,28 +1,30 @@
+import "./style.scss"
 import Filter from "../Filter/filter"
 import PropertyItem from "./property-item"
-import "./properties.scss"
-import { useEffect, useState } from "react"
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton, Spin } from "antd";
+import { getProperties } from "../../API/home";
 
 export default function Properties(){
-    const [properties, setProperties] = useState(null);
-    useEffect(()=>{
-        const getProperties = async()=>{
-            try {
-                const res = await axios.get("/api/property");
-                setProperties(res?.data.properties);
-                console.log(res?.data.properties);
-            } catch(err) {
-                console.log("get properties",err);
-            }
-        }
-        getProperties();
-    },[]);
+    const {data:properties,isLoading,error} = useQuery({
+        queryFn: () => getProperties(),
+        queryKey: ["properties"],
+        refetchOnWindowFocus: true
+        // staleTime: Infinity
+    })
     return (
         <div id="properties">
             <Filter />
             <div className="items">
-                {properties?.map((property,idx)=>(<PropertyItem key={idx} data={property} />))}
+                {isLoading && (
+                    <Spin size="large" />
+                )}
+                {error && <h1>There is an error to load items</h1>}
+                {properties?.map((property:any,idx:number)=>(
+                    // <Skeleton loading={isLoading} active avatar>
+                        <PropertyItem key={idx} data={property} />
+                    // </Skeleton> 
+                ))}
             </div>
         </div>
     )

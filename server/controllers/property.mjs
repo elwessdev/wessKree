@@ -23,7 +23,7 @@ export const postProperty = async (req,res) => {
 // Get Properties
 export const getProperties = async (req,res) => {
     try {
-        const properties = await Property.find();
+        const properties = await Property.find({},{uid:0}).lean();
         res.status(200).send({properties});
     } catch(err){
         console.error("postProperty error:",err);

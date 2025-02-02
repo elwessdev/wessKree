@@ -1,11 +1,10 @@
-import "./post-property.scss"
+import "./style.scss"
 import { useState } from "react";
-import { Button, message, Steps } from 'antd';
+import { message, Steps } from 'antd';
 import Step1 from "./steps/step1";
 import Step2 from "./steps/step2";
 import Step3 from "./steps/step3";
 import axios from "axios";
-import { useUser } from "../context/userContext";
 
 // Type
 interface step1Values {
