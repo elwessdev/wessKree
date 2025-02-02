@@ -17,7 +17,7 @@ const router = createBrowserRouter([
         errorElement: <h1>404 Not Found</h1>,
         children: [
             { path: "", element: <Home /> },
-            { path: "property", element: <Property /> },
+            { path: "property/:id", element: <Property /> },
             { path: "signup", element: <Signup /> },
             { path: "profile", element: <Profile /> },
             { path: "post-property", element: <PostPerperty /> },

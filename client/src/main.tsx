@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 import router from './Routes/routes'
 import { ConfigProvider } from 'antd';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// Css
 import "./main.scss"
 
 // AntD Theme
@@ -18,10 +21,15 @@ const componentsTheme = {
     "inputFontSize": 13,
     "paddingBlock": 7
   },
+  // "Spin": {
+  //   "colorPrimary": "rgb(255,255,255)"
+  // }
   "Spin": {
-    "colorPrimary": "rgb(255,255,255)"
+    "colorPrimary": "rgb(114,46,209)"
   }
 }
+
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
   // <StrictMode>
@@ -35,7 +43,9 @@ createRoot(document.getElementById('root')!).render(
         },
       }}
     >
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </ConfigProvider>
   // </StrictMode>,
 )

@@ -2,7 +2,6 @@ import {Form, Input, Select, Flex, Button} from 'antd';
 import { useEffect, useState } from 'react';
 // import MapPicker from './map';
 import {StateCity} from "../../Data/state-municipality.ts";
-// import LocationPicker from 'react-location-picker';
 // import { VscQuestion } from "react-icons/vsc";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
