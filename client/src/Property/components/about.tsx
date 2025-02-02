@@ -2,23 +2,29 @@ import { memo } from 'react';
 import { LuBedSingle } from "react-icons/lu";
 import { BiBath } from "react-icons/bi";
 import { PiRectangleDashedBold } from "react-icons/pi";
+import { LuSofa } from "react-icons/lu";
 import { GrStatusGood } from "react-icons/gr";
+import { MdOutlineFamilyRestroom } from "react-icons/md";
 
 const About = () => {
     return (
         <>
             <div className="req">
-                <div className="r">
+                {/* <div className="r">
                     <p>Rooms</p>
                     <span><LuBedSingle /> 4</span>
                 </div>
                 <div className="r">
                     <p>Bathrooms</p>
                     <span><BiBath /> 4</span>
+                </div> */}
+                <div className="r">
+                    <p>Furnishing Status</p>
+                    <span><LuSofa /> Semi-Furnishing</span>
                 </div>
                 <div className="r">
-                    <p>Square Area</p>
-                    <span><PiRectangleDashedBold /> 6x8.5 m²</span>
+                    <p>Category</p>
+                    <span><MdOutlineFamilyRestroom /> Family/Student</span>
                 </div>
                 <div className="r">
                     <p>Square Area</p>

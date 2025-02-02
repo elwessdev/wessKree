@@ -2,8 +2,8 @@ import "./style.scss"
 import Filter from "../Filter/filter"
 import PropertyItem from "./property-item"
 import { useQuery } from "@tanstack/react-query";
-import { Skeleton, Spin } from "antd";
-import { getProperties } from "../../API/home";
+import { Spin } from "antd";
+import { getProperties } from "../../API/property";
 
 export default function Properties(){
     const {data:properties,isLoading,error} = useQuery({
