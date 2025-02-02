@@ -5,11 +5,20 @@ import { IoShareSocialOutline } from "react-icons/io5";
 import { MdFavoriteBorder } from "react-icons/md";
 import { IoMdSearch } from "react-icons/io";
 
-const Title = () => {
+
+type props = {
+    title: string | null,
+    state: string | null,
+    city: string | null,
+    zip: number | null
+    neighborhood: string | null
+}
+
+const Title = ({title,state,city,zip,neighborhood}:props) => {
     return (
         <div className="title">
-            <h3>Name of property</h3>
-            <p>Kebili, Douz, rue 5458</p>
+            <h3>{title}</h3>
+            <p>{state}, {city}, {neighborhood} {zip}</p>
             <div className="btns">
                 <Button>
                     <IoShareSocialOutline /> Share

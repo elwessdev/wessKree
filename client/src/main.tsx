@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // Css
 import "./main.scss"
 
-// AntD Theme
+// Antd Theme
 const componentsTheme = {
   "Select": {
     "activeBorderColor": "#7065ef",

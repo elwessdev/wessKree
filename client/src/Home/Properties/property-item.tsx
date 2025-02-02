@@ -38,7 +38,6 @@ const featuresList = [
 ];
 
 const  PropertyItem = ({data}:props)=>{
-    console.log(data);
     return (
         <div className="property-item">
             <div className="photos">
