@@ -22,7 +22,7 @@ export default function Property(){
         queryKey: ["propertyDetails"],
         refetchOnWindowFocus: true
     })
-    console.log(data);
+    // console.log(data);
     return (
         <div id="property">
             {error && <h1>There is an error to load property details</h1>}

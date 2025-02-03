@@ -10,7 +10,7 @@ type props = {
     next: () => void,
     prev: () => void,
     data: values | any,
-    setData: (par:values) => void,
+    setData: any,
 }
 interface values {
     city: string | undefined,

@@ -39,10 +39,15 @@ body{
         left: 0px;
     }
 }
-.ant-modal{
-    .ant-modal-title {
-        font-size: 28px !important;
-    }
+.ant-modal .ant-modal-title {
+    font-weight: 700;
+    text-align: center;
+    margin: 0px 15px;
+    margin-bottom: 15px;
+}
+.ant-btn{
+    font-weight: 600;
+    line-height: 1.5;
 }
 .ant-slider .ant-slider-track {
     background-color: #7065ef;

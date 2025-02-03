@@ -1,0 +1,172 @@
+#profile{
+    margin: 0 auto;
+    display: flex;
+    // gap: 70px;
+    padding: 50px 60px;
+    flex-wrap: wrap;
+    .l-s{
+        width: 195px;
+        border: 2px solid rgba(112, 101, 239, 0.21);
+        padding: 20px 35px;
+        border-radius: 10px;
+        background: #FFF;
+        height: fit-content;
+        position: relative;
+        box-shadow: 0 0 3px 2px rgba(112, 101, 239, 0.14);
+        img{
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            display: block;
+            border-radius: 50%;
+        }
+        h3{
+            margin: 0;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            font-size: 17px;
+            color: #0d133a;
+        }
+        p{
+            margin: 0;
+            text-align: center;
+            color: #7f7f80;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 3px;
+            svg{
+                position: relative;
+                top: 2px;
+            }
+        }
+        .contact{
+            margin: 0 auto;
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            p{
+                border: 1px solid #7065ef;
+                width: 100%;
+                padding: 10px;
+                border-radius: 4px;
+                font-weight: 700;
+                font-size: 13px;
+                color:#0d133a;
+                position: relative;
+                display: flex;
+                justify-content: start;
+                margin: 0;
+                user-select: none;
+                svg{
+                    margin-right: 5px;
+                    font-size: 16px;
+                    position: relative;
+                    top: 0px;
+                    margin-top: -1px;
+                }
+                span{
+                    position: relative;
+                    top: 2px;
+                }
+                .copy{
+                    position: absolute;
+                    top: 55%;
+                    transform: translateY(-50%);
+                    right: 0;
+                    left: auto;
+                    cursor: pointer;
+                    transition: all .2s;
+                    &:hover{
+                        color: #7065ef;
+                    }
+                    // color: #7065ef;
+                }
+            }
+            .ask{
+                display: block;
+                height: 35px;
+                font-weight: 700;
+                font-size: 13px;
+                border-radius: 4px;
+                background: rgb(112, 101, 239);
+                color: #FFF;
+                padding: 0 20px;
+                line-height: 2;
+                transition: all 0.2s;
+                width: 100%;
+                border-color: #7065ef;
+                svg{
+                    font-size: 16px;
+                    position: relative;
+                    top: 3px;
+                    transition: color .2s;
+                }
+            }
+        }
+        .notif{
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            border-color: #7065ef;
+            color: #7065ef;
+            padding: 0;
+            &:hover{
+                background-color: #7065ef;
+                color: #FFF;
+            }
+            svg{
+                font-size: 19px;
+                position: absolute;
+            }
+        }
+    }
+    .r-s{
+        width: calc(100% - 330px);
+        padding-left: 60px;
+        display: flex;
+        flex-wrap: wrap;
+        display: flex;
+        flex-wrap: wrap;
+        grid-gap: 25px;
+        .porps{
+            display: flex;
+            flex-wrap: wrap;
+            display: flex;
+            flex-wrap: wrap;
+            grid-gap: 25px;
+        }
+        .tbs{
+            width: 100%;
+            .ant-tabs .ant-tabs-tab {
+                padding: 10px 13px;
+            }
+            .ant-tabs >.ant-tabs-nav{
+                background-color: #FFF;
+                border-radius: 3px;
+                overflow: hidden;
+                box-shadow: 0 0 3px 2px rgb(112 101 239 / 6%);
+            }
+            .ant-tabs .ant-tabs-tab+.ant-tabs-tab {
+                margin: 0;
+            }
+            .ant-tabs .ant-tabs-tab-btn{
+                // color: #0d133a;
+                font-weight: 600;
+            }
+            .ant-tabs-tab-icon{
+                margin-right: 5px;
+                svg{
+                    font-size: 17px;
+                    position: relative;
+                    top: 4px;
+                }
+            }
+        }
+    }
+}

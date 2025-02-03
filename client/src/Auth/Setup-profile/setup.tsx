@@ -57,7 +57,7 @@ export default function SetupProfile(){
                     };
                     // console.log(fullData);
                     const resServer = await axios.put("/api/auth/setupProfile",{
-                        ...fullData, id: user.id
+                        ...fullData, id: user?.id
                     },{withCredentials: true})
                     if(resServer.status!=200){
                         throw new Error('Something went wrong! Try again');

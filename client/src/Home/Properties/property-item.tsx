@@ -20,12 +20,12 @@ type props = {
 
 
 
-const  PropertyItem = ({data}:props)=>{
+const PropertyItem = ({data}:props)=>{
     return (
         <div className="property-item">
             <div className="photos">
                 <Image.PreviewGroup>
-                    {data?.imgs?.map((img,idx) => (
+                    {data?.imgs.map((img:any,idx:number) => (
                         <Image
                             key={idx}
                             src={img?.url}

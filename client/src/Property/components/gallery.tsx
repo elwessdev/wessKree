@@ -2,12 +2,10 @@ import { memo } from 'react';
 import { Image } from 'antd';
 
 type props = {
-    imgs: [
-        {
-            url: string,
-            cloudId: string,
-        }
-    ]
+    imgs: {
+        url: string,
+        cloudId: string,
+    }[]
 }
 
 const Gallery = ({imgs}:props) => {

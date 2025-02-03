@@ -19,7 +19,7 @@ const router = createBrowserRouter([
             { path: "", element: <Home /> },
             { path: "property/:id", element: <Property /> },
             { path: "signup", element: <Signup /> },
-            { path: "profile", element: <Profile /> },
+            { path: "profile/:userNameUrl", element: <Profile /> },
             { path: "post-property", element: <PostPerperty /> },
             { path: "setup-profile", element: <SetupProfile /> },
         ],
