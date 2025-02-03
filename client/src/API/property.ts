@@ -13,7 +13,7 @@ export const getProperties = async()=>{
 export const propertyDetails = async(id:number)=>{
     try {
         const res = await axios.get(`/api/property/details/${id}`);
-        return res?.data.details[0];
+        return res?.data;
     } catch(err) {
         return err;
     }

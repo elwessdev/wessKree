@@ -2,7 +2,7 @@ import "./style.scss"
 import { useParams } from "react-router-dom";
 import Gallery from "./components/gallery.tsx";
 import Title from "./title.tsx";
-import Details from "./components/details.tsx";
+import Features from "./components/features.tsx";
 import Owner from "./components/owner.tsx";
 import About from "./components/about.tsx";
 import Apply from "./components/apply.tsx";
@@ -43,10 +43,20 @@ export default function Property(){
                     />
                     <div className="btm-prt">
                         <div className="details">
-                            <About />
-                            <Owner />
+                            <About
+                                area={`${data?.area.width}x${data?.area.length}`}
+                                furnishing={data?.furnishingStatus}
+                                category={data?.category}
+                                status={"active"}
+                                description={data?.description}
+                            />
+                            <Owner
+                                user={data?.user}
+                            />
                             <div className="line"></div>
-                            <Details />
+                            <Features
+                                features={data?.features}
+                            />
                         </div>
                         <Apply />
                     </div>

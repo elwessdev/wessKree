@@ -2,20 +2,11 @@ import { useEffect, useState } from 'react';
 import { LoadingOutlined, UploadOutlined } from '@ant-design/icons';
 import { Form, message, Upload, Button, Flex, Spin } from 'antd';
 import type { UploadProps } from 'antd';
+import { featuresList } from "../../Data/features";
 // import type { GetProp, UploadProps } from 'antd';
-import { VscQuestion } from "react-icons/vsc";
 
-import { FaWifi } from "react-icons/fa";
-import { MdOutlineYard } from "react-icons/md";
-import { BsPersonWorkspace } from "react-icons/bs";
-import { MdFireplace } from "react-icons/md";
-import { AiFillSafetyCertificate } from "react-icons/ai";
-import { GiHomeGarage } from "react-icons/gi";
-import { TbAirConditioning } from "react-icons/tb";
-import { FaSwimmingPool } from "react-icons/fa";
-import { MdOutlineKitchen } from "react-icons/md";
-import { GiGasStove } from "react-icons/gi";
-import { MdBalcony } from "react-icons/md";
+// Icons
+import { VscQuestion } from "react-icons/vsc";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 
 // Type
@@ -30,19 +21,6 @@ type props = {
 const MAX_FILE_SIZE_MB = 2;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/jpg"];
 
-const featuresList = [
-    { key: "wifi", label: "Internet/WiFi", icon: <FaWifi /> },
-    { key: "backyard", label: "Backyard", icon: <MdOutlineYard /> },
-    { key: "workspace", label: "Workspace", icon: <BsPersonWorkspace /> },
-    { key: "parking", label: "Parking", icon: <AiFillSafetyCertificate /> },
-    { key: "garage", label: "Garage", icon: <GiHomeGarage /> },
-    { key: "airConditioner", label: "Air Conditioner", icon: <TbAirConditioning /> },
-    { key: "swimmingPool", label: "Swimming Pool", icon: <FaSwimmingPool /> },
-    { key: "refrigerator", label: "Refrigerator", icon: <MdOutlineKitchen /> },
-    { key: "heating", label: "Heating", icon: <MdFireplace /> },
-    { key: "stove", label: "Stove", icon: <GiGasStove /> },
-    { key: "balcony", label: "Balcony", icon: <MdBalcony /> },
-];
 
 const FeatureItem = ({ feature, checked, onClick }: { feature: any; checked: boolean; onClick: () => void }) => (
     <div className="f" onClick={onClick}>

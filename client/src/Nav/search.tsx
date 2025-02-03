@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Select } from 'antd';
-import {StateCity} from "../Data/state-municipality.ts";
+import {StateCity} from "../Data/stateCity.ts";
 
 // Icons
 import { TbHomeSearch } from "react-icons/tb";
