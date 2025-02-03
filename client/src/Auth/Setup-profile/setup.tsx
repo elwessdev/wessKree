@@ -4,7 +4,7 @@ import axios from "axios";
 import type { UploadProps } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { Form, Input, Select, Button, Flex, message, Upload, Avatar } from 'antd';
-import {StateCity} from "../../Data/state-municipality.ts";
+import {StateCity} from "../../Data/stateCity.ts";
 import { useUser } from "../../context/userContext.tsx";
 // Icons
 import { FaCloudUploadAlt } from "react-icons/fa";
@@ -57,7 +57,7 @@ export default function SetupProfile(){
                     };
                     // console.log(fullData);
                     const resServer = await axios.put("/api/auth/setupProfile",{
-                        ...fullData, id: user.id
+                        ...fullData, id: user?.id
                     },{withCredentials: true})
                     if(resServer.status!=200){
                         throw new Error('Something went wrong! Try again');

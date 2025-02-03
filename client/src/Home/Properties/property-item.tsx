@@ -2,6 +2,7 @@ import "./style.scss"
 import { Button, Tooltip, Image } from 'antd';
 import { NavLink } from "react-router-dom";
 import { formatDistance } from 'date-fns'
+import { featuresList } from "../../Data/features";
 // import { Image } from 'antd';
 
 import { FaRegHeart } from "react-icons/fa";
@@ -11,38 +12,20 @@ import { LuBedSingle } from "react-icons/lu";
 import { memo } from "react";
 
 // Icons
-import { MdFireplace, MdOutlineYard, MdOutlineKitchen, MdBalcony } from "react-icons/md";
-import { GiHomeGarage, GiGasStove } from "react-icons/gi";
-import { FaWifi, FaSwimmingPool } from "react-icons/fa";
-import { BsPersonWorkspace } from "react-icons/bs";
-import { AiFillSafetyCertificate } from "react-icons/ai";
-import { TbAirConditioning } from "react-icons/tb";
 import { IoTimeOutline } from "react-icons/io5";
 
 type props = {
     data: any
 }
 
-const featuresList = [
-    { key: "wifi", label: "Internet/WiFi", icon: <FaWifi /> },
-    { key: "backyard", label: "Backyard", icon: <MdOutlineYard /> },
-    { key: "workspace", label: "Workspace", icon: <BsPersonWorkspace /> },
-    { key: "parking", label: "Parking", icon: <AiFillSafetyCertificate /> },
-    { key: "garage", label: "Garage", icon: <GiHomeGarage /> },
-    { key: "airConditioner", label: "Air Conditioner", icon: <TbAirConditioning /> },
-    { key: "swimmingPool", label: "Swimming Pool", icon: <FaSwimmingPool /> },
-    { key: "refrigerator", label: "Refrigerator", icon: <MdOutlineKitchen /> },
-    { key: "heating", label: "Heating", icon: <MdFireplace /> },
-    { key: "stove", label: "Stove", icon: <GiGasStove /> },
-    { key: "balcony", label: "Balcony", icon: <MdBalcony /> },
-];
 
-const  PropertyItem = ({data}:props)=>{
+
+const PropertyItem = ({data}:props)=>{
     return (
         <div className="property-item">
             <div className="photos">
                 <Image.PreviewGroup>
-                    {data?.imgs?.map((img,idx) => (
+                    {data?.imgs.map((img:any,idx:number) => (
                         <Image
                             key={idx}
                             src={img?.url}

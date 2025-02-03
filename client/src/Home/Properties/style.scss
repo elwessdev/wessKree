@@ -232,13 +232,14 @@
             position: absolute;
             top: 16px;
             right: 15px;
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-color: #7065ef5c;
+            border-color: rgba(112, 101, 239, 0.3607843137);
+            padding: 0;
             &:hover{
                 background-color: #7065ef;
                 svg{
@@ -247,9 +248,10 @@
             }
             svg{
                 font-size: 15px;
-                position: absolute;
                 color: #7065ef;
-                transition: all .2s;
+                transition: all 0.2s;
+                position: relative;
+                top: 1px;
             }
         }
         .features{

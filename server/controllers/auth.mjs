@@ -10,7 +10,7 @@ export const signup = async(req,res)=>{
 
         const userExist = await User.findOne({email});
         if (userExist) {
-            return res.status(400).send({ message: 'user already exists' });
+            return res.status(400).json({ message: 'user already exists' });
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -36,11 +36,11 @@ export const signup = async(req,res)=>{
             path: '/',
         });
 
-        res.status(200).send({message: 'user created successfully' });
+        return res.status(200).json({message: 'user created successfully' });
 
     } catch(err){
         console.error("Signup error:",err);
-        res.status(500).send({ message: 'server error' });
+        return res.status(500).json({ message: 'server error' });
     }
 }
 // Get user details
@@ -48,13 +48,13 @@ export const getUser = async(req,res)=>{
     const id = req.token.id;
     try{
         if(!mongoose.Types.ObjectId.isValid(id)){
-            return res.status(400).send({ message: 'user id is not valid' });
+            return res.status(400).json({ message: 'user id is not valid' });
         }
         const user = await User.findById({_id:id});
         if(!user){
-            return res.status(400).send({ message: 'user not found' });
+            return res.status(400).json({ message: 'user not found' });
         }
-        res.status(200).send({
+        return res.status(200).json({
             id: user._id,
             username: user.username,
             email: user.email,
@@ -65,7 +65,7 @@ export const getUser = async(req,res)=>{
         });
     } catch(err){
         console.error("getUser error:",err);
-        res.status(500).send({ message: 'getUser server error' });
+        return res.status(500).json({ message: 'getUser server error' });
     }
 }
 // Setup profile
@@ -73,11 +73,11 @@ export const setupProfile = async(req,res) => {
     const {state,city,photo,pfpId,id} = req.body;
     try{
         if(!mongoose.Types.ObjectId.isValid(id)){
-            return res.status(400).send({ message: 'user id is not valid' });
+            return res.status(400).json({ message: 'user id is not valid' });
         }
         const user = await User.findById({_id:id});
         if(!user){
-            return res.status(400).send({ message: 'user not found' });
+            return res.status(400).json({ message: 'user not found' });
         }
         await User.findByIdAndUpdate({_id:id},{
             state,
@@ -86,10 +86,10 @@ export const setupProfile = async(req,res) => {
             pfpId,
             isActive: true
         })
-        res.status(200).send({message: "user profile has been setup"});
+        return res.status(200).json({message: "user profile has been setup"});
     } catch(err){
         console.error("setupProfile error:",err);
-        res.status(500).send({ message: 'setupProfile server error' });
+        return res.status(500).json({ message: 'setupProfile server error' });
     }
 }
 // Logout
@@ -98,7 +98,7 @@ export const logout = (req,res)=>{
         httpOnly: true,
         secure: process.env.NODE_ENV === 'prod',
     });
-    res.status(200).json({ message: 'Logged out successfully' });
+    return res.status(200).json({ message: 'Logged out successfully' });
 }
 // Signin
 export const signin = async (req, res) => {
@@ -127,11 +127,11 @@ export const signin = async (req, res) => {
             path: '/',
         });
 
-        res.status(200).json({message: 'Login successful'});
+        return res.status(200).json({message: 'Login successful'});
 
     } catch (err) {
         console.error("Signin error:", err.message); // Log only the error message
-        res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error' });
     }
 }
 
