@@ -2,7 +2,6 @@ import "./style.scss"
 import { useEffect, useState } from "react";
 import ImgCrop from 'antd-img-crop';
 import { Form, Input, Select, Button, Flex, message, Upload, Avatar, UploadProps, Spin } from 'antd';
-import { useForm } from "antd/es/form/Form";
 import {StateCity} from "../Data/stateCity.ts";
 import { useUser } from "../context/userContext.tsx";
 import { checkPwd } from "../API/auth.ts";
@@ -28,7 +27,7 @@ const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).t
 
 export default function Settings(){
     const {user} = useUser();
-    const [form] = useForm();
+    const [form] = Form.useForm();
 
     const [imageUrl, setImageUrl] = useState<string | null | any>(null);
     const [fileToUpload, setFileToUpload] = useState<File | null>(null);
@@ -49,12 +48,12 @@ export default function Settings(){
     };
     useEffect(()=>{
         form.setFieldsValue({ state: user?.state, city: user?.city });
-        const stateIf:any = StateCity.find((s) => capitalize(s.Name) === user?.state);
-        setDelegations(
-            stateIf.Delegations.map((d:any) =>(
-                { value: capitalize(d.Value), label: capitalize(d.Name) }
-            ))
-        );
+        // const stateIf:any = StateCity.find((s) => capitalize(s.Name) === user?.state);
+        // setDelegations(
+        //     stateIf.Delegations.map((d:any) =>(
+        //         { value: capitalize(d.Value), label: capitalize(d.Name) }
+        //     ))
+        // );
         setImageUrl(user?.photo);
     },[user]);
 
