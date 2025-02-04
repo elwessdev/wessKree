@@ -24,9 +24,9 @@ app.use(cors());
 app.use(cookieParser());
 
 // Testing Endpoint
-app.get("/",(req,res)=>{
-    res.status(200).send("Server work");
-})
+app.get("/", (req, res) => {
+    res.send("<h1>Server is running!</h1>");
+});
 
 // Routes
 app.use("/auth", authRoutes);

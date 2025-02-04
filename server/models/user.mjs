@@ -7,6 +7,10 @@ export default mongoose.model("user", new Schema(
             type: String,
             required: true
         },
+        publicName: {
+            type: String,
+            required: true
+        },
         email: {
             type: String,
             required: true
@@ -30,6 +34,16 @@ export default mongoose.model("user", new Schema(
         city: {
             type: String,
             default: ""
+        },
+        contact: {
+            phone: {
+                type: String,
+                default: ""
+            },
+            whatsapp: {
+                type: String,
+                default: ""
+            }
         },
         isActive: {
             type: Boolean,

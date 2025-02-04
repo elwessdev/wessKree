@@ -16,7 +16,7 @@ import { propertyDetails } from "../API/property.ts";
 
 
 export default function Property(){
-    const {id} = useParams();
+    const {id}:any = useParams();
     const {data,isLoading,error} = useQuery({
         queryFn: () => propertyDetails(id),
         queryKey: ["propertyDetails"],

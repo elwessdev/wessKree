@@ -19,14 +19,13 @@ import { RiEdit2Fill } from "react-icons/ri";
 type params = Record<string, string | undefined>;
 
 export default function Profile(){
-    const {userNameUrl} = useParams<params>();
-    console.log(userNameUrl);
+    const {userNameUrl}:any = useParams<params>();
+    // console.log(userNameUrl);
     const [open, setOpen] = useState<boolean>(false);
     const [question, setQuestion] = useState<string>("");
 
     const {data,isLoading,error} = useQuery({
         queryFn: () => {
-            console.log(userNameUrl);
             if(userNameUrl==="my-profile"){
                 return getMyInfo();
             }
@@ -95,7 +94,7 @@ export default function Profile(){
                     </div>
                     <div className="r-s">
                         {userNameUrl!="my-profile" 
-                            ? data?.properties.map((property,idx)=>(<PropertyItem data={property} key={idx} />))
+                            ? data?.properties.map((property:any,idx:number)=>(<PropertyItem data={property} key={idx} />))
                         :(
                             <div className="tbs">
                                 <Tabs
@@ -106,7 +105,7 @@ export default function Profile(){
                                             label: `My Property`,
                                             children: (
                                                 <div className="porps">
-                                                    {data?.properties.map((property,idx)=>(<PropertyItem data={property} key={idx} />))}
+                                                    {data?.properties.map((property:any,idx:number)=>(<PropertyItem data={property} key={idx} />))}
                                                 </div>
                                             ),
                                             icon: <MdMapsHomeWork />,

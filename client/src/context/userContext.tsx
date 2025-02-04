@@ -3,8 +3,9 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { useNavigate } from "react-router-dom";
 
 interface User {
-    id: string;
+    id?: string;
     username: string;
+    publicName: string;
     email: string;
     photo: string;
     state: string;
@@ -37,7 +38,7 @@ export const UserProvider = ({children}: UserProviderProps) => {
             if (res.data&&!res.data.isActive){
                 navigate("/setup-profile");
             }
-        } catch (err) {
+        } catch (err:any) {
             console.log("getUser error:", err.response?.data?.message);
             // navigate("/");
         }
@@ -52,7 +53,7 @@ export const UserProvider = ({children}: UserProviderProps) => {
                 setUser(null);
                 navigate("/");
             }
-        } catch (err) {
+        } catch (err:any) {
             console.log("logout error:", err.response);
         }
     };

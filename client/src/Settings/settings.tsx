@@ -2,13 +2,12 @@ import "./style.scss"
 import { useEffect, useState } from "react";
 import ImgCrop from 'antd-img-crop';
 import { Form, Input, Select, Button, Flex, message, Upload, Avatar, UploadProps, Spin } from 'antd';
-import { useForm } from "antd/es/form/Form";
 import {StateCity} from "../Data/stateCity.ts";
 import { useUser } from "../context/userContext.tsx";
-import { checkPwd } from "../API/user.ts";
+import { checkPwd } from "../API/auth.ts";
 
 // Icons
-import { FaCloudUploadAlt } from "react-icons/fa";
+// import { FaCloudUploadAlt } from "react-icons/fa";
 import { RiImageEditLine } from "react-icons/ri";
 
 // Type
@@ -28,7 +27,11 @@ const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).t
 
 export default function Settings(){
     const {user} = useUser();
-    const [form] = useForm();
+    const [form] = Form.useForm();
+
+    const [imageUrl, setImageUrl] = useState<string | null | any>(null);
+    const [fileToUpload, setFileToUpload] = useState<File | null>(null);
+    const [uploading, setUploading] = useState<boolean>(false);
 
     // Select
     const [delegations, setDelegations] = useState<stateCityType>([]);
@@ -45,20 +48,16 @@ export default function Settings(){
     };
     useEffect(()=>{
         form.setFieldsValue({ state: user?.state, city: user?.city });
-        setDelegations(
-            StateCity.find((s) => capitalize(s.Name) === user?.state)?.Delegations.map((d) =>
-                (
-                    { value: capitalize(d.Value), label: capitalize(d.Name) }
-                )
-            )
-        );
+        // const stateIf:any = StateCity.find((s) => capitalize(s.Name) === user?.state);
+        // setDelegations(
+        //     stateIf.Delegations.map((d:any) =>(
+        //         { value: capitalize(d.Value), label: capitalize(d.Name) }
+        //     ))
+        // );
         setImageUrl(user?.photo);
     },[user]);
 
     // PFP
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
-    const [fileToUpload, setFileToUpload] = useState<File | null>(null);
-    const [uploading, setUploading] = useState<boolean>(false);
     const onChange: UploadProps["onChange"] = ({ file }) => {
         if (file.status === "done" || file.originFileObj) {
             setFileToUpload(file.originFileObj as File);
@@ -74,18 +73,26 @@ export default function Settings(){
     const handleFormSubmit = async(values:values) => {
         if(values.currentPassword){
             let newData = {};
-            const checkPwdRes = await checkPwd(values.currentPassword);
+            const checkPwdRes:any = await checkPwd(values.currentPassword);
             if(checkPwdRes.status!=200){
-                message.error("Password is incorrect");
+                await form.setFields([{
+                    name: 'currentPassword',
+                    errors:  ["Password is incorrect"],
+                }]);
                 return;
+            }
+
+            if(fileToUpload){
+                console.log("yes");
+                setUploading(false);
             }
 
             if(values.newPassword && values.confirmNewPassword && values.newPassword === values.confirmNewPassword){
                 newData = {...newData, password: values.newPassword};
             }
-            // if(values.publicName && values.publicName!=user?.publicName){
-            //     newData = {...newData, publicName: values.publicName};
-            // }
+            if(values.publicName && values.publicName!=user?.publicName){
+                newData = {...newData, publicName: values.publicName};
+            }
             if(values.email && values.email!=user?.email){
                 newData = {...newData, email: values.email};
             }
@@ -98,8 +105,10 @@ export default function Settings(){
             console.log(newData);
             // console.log(values);
             // console.log(fileToUpload);
-            message.success("ok")
+            message.success("ok");
+            return;
         }
+        return;
     }
     return (
         <div id="settings">
@@ -143,8 +152,11 @@ export default function Settings(){
                                     style={{flex: 1}}
                                     label="Public name"
                                     name={"publicName"}
-                                    initialValue={user?.username}
-                                    rules={[{ required: true, message: "Please Enter Public Name" }]}
+                                    initialValue={user?.publicName}
+                                    rules={[
+                                        { required: true, message: "Please Enter Public Name" },
+                                        { min: 5, message: 'Public name must be at least 5 characters!' },
+                                    ]}
                                     >
                                         <Input placeholder="Enter Public name" />
                                 </Form.Item>
@@ -155,7 +167,9 @@ export default function Settings(){
                                     name={"state"}
                                     style={{flex: 1}}
                                     initialValue={user?.state}
-                                    rules={[{ required: true, message: "Please Choose State" }]}
+                                    rules={[
+                                        { required: true, message: "Please Choose State" }
+                                    ]}
                                 >
                                     <Select
                                         placeholder="choose your state"
@@ -183,14 +197,16 @@ export default function Settings(){
                                     label="Email"
                                     name={"email"}
                                     initialValue={user?.email}
-                                    rules={[{ required: true, message: "Please Enter Email" }]}
+                                    rules={[
+                                        { required: true, message: "Please Enter Email" }
+                                    ]}
                                 >
-                                    <Input placeholder="Enter Email" />
+                                    <Input type="email" placeholder="Enter Email" />
                                 </Form.Item>
                                 <Form.Item
                                     style={{flex: 1}}
+                                    name="currentPassword"
                                     label="Current Password"
-                                    name={"currentPassword"}
                                     rules={[{ required: true, message: "Please Enter Password for save edits" }]}
                                 >
                                     <Input.Password placeholder="Enter current password" />
@@ -201,15 +217,18 @@ export default function Settings(){
                                     style={{flex: 1}}
                                     label="New Password"
                                     name={"newPassword"}
+                                    rules={[
+                                        { min: 5, message: 'Password name must be at least 5 characters!' },
+                                    ]}
                                 >
-                                    <Input.Password placeholder="Enter current password" />
+                                    <Input.Password placeholder="Enter new password" />
                                 </Form.Item>
                                 <Form.Item
                                     style={{flex: 1}}
                                     label="Confirm Password"
                                     name={"confirmNewPassword"}
                                 >
-                                    <Input.Password placeholder="Enter new password" />
+                                    <Input.Password placeholder="Confirm password" />
                                 </Form.Item>
                             </Flex>
                             <Flex gap={15}>
