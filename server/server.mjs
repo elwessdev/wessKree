@@ -20,7 +20,10 @@ connectDB().then(_=>{
 })
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:5173', 'https://wesskree.vercel.app'],
+    credentials: true,
+}));
 app.use(cookieParser());
 
 // Testing Endpoint
