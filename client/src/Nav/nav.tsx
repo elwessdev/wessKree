@@ -26,7 +26,7 @@ export default function Nav(){
         {
             key: '1',
             label: (
-                <NavLink to={"/profile"}><FaHouseUser /> Profile</NavLink>
+                <NavLink to={"/profile/my-profile"}><FaHouseUser /> Profile</NavLink>
             ),
         },
         {

@@ -1,23 +1,20 @@
 import "./style.scss"
 import { useState } from 'react';
 import axios from "axios";
-import type { UploadProps } from 'antd';
 import ImgCrop from 'antd-img-crop';
-import { Form, Input, Select, Button, Flex, message, Upload, Avatar } from 'antd';
+import { Form, Input, Select, Button, Flex, message, Upload, Avatar, UploadProps } from 'antd';
 import {StateCity} from "../../Data/stateCity.ts";
 import { useUser } from "../../context/userContext.tsx";
 // Icons
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RiImageEditLine } from "react-icons/ri";
 
-
-
-
 type stateCityType = { value: string; label: string }[];
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 export default function SetupProfile(){
+    const [form] = Form.useForm();
     // User Context
     const {user,userDetails} = useUser();
     // Upload PFP
@@ -35,9 +32,6 @@ export default function SetupProfile(){
             };
         }
     };
-    // Form
-    const [form] = Form.useForm();
-    const [messageApi, contextHolder] = message.useMessage();
 
     const handleFormSubmit = async (values: { state: string; city: string }) => {
         if (fileToUpload) {
@@ -64,20 +58,14 @@ export default function SetupProfile(){
                     }
                     userDetails();
                     setUploading(false);
-                    messageApi.open({
-                        type: 'success',
-                        content: "Your profile is ready 👏",
-                    });
+                    message.success("Your profile is ready 👏",);
                 } else{
                     throw new Error('Something went wrong! Try again');
                 }
             } catch (err) {
                 // console.error("Error uploading to Cloudinary:", error);
                 setUploading(false);
-                messageApi.open({
-                    type: 'error',
-                    content: `${err as string}`,
-                });
+                message.error(`${err as string}`);
             }
         }
     };
@@ -94,7 +82,6 @@ export default function SetupProfile(){
 
     return (
         <div className="setup-profile">
-            {contextHolder}
             <div className="pfp">
                 <Avatar src={imageUrl} />
                 <ImgCrop rotationSlider>
@@ -146,7 +133,7 @@ export default function SetupProfile(){
                     </Flex>
                     <Flex gap={15}>
                         <Form.Item style={{ flex: 1 }}>
-                            <Button htmlType="submit" block loading={uploading}>
+                            <Button type="primary" htmlType="submit" block loading={uploading}>
                                 {uploading ?'' : "Save"}
                             </Button>
                         </Form.Item>

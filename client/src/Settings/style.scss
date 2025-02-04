@@ -1,5 +1,6 @@
-.setup-profile{
+#settings{
     max-width: 600px;
+    min-height: 460px;
     background-color: #FFF;
     margin: 0 auto;
     margin-top: 70px;
@@ -8,6 +9,7 @@
     display: flex;
     overflow: hidden;
     padding: 30px;
+    position: relative;
     flex-wrap: wrap;
     .pfp{
         width: 140px;
@@ -52,7 +54,9 @@
                 align-items: center;
                 svg{
                     color: #FFF;
-                    font-size: 19px;
+                    font-size: 18px;
+                    position: relative;
+                    top: 4px;
                 }
             }
         }
@@ -60,13 +64,13 @@
     .ant-form{
         width: 100%;
         margin-top: 23px;
-        .ant-form-vertical .ant-form-item:not(.ant-form-item-horizontal) .ant-form-item-label{
-            padding: 0 !important;
-            font-size: 15px;
-        }
         .ant-col{
             font-weight: 600;
             padding-bottom: 1px;
+        }
+        .ant-form-vertical .ant-form-item:not(.ant-form-item-horizontal) .ant-form-item-label{
+            padding: 0 !important;
+            font-size: 15px;
         }
         .ant-form-item {
             margin-bottom: 0;
@@ -80,6 +84,17 @@
         }
         .ant-select-selector {
             border-radius: 3px;
+            height: 35px;
         }
+    }
+    .ant-form-item .ant-form-item-explain-error {
+        font-size: 12px;
+        margin-top: 3px;
+    }
+    .ant-spin{
+        position: absolute;
+        left: 50%;
+        top: 60px;
+        transform: translateX(-50%);
     }
 }

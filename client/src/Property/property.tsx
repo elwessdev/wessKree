@@ -51,7 +51,7 @@ export default function Property(){
                                 description={data?.description}
                             />
                             <Owner
-                                user={data?.user}
+                                userInfo={data?.user}
                             />
                             <div className="line"></div>
                             <Features
