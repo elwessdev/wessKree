@@ -15,6 +15,7 @@ const componentsTheme = {
     "activeOutlineColor": "rgba(112,101,239,0.1)",
     "hoverBorderColor": "rgb(112,101,239)",
     "optionSelectedBg": "rgba(112,101,239,0.11)",
+    "controlHeight": 36,
     "colorPrimary": "rgb(112,101,239)"
   },
   "Input": {

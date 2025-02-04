@@ -18,12 +18,3 @@ export const getMyInfo = async()=>{
         return err;
     }
 }
-// Check Password
-export const checkPwd = async(pwd:string)=>{
-    try{
-        const res = await axios.post("/api/user/checkPwd",{password:pwd});
-        return res;
-    } catch(err){
-        return err;
-    }
-}

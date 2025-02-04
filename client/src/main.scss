@@ -22,6 +22,11 @@ body{
 *{
     font-family: "Nunito Sans", serif;
 }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
 
 // Ant Design
 .ant-select .ant-select-arrow{
@@ -51,4 +56,9 @@ body{
 }
 .ant-slider .ant-slider-track {
     background-color: #7065ef;
+}
+.ant-form-item .ant-form-item-explain-error {
+    color: #ff4d4f;
+    font-weight: 500;
+    font-size: 13px;
 }

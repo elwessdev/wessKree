@@ -52,7 +52,9 @@
                 align-items: center;
                 svg{
                     color: #FFF;
-                    font-size: 19px;
+                    font-size: 18px;
+                    position: relative;
+                    top: 4px;
                 }
             }
         }
@@ -81,5 +83,8 @@
         .ant-select-selector {
             border-radius: 3px;
         }
+    }
+    .ant-form-item-label{
+        padding: 0 !important;
     }
 }
