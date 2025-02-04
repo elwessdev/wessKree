@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 
 // Signup
 export const signup = async(req,res)=>{
-    const {username,email,password} = req.body;
+    const {username,publicName,email,password} = req.body;
     try{
 
         const userExist = await User.findOne({email});
@@ -17,6 +17,7 @@ export const signup = async(req,res)=>{
         const hashPwd = await bcrypt.hash(password, salt);
 
         const user = new User({
+            publicName,
             username,
             email,
             password: hashPwd
@@ -35,9 +36,7 @@ export const signup = async(req,res)=>{
             maxAge: new Date(Date.now() + 8 * 60 * 60 * 1000),
             path: '/',
         });
-
         return res.status(200).json({message: 'user created successfully' });
-
     } catch(err){
         console.error("Signup error:",err);
         return res.status(500).json({ message: 'server error' });
@@ -47,22 +46,11 @@ export const signup = async(req,res)=>{
 export const getUser = async(req,res)=>{
     const id = req.token.id;
     try{
-        if(!mongoose.Types.ObjectId.isValid(id)){
-            return res.status(400).json({ message: 'user id is not valid' });
-        }
-        const user = await User.findById({_id:id});
+        const user = await User.findOne({_id:id},{_id:0,pfpId:0});
         if(!user){
             return res.status(400).json({ message: 'user not found' });
         }
-        return res.status(200).json({
-            id: user._id,
-            username: user.username,
-            email: user.email,
-            photo: user.photo,
-            state: user.state,
-            city: user.city,
-            isActive: user.isActive
-        });
+        return res.status(200).json(user);
     } catch(err){
         console.error("getUser error:",err);
         return res.status(500).json({ message: 'getUser server error' });
@@ -70,11 +58,11 @@ export const getUser = async(req,res)=>{
 }
 // Setup profile
 export const setupProfile = async(req,res) => {
-    const {state,city,photo,pfpId,id} = req.body;
+    const {state,city,photo,pfpId,whatsapp,phone} = req.body.data;
+    const id = req.token.id;
+    console.log(req.body.data);
+    console.log(id);
     try{
-        if(!mongoose.Types.ObjectId.isValid(id)){
-            return res.status(400).json({ message: 'user id is not valid' });
-        }
         const user = await User.findById({_id:id});
         if(!user){
             return res.status(400).json({ message: 'user not found' });
@@ -84,7 +72,8 @@ export const setupProfile = async(req,res) => {
             city,
             photo,
             pfpId,
-            isActive: true
+            isActive: true,
+            contact: {phone,whatsapp}
         })
         return res.status(200).json({message: "user profile has been setup"});
     } catch(err){
@@ -126,9 +115,7 @@ export const signin = async (req, res) => {
             maxAge: new Date(Date.now() + 8 * 60 * 60 * 1000),
             path: '/',
         });
-
         return res.status(200).json({message: 'Login successful'});
-
     } catch (err) {
         console.error("Signin error:", err.message); // Log only the error message
         return res.status(500).json({ message: 'Server error' });

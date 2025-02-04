@@ -25,7 +25,7 @@ app.use(cookieParser());
 
 // Testing Endpoint
 app.get("/",(req,res)=>{
-    res.status(200).send("Server work");
+    res.status(200).send("<h1>Server work</h1>");
 })
 
 // Routes
