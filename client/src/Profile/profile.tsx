@@ -4,7 +4,7 @@ import { Button, message, Modal, Spin, Tabs, Tooltip } from 'antd';
 import PropertyItem from "../Home/Properties/property-item";
 // import { Tabs } from 'antd';
 import { useQuery } from "@tanstack/react-query";
-import { getUserInfos, getMyInfo } from "../API/property";
+import { getUserInfos, getMyInfo } from "../API/user";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 
@@ -103,7 +103,7 @@ export default function Profile(){
                                     items={[
                                         {
                                             key: "0",
-                                            label: `Property`,
+                                            label: `My Property`,
                                             children: (
                                                 <div className="porps">
                                                     {data?.properties.map((property,idx)=>(<PropertyItem data={property} key={idx} />))}

@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.mjs"
 import propertyRoutes from "./routes/property.mjs"
+import userRoutes from "./routes/user.mjs"
 
 dotenv.config();
 const app = express();
@@ -30,3 +31,4 @@ app.get("/",(req,res)=>{
 // Routes
 app.use("/auth", authRoutes);
 app.use("/property", propertyRoutes);
+app.use("/user", userRoutes);

@@ -1,14 +1,15 @@
 import { memo, useState } from 'react';
 import { Button, message, Modal } from 'antd';
-import { LuBadgeInfo } from "react-icons/lu";
-import { TbHomeQuestion } from "react-icons/tb";
 import { NavLink } from 'react-router-dom';
 import TextArea from 'antd/es/input/TextArea';
+import { useUser } from '../../context/userContext';
 
+import { LuBadgeInfo } from "react-icons/lu";
+import { TbHomeQuestion } from "react-icons/tb";
 
 type props = {
     title?: string,
-    user: {
+    userInfo: {
         username: string,
         state: string,
         city: string,
@@ -16,7 +17,8 @@ type props = {
     }
 }
 
-const Owner = ({user}:props) => {
+const Owner = ({userInfo}:props) => {
+    const {user} = useUser();
     const [open, setOpen] = useState<boolean>(false);
     const [question, setQuestion] = useState<string>("");
 
@@ -28,17 +30,21 @@ const Owner = ({user}:props) => {
         <div className="owner">
             <h3>Property owner</h3>
             <div className="profile">
-                <img src={user?.photo} alt={user?.username} />
+                <img src={userInfo?.photo} alt={userInfo?.username} />
                 <div className="det">
-                    <p>{user?.username}</p>
-                    <span>{user?.state}, {user?.city}</span>
+                    <p>{userInfo?.username}</p>
+                    <span>{userInfo?.state}, {userInfo?.city}</span>
                 </div>
             </div>
             <div className="btns">
-                <Button onClick={()=>setOpen(true)}>
-                    <TbHomeQuestion /> Ask a question
-                </Button>
-                <NavLink to={`/profile/${user?.username}`}>
+                {userInfo?.username != user?.username && (
+                    <>
+                        <Button onClick={()=>setOpen(true)}>
+                            <TbHomeQuestion /> Ask a question
+                        </Button>
+                    </>
+                )}
+                <NavLink to={userInfo?.username==user?.username ?`/profile/my-profile` :`/profile/${userInfo?.username}`}>
                     <LuBadgeInfo /> Get more info
                 </NavLink>
             </div>
