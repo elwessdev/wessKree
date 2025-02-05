@@ -3,7 +3,22 @@ import bcrypt from "bcryptjs";
 import Property from '../models/property.mjs';
 import User from '../models/user.mjs';
 
-// User Infos
+
+// Get user details
+export const getUser = async(req,res)=>{
+    const id = req.token.id;
+    try{
+        const user = await User.findOne({_id:id},{_id:0});
+        if(!user){
+            return res.status(400).json({ message: 'user not found' });
+        }
+        return res.status(200).json(user);
+    } catch(err){
+        console.error("getUser error:",err);
+        return res.status(500).json({ message: 'getUser server error' });
+    }
+}
+// User Infos for profile
 export const userInfos = async(req,res)=>{
     const username = req.params.username;
     try {
@@ -85,5 +100,20 @@ export const checkEmail = async(req,res)=>{
     } catch(err){
         console.error("check email error:",err);
         return res.status(500).send({ message: err });
+    }
+}
+// Update profile
+export const updateProfile = async(req,res)=>{
+    const {data} = req.body;
+    const {id} = req.token;
+    try {
+        const updatedUser = await User.findByIdAndUpdate(id, data, { new: true });
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        return res.status(200).json("Profile has been update");
+    } catch(err){
+        console.error("Update profile error:", err);
+        return res.status(500).json({ message: "update profile error" });
     }
 }

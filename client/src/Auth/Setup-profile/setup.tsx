@@ -69,7 +69,7 @@ export default function SetupProfile(){
             state: capitalize(values.state),
             city: capitalize(values.city),
             photo: upPfp.data.secure_url,
-            pfpId: upPfp.data.asset_id
+            pfpId: upPfp.data.public_id
         };
         if(values.phone){
             fullData = {...fullData, phone:values.phone};

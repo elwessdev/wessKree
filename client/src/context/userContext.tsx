@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 
 interface User {
     id?: string;
-    username: string;
-    publicName: string;
-    email: string;
-    photo: string;
-    state: string;
-    city: string;
-    isActive: boolean;
+    username?: string;
+    publicName?: string;
+    email?: string;
+    photo?: string;
+    state?: string;
+    city?: string;
+    isActive?: boolean;
+    pfpId?:string;
 }
 interface UserContextType {
     user: User | null;
@@ -30,7 +31,7 @@ export const UserProvider = ({children}: UserProviderProps) => {
 
     const userDetails = async () => {
         try {
-            const res = await axios.get<User>("/api/auth/getUser", { 
+            const res = await axios.get<User>("/api/user/getUser", { 
                 withCredentials: true 
             });
             setUser(res.data);

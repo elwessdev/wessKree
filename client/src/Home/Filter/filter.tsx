@@ -1,6 +1,8 @@
 import { Select, Slider, Button } from 'antd';
 // import { useState } from 'react';
 // import { TbHomeSearch } from "react-icons/tb";
+import {StateCity} from "../../Data/stateCity.ts";
+import { useState } from 'react';
 
 const options = [
     {
@@ -33,12 +35,28 @@ const options = [
     },
 ]
 
+type stateCityType = { value: string; label: string }[];
+
+// Functions
+const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
 export default function Filter(){
-    // const [priceValue, setPriceValue] = useState<number>(1);
-    // const handlePrice = (newAvarage: number) => {
-    //     setPriceValue(newAvarage as number);
-    //     console.log(newAvarage);
-    // }
+    const [priveInterval, setPriceInterval]=useState<number | number[]>([]);
+    const onChangeComplete = (value: number | number[]) => {
+        console.log('Price interval: ', value);
+        setPriceInterval(value);
+    };
+
+    const [delegations, setDelegations] = useState<stateCityType>([]);
+    const stateOptions = StateCity.map(state => ({
+        value: capitalize(state.Name),
+        label: capitalize(state.Name),
+    }));
+    const handleStateChange = (value:string|undefined) => {
+        if(!value) return;
+        const state = StateCity.find((s) => capitalize(s.Name) === value);
+        setDelegations(state ?state.Delegations.map((d) => ({ value: capitalize(d.Value), label: capitalize(d.Name) })) :[]);
+    };
     return(
         <div id="properties_filter">
             <div className="p_s">
@@ -48,10 +66,11 @@ export default function Filter(){
                     style={{ width: "100%" }}
                     placeholder="Search..."
                     optionFilterProp="label"
+                    onChange={handleStateChange}
                     filterSort={(optionA, optionB) =>
                     (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                     }
-                    options={options}
+                    options={stateOptions}
                 />
             </div>
             <div className="p_s">
@@ -64,7 +83,7 @@ export default function Filter(){
                     filterSort={(optionA, optionB) =>
                     (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                     }
-                    options={options}
+                    options={delegations}
                 />
             </div>
             <div className="p_s">
@@ -76,16 +95,20 @@ export default function Filter(){
                     filterSort={(optionA, optionB) =>
                     (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                     }
-                    options={options}
+                    options={[
+                        { value: 'Apartment', label: 'Apartment' },
+                        { value: 'House', label: 'House' },
+                        { value: 'Villa', label: 'Villa' },
+                    ]}
                 />
             </div>
             <div className="p_s price">
                 <span className="subTitle">Price</span>
                 <Slider
                     range={{ draggableTrack: false }}
-                    defaultValue={[0, 100]}
-                    // onChange={handlePrice}
-                    // value={typeof priceValue === 'number' ? priceValue : 0}
+                    defaultValue={[0, 10000]}
+                    // onChange={onChange}
+                    onChangeComplete={onChangeComplete}
                 />
             </div>
             <div className="p_s">
@@ -97,7 +120,11 @@ export default function Filter(){
                     filterSort={(optionA, optionB) =>
                     (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                     }
-                    options={options}
+                    options={[
+                        { value: '1', label: 'S+1' },
+                        { value: '2', label: 'S+2' },
+                        { value: '3', label: 'S+3' }
+                    ]}
                 />
             </div>
             <div className="p_s last">
@@ -109,7 +136,11 @@ export default function Filter(){
                     filterSort={(optionA, optionB) =>
                     (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                     }
-                    options={options}
+                    options={[
+                        { value: 'student', label: 'Student' },
+                        { value: 'Family', label: 'Family' },
+                        { value: 'anyone', label: 'Anyone' },
+                    ]}
                 />
             </div>
             <Button type="primary" block>

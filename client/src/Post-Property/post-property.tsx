@@ -29,7 +29,7 @@ interface step1Values {
 }
 interface step2Values {
     city?: string | undefined,
-    neighborhood: string | undefined,
+    neighborhood?: string | undefined,
     state?: string | undefined,
     zip?: string | undefined,
     lat?: number,

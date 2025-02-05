@@ -4,11 +4,13 @@ import ImgCrop from 'antd-img-crop';
 import { Form, Input, Select, Button, Flex, message, Upload, Avatar, UploadProps, Spin } from 'antd';
 import {StateCity} from "../Data/stateCity.ts";
 import { useUser } from "../context/userContext.tsx";
-import { checkPwd } from "../API/auth.ts";
+import { checkEmail, checkPwd } from "../API/auth.ts";
 
 // Icons
 // import { FaCloudUploadAlt } from "react-icons/fa";
 import { RiImageEditLine } from "react-icons/ri";
+import { deleteCloud, uploadCloud } from "../API/cloudinary.ts";
+import { updateProfile } from "../API/user.ts";
 
 // Type
 type stateCityType = { value: string; label: string }[];
@@ -28,11 +30,11 @@ const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).t
 export default function Settings(){
     const {user} = useUser();
     const [form] = Form.useForm();
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [imageUrl, setImageUrl] = useState<string | null | any>(null);
     const [fileToUpload, setFileToUpload] = useState<File | null>(null);
-    const [uploading, setUploading] = useState<boolean>(false);
-
+    
     // Select
     const [delegations, setDelegations] = useState<stateCityType>([]);
     const stateOptions = StateCity.map(state => ({
@@ -48,15 +50,15 @@ export default function Settings(){
     };
     useEffect(()=>{
         form.setFieldsValue({ state: user?.state, city: user?.city });
-        // const stateIf:any = StateCity.find((s) => capitalize(s.Name) === user?.state);
-        // setDelegations(
-        //     stateIf.Delegations.map((d:any) =>(
-        //         { value: capitalize(d.Value), label: capitalize(d.Name) }
-        //     ))
-        // );
+        const stateIf:any = StateCity.find((s) => capitalize(s.Name) === user?.state);
+        setDelegations(
+            stateIf?.Delegations.map((d:any) =>(
+                { value: capitalize(d.Value), label: capitalize(d.Name) }
+            ))
+        );
         setImageUrl(user?.photo);
     },[user]);
-
+    
     // PFP
     const onChange: UploadProps["onChange"] = ({ file }) => {
         if (file.status === "done" || file.originFileObj) {
@@ -83,17 +85,47 @@ export default function Settings(){
             }
 
             if(fileToUpload){
-                console.log("yes");
-                setUploading(false);
+                const deleteCloudRes:any = await deleteCloud(user?.pfpId);
+                console.log(deleteCloudRes);
+                if(!deleteCloudRes.success){
+                    message.error("Something wrong in change profile picture, Try again");
+                    return;
+                }
+                const upToCloud:any = await uploadCloud(fileToUpload);
+                if(upToCloud.status!=200){
+                    message.error("Something wrong in change profile picture, Try again");
+                    return;
+                }
+                newData = {
+                    ...newData,
+                    photo: upToCloud.data.secure_url,
+                    pfpId: upToCloud.data.public_id
+                }
             }
 
-            if(values.newPassword && values.confirmNewPassword && values.newPassword === values.confirmNewPassword){
+            if(values.newPassword && values.confirmNewPassword){
+                if(values.newPassword != values.confirmNewPassword){
+                    form.setFields([{
+                        name: "confirmNewPassword",
+                        errors: ["Passwords do not match"]
+                    }]);
+                    return;
+                }
                 newData = {...newData, password: values.newPassword};
             }
             if(values.publicName && values.publicName!=user?.publicName){
                 newData = {...newData, publicName: values.publicName};
             }
             if(values.email && values.email!=user?.email){
+                const checkMailRes:any = await checkEmail(values.email);
+                // console.log(checkMailRes);
+                if(checkMailRes.status==200){
+                    form.setFields([{
+                        name:"email",
+                        errors: ["This email is used at other account"]
+                    }])
+                    return;
+                }
                 newData = {...newData, email: values.email};
             }
             if(values.state && values.state!=user?.state){
@@ -102,11 +134,15 @@ export default function Settings(){
             if(values.city && values.city!=user?.city){
                 newData = {...newData, city: values.city};
             }
-            console.log(newData);
-            // console.log(values);
-            // console.log(fileToUpload);
-            message.success("ok");
-            return;
+            if(Object.keys(newData).length > 0){
+                const updatePfRes = await updateProfile(newData);
+                if(updatePfRes.status!=200){
+                    message.error("Something wrong when update profile, Try again");
+                    return;
+                }
+                console.log(newData);
+                message.success("You profile has been updated");
+            }
         }
         return;
     }
@@ -195,7 +231,7 @@ export default function Settings(){
                                 <Form.Item
                                     style={{flex: 1}}
                                     label="Email"
-                                    name={"email"}
+                                    name="email"
                                     initialValue={user?.email}
                                     rules={[
                                         { required: true, message: "Please Enter Email" }
@@ -216,7 +252,9 @@ export default function Settings(){
                                 <Form.Item
                                     style={{flex: 1}}
                                     label="New Password"
-                                    name={"newPassword"}
+                                    name="newPassword"
+                                    // hasFeedback
+                                    // required={false}
                                     rules={[
                                         { min: 5, message: 'Password name must be at least 5 characters!' },
                                     ]}
@@ -226,15 +264,27 @@ export default function Settings(){
                                 <Form.Item
                                     style={{flex: 1}}
                                     label="Confirm Password"
-                                    name={"confirmNewPassword"}
+                                    name="confirmNewPassword"
+                                    // hasFeedback
+                                    // required={false}
+                                    rules={[
+                                        ({ getFieldValue }) => ({
+                                            validator(_, value) {
+                                            if (!value || getFieldValue('newPassword') === value) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(new Error('Passwords do not match'));
+                                            },
+                                        }),
+                                    ]}
                                 >
                                     <Input.Password placeholder="Confirm password" />
                                 </Form.Item>
                             </Flex>
                             <Flex gap={15}>
                                 <Form.Item style={{ flex: 1 }}>
-                                    <Button type="primary" htmlType="submit" block loading={uploading}>
-                                        {uploading ?'' : "Save"}
+                                    <Button type="primary" htmlType="submit" block loading={loading}>
+                                        {loading ?'' : "Save"}
                                     </Button>
                                 </Form.Item>
                             </Flex>
