@@ -12,3 +12,12 @@ export const uploadCloud = async(file:File) => {
         return err;
     }
 }
+// Delete Image
+export const deleteCloud = async(id:string|undefined) => {
+    try {
+        const res = await axios.delete(`/api/user/deleteCloudImg/${id}`);
+        return res?.data;
+    } catch(err){
+        return err;
+    }
+}

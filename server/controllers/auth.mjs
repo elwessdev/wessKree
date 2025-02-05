@@ -42,20 +42,6 @@ export const signup = async(req,res)=>{
         return res.status(500).json({ message: 'server error' });
     }
 }
-// Get user details
-export const getUser = async(req,res)=>{
-    const id = req.token.id;
-    try{
-        const user = await User.findOne({_id:id},{_id:0,pfpId:0});
-        if(!user){
-            return res.status(400).json({ message: 'user not found' });
-        }
-        return res.status(200).json(user);
-    } catch(err){
-        console.error("getUser error:",err);
-        return res.status(500).json({ message: 'getUser server error' });
-    }
-}
 // Setup profile
 export const setupProfile = async(req,res) => {
     const {state,city,photo,pfpId,whatsapp,phone} = req.body.data;

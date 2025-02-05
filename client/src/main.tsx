@@ -50,6 +50,15 @@ const componentsTheme = {
     "defaultActiveColor": "rgb(89,77,217)",
     "paddingInline": 20,
     "paddingBlock": 6
+  },
+  "Slider": {
+    "handleActiveColor": "rgb(112,101,239)",
+    "dotActiveBorderColor": "rgba(112,101,239,0.8)",
+    "handleColor": "rgb(112,101,239)",
+    "trackBg": "rgba(112,101,239,0.82)",
+    "trackHoverBg": "rgb(112,101,239)",
+    "colorPrimaryBorderHover": "rgb(112,101,239)",
+    "handleActiveOutlineColor": "rgba(112,101,239,0.18)"
   }
 }
 

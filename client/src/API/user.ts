@@ -18,3 +18,21 @@ export const getMyInfo = async()=>{
         return err;
     }
 }
+// Update profile
+type updateType = {
+    publicName?: string,
+    photo?: string,
+    pfpId?: string,
+    password?: string,
+    email?: string,
+    state?: string,
+    city?: string
+}
+export const updateProfile = async(data:updateType)=>{
+    try {
+        const res = await axios.put("/api/user/update",{data});
+        return res;
+    } catch(err){
+        return err;
+    }
+}
