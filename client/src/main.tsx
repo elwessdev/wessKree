@@ -59,6 +59,11 @@ const componentsTheme = {
     "trackHoverBg": "rgb(112,101,239)",
     "colorPrimaryBorderHover": "rgb(112,101,239)",
     "handleActiveOutlineColor": "rgba(112,101,239,0.18)"
+  },
+  "Empty": {
+    "colorTextDescription": "rgb(112,101,239)",
+    "fontSize": 13,
+    "controlHeightLG": 44
   }
 }
 

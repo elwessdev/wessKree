@@ -1,4 +1,4 @@
-.ant-modal{
+.login{
     width: 400px !important;
     *{
         font-family: "Nunito Sans", serif;
@@ -9,6 +9,12 @@
     //     font-size: 40px;
     //     font-weight: 700;
     // }
+    .ant-modal-title {
+        font-size: 40px !important;
+    }
+    .ant-spin{
+        color: #FFF;
+    }
     .ant-form-vertical .ant-form-item:not(.ant-form-item-horizontal) .ant-form-item-label{
         padding: 0;
         

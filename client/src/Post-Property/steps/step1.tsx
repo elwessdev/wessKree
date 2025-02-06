@@ -84,9 +84,9 @@ export default function Step1({data,setData,next}:props){
                             <Select
                                 placeholder="Choose type"
                                 options={[
-                                    { value: 'Apartment', label: 'Apartment' },
-                                    { value: 'House', label: 'House' },
-                                    { value: 'Villa', label: 'Villa' },
+                                    { value: 'apartment', label: 'Apartment' },
+                                    { value: 'house', label: 'House' },
+                                    { value: 'villa', label: 'Villa' },
                                     // { value: 'Office', label: 'Office', },
                                 ]}
                             />
@@ -105,7 +105,7 @@ export default function Step1({data,setData,next}:props){
                                 showSearch={false}
                                 options={[
                                     { value: 'student', label: 'Student' },
-                                    { value: 'Family', label: 'Family' },
+                                    { value: 'family', label: 'Family' },
                                     { value: 'anyone', label: 'Anyone' },
                                 ]}
                             />
@@ -198,9 +198,9 @@ export default function Step1({data,setData,next}:props){
                                 placeholder="Choose Furnishing Status"
                                 showSearch={false}
                                 options={[
-                                    { value: 'Furnished', label: 'Furnished' },
-                                    { value: 'Semi-Furnished', label: 'Semi-Furnished' },
-                                    { value: 'Unfurnished', label: 'Unfurnished' },
+                                    { value: 'furnished', label: 'Furnished' },
+                                    { value: 'semiFurnished', label: 'Semi-Furnished' },
+                                    { value: 'unfurnished', label: 'Unfurnished' },
                                 ]}
                             />
                         </Form.Item>
