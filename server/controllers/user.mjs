@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from "bcryptjs";
 import Property from '../models/property.mjs';
 import User from '../models/user.mjs';
+import Favorite from '../models/favorite.mjs';
 
 
 // Get user details
@@ -115,5 +116,21 @@ export const updateProfile = async(req,res)=>{
     } catch(err){
         console.error("Update profile error:", err);
         return res.status(500).json({ message: "update profile error" });
+    }
+}
+// Add favorite
+export const addFavorite = async(req,res)=>{
+    const {id:propertyId} = req.body;
+    const {id:userId} = req.token;
+    try{
+        const addFavorite = new Favorite({
+            userId,
+            propertyId
+        });
+        await addFavorite.save();
+        return res.status(200).json({success:true});
+    } catch(error){
+        console.error("add favorite error:", error);
+        return res.status(500).json({ message: "add favorite", error });
     }
 }

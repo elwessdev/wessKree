@@ -8,7 +8,8 @@ import {
     checkPwd,
     checkUsername,
     checkEmail,
-    updateProfile
+    updateProfile,
+    addFavorite
 } from "../controllers/user.mjs";
 import {deleteCloudImg } from "../controllers/cloudinary.mjs";
 
@@ -30,5 +31,7 @@ router.post("/checkEmail",checkEmail);
 router.delete("/deleteCloudImg/:id",verifyToken,validID,deleteCloudImg);
 // Update profile
 router.put("/update",verifyToken,validID,updateProfile);
+// Add to favorite
+router.post("/favorite",verifyToken,validID,addFavorite);
 
 export default router;

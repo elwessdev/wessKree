@@ -24,8 +24,13 @@ const PropertyItem = ({data}:props)=>{
 
     // Add favorite
     const addToFavorite = async() => {
-        addFavorite(data?._id);
-        message.success("The property added to favorite");
+        const res = await addFavorite(data?._id);
+        // console.log(res);
+        if(res.status==200){
+            message.success("The property added to favorite");
+        } else {
+            message.error("Something error, Try again");
+        }
     }
 
     return (

@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-import { Schema } from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
 export default mongoose.model("properties", new Schema(
     {
@@ -97,5 +96,6 @@ export default mongoose.model("properties", new Schema(
             }
         ],
         features: [String]
-    },{timestamps: true})
-)
+    },
+    {timestamps: true}
+))
