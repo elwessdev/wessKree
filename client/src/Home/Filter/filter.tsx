@@ -1,52 +1,44 @@
-import { Select, Slider, Button } from 'antd';
+import { Select, Slider, Button, Tooltip } from 'antd';
 // import { useState } from 'react';
 // import { TbHomeSearch } from "react-icons/tb";
 import {StateCity} from "../../Data/stateCity.ts";
-import { useState } from 'react';
+import { useImperativeHandle, useState } from 'react';
 
-const options = [
-    {
-        value: '1',
-        label: 'Not Identified',
-    },
-    {
-        value: '2',
-        label: 'Closed',
-    },
-    {
-        value: '3',
-        label: 'Communicated',
-    },
-    {
-        value: '4',
-        label: 'Identified',
-    },
-    {
-        value: '5',
-        label: 'Resolved',
-    },
-    {
-        value: '6',
-        label: 'Cancelled',
-    },
-    {
-        value: '6',
-        label: 'Cancelled',
-    },
-]
+// Icons
+import { RiResetRightFill } from "react-icons/ri";
 
+// Type
 type stateCityType = { value: string; label: string }[];
+type filter = {
+    state: string | null,
+    city: string | null,
+    type: string | null,
+    price: number[] | number | null,
+    rooms: string | null,
+    category:  string | null,
+}
 
 // Functions
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
-export default function Filter(){
-    const [priveInterval, setPriceInterval]=useState<number | number[]>([]);
+export default function Filter({sRef,onClick,onReset}:any){
+    //  Filter
+    const [filter, setFilter] = useState<filter>({
+        state: null,
+        city: null,
+        type: null,
+        price: null,
+        rooms: null,
+        category: null
+    })
+
+    // Price
     const onChangeComplete = (value: number | number[]) => {
-        console.log('Price interval: ', value);
-        setPriceInterval(value);
+        // console.log('Price interval: ', value);
+        setFilter({...filter,price:value})
     };
 
+    // State and city
     const [delegations, setDelegations] = useState<stateCityType>([]);
     const stateOptions = StateCity.map(state => ({
         value: capitalize(state.Name),
@@ -54,9 +46,17 @@ export default function Filter(){
     }));
     const handleStateChange = (value:string|undefined) => {
         if(!value) return;
-        const state = StateCity.find((s) => capitalize(s.Name) === value);
+        const state:any = StateCity.find((s) => capitalize(s.Name) === value);
+        setFilter({...filter,state:capitalize(state.Name)});
         setDelegations(state ?state.Delegations.map((d) => ({ value: capitalize(d.Value), label: capitalize(d.Name) })) :[]);
     };
+
+    // Send Filter data to parent
+    useImperativeHandle(sRef,()=>({
+        filter,
+        setFilter
+    }));
+
     return(
         <div id="properties_filter">
             <div className="p_s">
@@ -71,6 +71,7 @@ export default function Filter(){
                     (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                     }
                     options={stateOptions}
+                    value={filter?.state}
                 />
             </div>
             <div className="p_s">
@@ -81,9 +82,11 @@ export default function Filter(){
                     placeholder="Search..."
                     optionFilterProp="label"
                     filterSort={(optionA, optionB) =>
-                    (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                        (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                     }
+                    onChange={(value)=>setFilter({...filter,city:value})}
                     options={delegations}
+                    value={filter?.city}
                 />
             </div>
             <div className="p_s">
@@ -95,10 +98,12 @@ export default function Filter(){
                     filterSort={(optionA, optionB) =>
                     (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                     }
+                    onChange={(value)=>setFilter({...filter,type:value})}
+                    value={filter?.type}
                     options={[
-                        { value: 'Apartment', label: 'Apartment' },
-                        { value: 'House', label: 'House' },
-                        { value: 'Villa', label: 'Villa' },
+                        { value: 'apartment', label: 'Apartment' },
+                        { value: 'house', label: 'House' },
+                        { value: 'villa', label: 'Villa' },
                     ]}
                 />
             </div>
@@ -120,11 +125,13 @@ export default function Filter(){
                     filterSort={(optionA, optionB) =>
                     (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                     }
+                    onChange={(value)=>setFilter({...filter,rooms:value})}
                     options={[
                         { value: '1', label: 'S+1' },
                         { value: '2', label: 'S+2' },
                         { value: '3', label: 'S+3' }
                     ]}
+                    value={filter?.rooms}
                 />
             </div>
             <div className="p_s last">
@@ -136,17 +143,24 @@ export default function Filter(){
                     filterSort={(optionA, optionB) =>
                     (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                     }
+                    onChange={(value)=>setFilter({...filter,category:value})}
                     options={[
                         { value: 'student', label: 'Student' },
-                        { value: 'Family', label: 'Family' },
+                        { value: 'family', label: 'Family' },
                         { value: 'anyone', label: 'Anyone' },
                     ]}
+                    value={filter?.category}
                 />
             </div>
-            <Button type="primary" block>
-                {/* <TbHomeSearch /> */}
-                Search
-            </Button>
+            <div className='btns'>
+                <Button type="primary" block onClick={onClick}>
+                    {/* <TbHomeSearch /> */}
+                    Search
+                </Button>
+                <Tooltip placement="top" title={"Reset filter"} arrow={true}>
+                    <Button type="primary" className='reset' block onClick={onReset}><RiResetRightFill /></Button>
+                </Tooltip>
+            </div>
         </div>
     )
 }

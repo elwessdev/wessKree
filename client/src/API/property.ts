@@ -18,3 +18,7 @@ export const propertyDetails = async(id:number)=>{
         return err;
     }
 }
+// Add favorite
+export const addFavorite = async(id:string)=>{
+    console.log(id);
+}

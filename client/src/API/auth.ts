@@ -1,5 +1,15 @@
 import axios from "axios"
 
+
+// Login
+export const signin = async (values: { username: string, password: string }) => {
+    try {
+        const res = await axios.post("/api/auth/signin",{...values});
+        return res;
+    } catch (err){
+        return err;
+    }
+};
 // Signup
 export const signup = async(username:string,publicName:string,email:string,password:string) => {
     try{

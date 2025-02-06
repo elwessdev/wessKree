@@ -1,26 +1,33 @@
 import "./style.scss"
-import { Button, Tooltip, Image } from 'antd';
+import { Button, Tooltip, Image, message } from 'antd';
 import { NavLink } from "react-router-dom";
 import { formatDistance } from 'date-fns'
 import { featuresList } from "../../Data/features";
-// import { Image } from 'antd';
+import { memo } from "react";
+import { useUser } from "../../context/userContext";
+import { addFavorite } from "../../API/property";
 
+// Icons
 import { FaRegHeart } from "react-icons/fa";
 import { PiRectangleDashedBold } from "react-icons/pi";
 import { BiBath } from "react-icons/bi";
 import { LuBedSingle } from "react-icons/lu";
-import { memo } from "react";
-
-// Icons
 import { IoTimeOutline } from "react-icons/io5";
+
 
 type props = {
     data: any
 }
 
-
-
 const PropertyItem = ({data}:props)=>{
+    const {user} = useUser();
+
+    // Add favorite
+    const addToFavorite = async() => {
+        addFavorite(data?._id);
+        message.success("The property added to favorite");
+    }
+
     return (
         <div className="property-item">
             <div className="photos">
@@ -59,7 +66,18 @@ const PropertyItem = ({data}:props)=>{
                 </div>
                 <hr />
                 <NavLink to={`/property/${data?._id}`} className="explore">Explore</NavLink>
-                <Button className="favorite"><FaRegHeart /></Button>
+                {user?.email 
+                    ?(
+                        <Tooltip placement="top" title={"Add to favorite"} arrow={true}>
+                            <Button onClick={addToFavorite} className="favorite"><FaRegHeart /></Button>
+                        </Tooltip>
+                    )
+                    :(
+                        <Tooltip placement="top" title={"Please login first"} arrow={true}>
+                            <Button className="favorite"><FaRegHeart /></Button>
+                        </Tooltip>
+                    )
+                }
             </div>
         </div>
     )

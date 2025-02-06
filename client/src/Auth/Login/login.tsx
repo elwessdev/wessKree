@@ -3,8 +3,8 @@ import { FC, memo, useState } from 'react';
 import { NavLink } from "react-router-dom";
 import { Modal,Input,Form,Button,Checkbox,Spin,message } from 'antd';
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
-import axios from "axios";
 import { useUser } from "../../context/userContext";
+import { signin } from "../../API/auth";
 
 // Icon
 import { MdOutlineAlternateEmail } from "react-icons/md";
@@ -20,29 +20,34 @@ interface props {
 const Login: FC<props> = ({open,cancel}) => {
     const {userDetails} = useUser();
     const [form] = Form.useForm();
-    const [messageApi, contextHolder] = message.useMessage();
     const [loading, setloading] = useState<boolean>(false);
 
     const handleFinish = async (values: { username: string; password: string }) => {
         // console.log("Login values:", values);
         setloading(true);
-        try {
-            const res = await axios.post("/api/auth/signin",{...values});
+        try{
+            const res = await signin(values);
             if(res.status==200){
+                setloading(false);
                 userDetails();
                 cancel(false);
                 form.resetFields();
             } else {
-                throw new Error("Some thing wrong");
+                form.setFields([
+                    {
+                        name: "password",
+                        errors:["Email/Password incorrect"]
+                    },
+                    {
+                        name: "email",
+                        errors:[""]
+                    },
+                ])
+                setloading(false);
             }
-            // console.log(res);
+        } catch(err){
             setloading(false);
-        } catch (err){
-            setloading(false);
-            messageApi.open({
-                type: 'error',
-                content: `Something went wrong! Try again`,
-            });
+            message.error(`Something went wrong! Try again`);
         }
     };
 
@@ -58,7 +63,6 @@ const Login: FC<props> = ({open,cancel}) => {
             onCancel={()=>cancel(false)}
             footer={null} // Remove default footer buttons
             >
-            {contextHolder}
             <Form
                 form={form}
                 layout="vertical"
