@@ -353,5 +353,67 @@
                 }
             }
         }
+        .step1{
+            .prices{
+                gap: 5px;
+                margin: 20px 55px;
+                justify-content: center;
+                width: fit-content;
+                .day .ant-form-item-control-input .ant-form-item-control-input-content::before{
+                    content: "Day";
+                }
+                .week .ant-form-item-control-input .ant-form-item-control-input-content::before{
+                    content: "Week";
+                }
+                .month .ant-form-item-control-input .ant-form-item-control-input-content::before{
+                    content: "Month";
+                }
+                .ant-form-item{
+                    padding-right: 65px;
+                    display: flex;
+                    justify-content: center;
+                    .ant-form-item-control-input {
+                        height: 40px !important;
+                        width: 110px;
+                        .ant-form-item-control-input-content{
+                            width: 110px;
+                            position: relative;
+                            height: 100%;
+                            &:after{
+                                content: "DT";
+                                position: absolute;
+                                top: 0;
+                                right: -18px;
+                                font-weight: 700;
+                                font-size: 12px;
+                                color: #7065ef;
+                            }
+                            &:before{
+                                position: absolute;
+                                bottom: 1px;
+                                right: -42px;
+                                font-weight: 700;
+                                font-size: 16px;
+                                color: #7065ef;
+                                width: 40px;
+                                height: 20px;
+                            }
+                            input{
+                                height: 100%;
+                                text-align: center;
+                                font-size: 13px;
+                                font-weight: 600;
+                                color: #0d133a;
+                                border-color: #7065ef;
+                                position: relative;
+                                &::placeholder{
+                                    color: #7165ef88;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

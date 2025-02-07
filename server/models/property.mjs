@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-import { Schema } from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
 export default mongoose.model("properties", new Schema(
     {
@@ -51,6 +50,11 @@ export default mongoose.model("properties", new Schema(
             type: [String],
             required: true
         },
+        price: {
+            day: String,
+            week: String,
+            month: String
+        },
         contact: {
             phone: String,
             whatsapp: String,
@@ -97,5 +101,6 @@ export default mongoose.model("properties", new Schema(
             }
         ],
         features: [String]
-    },{timestamps: true})
-)
+    },
+    {timestamps: true}
+))

@@ -9,6 +9,7 @@
         h3{
             margin: 0;
             font-size: 25px;
+            text-transform: capitalize;
         }
         p{
             margin: 0;
@@ -429,5 +430,10 @@
                 }
             }
         }
+    }
+    .ant-spin-spinning{
+        margin: 0 auto;
+        display: block;
+        margin-top: 60px;
     }
 }
