@@ -116,7 +116,7 @@ export default function Filter({sRef,onClick,onReset}:any){
                     onChangeComplete={onChangeComplete}
                 />
             </div>
-            <div className="p_s">
+            {/* <div className="p_s">
                 <span className="subTitle">Rooms</span>
                 <Select
                     style={{ width: "100%" }}
@@ -133,7 +133,7 @@ export default function Filter({sRef,onClick,onReset}:any){
                     ]}
                     value={filter?.rooms}
                 />
-            </div>
+            </div> */}
             <div className="p_s last">
                 <span className="subTitle">Category</span>
                 <Select

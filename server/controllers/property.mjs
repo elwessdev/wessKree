@@ -7,15 +7,12 @@ export const postProperty = async(req,res) => {
     const data = req.body;
     const id = req.token.id;
     try {
-        if(!mongoose.Types.ObjectId.isValid(id)){
-            return res.status(400).json({message: 'id is not valid'});
-        }
         const property = new Property({
             uid: req.token.id,
             ...data
         });
-        await property.save();
-        return res.status(200).json({message: "property has been posted"});
+        const savedProp = await property.save();
+        return res.status(200).json({message: "property has been posted",id:savedProp._id});
     } catch(err){
         console.error("postProperty error:",err);
         return res.status(500).json({message: err});

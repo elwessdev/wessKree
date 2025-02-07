@@ -123,6 +123,10 @@ export const addFavorite = async(req,res)=>{
     const {id:propertyId} = req.body;
     const {id:userId} = req.token;
     try{
+        const isExist = await Favorite.findOne({userId:userId,propertyId:propertyId});
+        if(isExist){
+            return res.status(200).json({exist:true});
+        }
         const addFavorite = new Favorite({
             userId,
             propertyId

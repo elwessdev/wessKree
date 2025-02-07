@@ -1,7 +1,7 @@
 import "./style.scss"
 import { useParams } from "react-router-dom";
 import Gallery from "./components/gallery.tsx";
-import Title from "./title.tsx";
+import Title from "./components/title.tsx";
 import Features from "./components/features.tsx";
 import Owner from "./components/owner.tsx";
 import About from "./components/about.tsx";
@@ -37,6 +37,7 @@ export default function Property(){
                         city={data?.city}
                         neighborhood={data?.neighborhood}
                         zip={data?.zip}
+                        username={data?.user?.username}
                     />
                     <Gallery
                         imgs={data?.imgs}

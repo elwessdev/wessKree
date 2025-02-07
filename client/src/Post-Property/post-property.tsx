@@ -5,6 +5,7 @@ import Step1 from "./steps/step1";
 import Step2 from "./steps/step2";
 import Step3 from "./steps/step3";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // Type
 interface step1Values {
@@ -23,8 +24,13 @@ interface step1Values {
         length: number
     }
     contact?:{
-        phone: string,
-        whatsapp: string
+        phone?: string,
+        whatsapp?: string
+    },
+    price: {
+        day?:string,
+        week?:string,
+        month?:string,
     }
 }
 interface step2Values {
@@ -52,6 +58,7 @@ interface step3Values {
 }
 
 export default function PostPerperty(){
+    const navigate = useNavigate();
     const [current, setCurrent] = useState(0);
     const [loading, setLoading]=useState<boolean>(false);
     const [step1Data, setStep1Data] = useState<step1Values|null>(null);
@@ -97,6 +104,7 @@ export default function PostPerperty(){
                 kitchen: step1Data?.kitchen,
                 furnishingStatus: step1Data?.furnishingStatus,
                 leaseDuration: step1Data?.leaseDuration,
+                price: step1Data?.price,
                 contact: step1Data?.contact,
                 description: step1Data?.description,
                 state: step2Data?.state,
@@ -110,13 +118,20 @@ export default function PostPerperty(){
                 features: step3Data?.features,
                 imgs: imgsURL
             },{withCredentials: true});
-            console.log(res);
-            setLoading(false);
-            message.success('Post has been posted!');
+            // console.log(res);
+            if(res.status==200){
+                setLoading(false);
+                message.success('Post has been posted!');
+                setTimeout(()=>navigate(`/property/${res.data.id}`),1000);
+            } else {
+                setLoading(false);
+                message.error(`Something wrong, Try again`);
+            }
+            // console.log(res);
         } catch(err){
-            // console.log(err);
+            console.log(err);
             setLoading(false);
-            message.error(`Something wrong ${err}`);
+            message.error(`Something wrong, Try again`);
         }
     }
 

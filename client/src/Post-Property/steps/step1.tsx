@@ -6,6 +6,7 @@ import { Form, Input, Select, Space, Flex, InputNumber, Button } from 'antd';
 import { TbMeterSquare } from "react-icons/tb";
 import { MdPhone } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
+import { useState } from 'react';
 
 const { TextArea } = Input;
 
@@ -25,8 +26,13 @@ interface values {
         length: number | null
     }
     contact:{
-        phone: string | null,
-        whatsapp: string | null
+        phone?: string | null,
+        whatsapp?: string | null
+    },
+    price: {
+        day?:string | null,
+        week?:string | null,
+        month?:string | null,
     }
 }
 type props = {
@@ -35,23 +41,49 @@ type props = {
     next: () => void
 }
 
+// Fn
+// const formatPrice = (value:any) => {
+//     const numericValue = value.replace(/[^\d.]/g, "");
+//     return new Intl.NumberFormat("fr-TN", {
+//         style: "currency",
+//         currency: "TND",
+//         minimumFractionDigits: 0,
+//     }).format(numericValue || 0);
+// };
+
 export default function Step1({data,setData,next}:props){
     const [form] = Form.useForm();
+    const [priceLease, setPriceLease] = useState<string[]>([])
+
+    const handlePrice = (values:string[]) => {
+        setPriceLease(values);
+        if(data?.price){
+            const newPriceList = Object.keys(data?.price).filter(key => !values.includes(key));
+            newPriceList.forEach(key => delete data?.price[key]);
+        }
+        // console.log(priceLease);
+        // console.log(data?.price);
+    }
     
     const handleSubmit = (values:values) => {
-        // console.log("step 1 data from child:", values);
+        console.log("step 1 data from child:", values);
         setData({
             ...values,
             rooms: Number(values?.rooms),
             bathrooms: Number(values?.bathrooms),
             bedrooms: Number(values?.bedrooms),
             kitchen: Number(values?.kitchen),
+            price: {
+                day: values?.price?.day,
+                week: values?.price?.week,
+                month: values?.price?.month,
+            }
         });
         next();
     }
     
     return (
-        <div className="step">
+        <div className="step step1">
             <Form
                 form={form}
                 layout="vertical"
@@ -214,12 +246,13 @@ export default function Step1({data,setData,next}:props){
                             rules={[{ required: true, message: "Please choose lease duration" }]}
                             initialValue={data?.leaseDuration}
                             // tooltip={{ title: 'This is a required field', icon: <VscQuestion /> }}
-                        >
+                            >
                             <Select
                                 mode="multiple"
                                 style={{ width: '100%' }}
-                                placeholder="please select"
+                                placeholder="Select..."
                                 showSearch={false}
+                                onChange={handlePrice}
                                 options={[
                                     { value: 'month', label: 'Month' },
                                     { value: 'week', label: 'Week' },
@@ -259,6 +292,48 @@ export default function Step1({data,setData,next}:props){
                                 </Space.Compact>
                         </Form.Item>
                     </Flex>
+
+                    {(priceLease.length>0 || (data!=null && Object.entries(data?.price).length>0)) && 
+                        <Form.Item
+                            style={{flex:1}}
+                        >
+                            <Space.Compact className='prices' style={{ flex: 1, gap: 5 }}  >
+                                {(priceLease.includes("day")||data?.price?.day) &&
+                                    <Form.Item
+                                        style={{ flex: 1 }} 
+                                        name={["price", "day"]}
+                                        className='day'
+                                        rules={[{ required: true, message: "Please enter price" }]}
+                                        initialValue={data?.price.day}
+                                    >
+                                        <Input type='number' placeholder='Price'/>
+                                    </Form.Item>
+                                }
+                                {(priceLease.includes("week")||data?.price?.week) &&
+                                    <Form.Item
+                                        style={{ flex: 1 }} 
+                                        name={["price", "week"]}
+                                        className='week'
+                                        rules={[{ required: true, message: "Please enter price" }]}
+                                        initialValue={data?.price?.week}
+                                    >
+                                        <Input type='number' placeholder='Price'/>
+                                    </Form.Item>
+                                }
+                                {(priceLease.includes("month")||data?.price?.month) &&
+                                    <Form.Item
+                                        style={{ flex: 1 }} 
+                                        name={["price", "month"]}
+                                        className='month'
+                                        rules={[{ required: true, message: "Please enter price" }]}
+                                        initialValue={data?.price?.month}
+                                    >
+                                        <Input type='number' placeholder='Price'/>
+                                    </Form.Item>
+                                }
+                            </Space.Compact>
+                        </Form.Item>
+                    }
 
                     <Flex gap={15}>
                         <Form.Item

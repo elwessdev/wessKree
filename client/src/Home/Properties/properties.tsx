@@ -43,7 +43,7 @@ export default function Properties(){
                     return item[key] === value;
                 });
             }));
-            setTimeout(()=>setLoadingSearch(false),200);
+            setTimeout(()=>setLoadingSearch(false),150);
         }
     }
 
@@ -60,7 +60,7 @@ export default function Properties(){
                 category: null
             })
             setFilterList(null);
-            setTimeout(()=>setLoadingSearch(false),200);
+            setTimeout(()=>setLoadingSearch(false),150);
         }
     }
     

@@ -50,6 +50,11 @@ export default mongoose.model("properties", new Schema(
             type: [String],
             required: true
         },
+        price: {
+            day: String,
+            week: String,
+            month: String
+        },
         contact: {
             phone: String,
             whatsapp: String,
