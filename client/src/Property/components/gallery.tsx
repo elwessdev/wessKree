@@ -1,14 +1,19 @@
 import { memo } from 'react';
 import { Image } from 'antd';
+import ViewMap from "./map";
 
 type props = {
     imgs: {
         url: string,
         cloudId: string,
-    }[]
+    }[],
+    map: {
+        lat: number,
+        lng: number
+    }
 }
 
-const Gallery = ({imgs}:props) => {
+const Gallery = ({imgs,map}:props) => {
     return (
         <div className="gallery">
             <Image.PreviewGroup
@@ -29,9 +34,7 @@ const Gallery = ({imgs}:props) => {
                     </div>
                 </div>
             </Image.PreviewGroup>
-            {/* <Button>
-                <TbPhotoSquareRounded /> View all photos
-            </Button> */}
+            {map?.lat!=36.8065 && map?.lng!=10.1815 && <ViewMap map={map} /> }
         </div>
     )
 }

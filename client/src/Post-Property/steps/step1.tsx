@@ -66,7 +66,7 @@ export default function Step1({data,setData,next}:props){
     }
     
     const handleSubmit = (values:values) => {
-        console.log("step 1 data from child:", values);
+        // console.log("step 1 data from child:", values);
         setData({
             ...values,
             rooms: Number(values?.rooms),

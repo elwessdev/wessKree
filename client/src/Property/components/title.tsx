@@ -1,37 +1,67 @@
 import { memo } from 'react';
-import { Button } from 'antd';
+import { Button, message, Tooltip } from 'antd';
 
-import { IoShareSocialOutline } from "react-icons/io5";
+import { IoShareSocialOutline, IoTimeOutline } from "react-icons/io5";
 import { MdFavoriteBorder } from "react-icons/md";
 import { IoMdSearch } from "react-icons/io";
 import { useUser } from '../../context/userContext';
+import { addFavorite } from '../../API/property';
+import { formatDistance } from 'date-fns';
 
 
 type props = {
-    title: string | null,
-    state: string | null,
-    city: string | null,
-    zip: number | null
-    neighborhood: string | null,
-    username: string | null
+    title?: string | null,
+    state?: string | null,
+    city?: string | null,
+    zip?: number | null
+    neighborhood?: string | null,
+    username?: string | null,
+    id?: string | undefined,
+    scrollToNear?:()=>any,
+    createdAt: any
 }
 
-const Title = ({title,state,city,zip,neighborhood,username}:props) => {
+const Title = ({title,state,city,zip,neighborhood,username,id,scrollToNear,createdAt}:props) => {
     const {user} = useUser();
+
+    const addToFavorite = async() => {
+        const res = await addFavorite(id);
+        if(res?.data.exist){
+            message.success("Already in my favorite");
+            return;
+        }
+        if(res?.data.success){
+            message.success("The property added to favorite");
+        } else {
+            message.error("Something error, Try again");
+        }
+    }
+
     return (
         <div className="title">
             <h3>{title}</h3>
             <p>{state}, {city}, {neighborhood} {zip}</p>
+            <p className="date"><IoTimeOutline /> {formatDistance(new Date(createdAt), new Date(), { addSuffix: true }).replace("about ", "")}</p>
+            {(user && user?.username==username) && (
+                <p className='my'>My Property</p>
+            )}
             <div className="btns">
                 <Button>
                     <IoShareSocialOutline /> Share
                 </Button>
-                {user?.username!=username && (
-                    <Button>
+                {user==null&&(
+                    <Tooltip placement="top" title={"Login first"}>
+                        <Button>
+                            <MdFavoriteBorder /> Favorite
+                        </Button>
+                    </Tooltip>
+                )}
+                {(user && user?.username!=username) && (
+                    <Button onClick={addToFavorite}>
                         <MdFavoriteBorder /> Favorite
                     </Button>
                 )}
-                <Button>
+                <Button onClick={scrollToNear}>
                     <IoMdSearch /> Browser nearby
                 </Button>
             </div>

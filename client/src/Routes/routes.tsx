@@ -5,10 +5,11 @@ import App from "../App";
 import Home from '../Home/Home'
 import Property from "../Property/property";
 import Signup from '../Auth/Signup/signup';
-import Profile from '../Profile/profile';
 import PostPerperty from '../Post-Property/post-property';
 import SetupProfile from '../Auth/Setup-profile/setup';
 import Settings from '../Settings/settings.tsx';
+import MyProfile from '../Profile/MyProfile.tsx';
+import UserProfile from '../Profile/UserProfile.tsx';
 
 
 const router = createBrowserRouter([
@@ -20,7 +21,8 @@ const router = createBrowserRouter([
             { path: "", element: <Home /> },
             { path: "property/:id", element: <Property /> },
             { path: "signup", element: <Signup /> },
-            { path: "profile/:userNameUrl", element: <Profile /> },
+            // { path: "profile/:userNameUrl", element: <UserProfile /> },
+            { path: "my-profile", element: <MyProfile /> },
             { path: "post-property", element: <PostPerperty /> },
             { path: "setup-profile", element: <SetupProfile /> },
             { path: "settings", element: <Settings /> },

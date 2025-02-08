@@ -1,15 +1,14 @@
-import mongoose from 'mongoose';
 import bcrypt from "bcryptjs";
 import Property from '../models/property.mjs';
 import User from '../models/user.mjs';
 import Favorite from '../models/favorite.mjs';
 
 
-// Get user details
+// After Login Details
 export const getUser = async(req,res)=>{
     const id = req.token.id;
     try{
-        const user = await User.findOne({_id:id},{_id:0});
+        const user = await User.findOne({_id:id});
         if(!user){
             return res.status(400).json({ message: 'user not found' });
         }
@@ -19,12 +18,14 @@ export const getUser = async(req,res)=>{
         return res.status(500).json({ message: 'getUser server error' });
     }
 }
-// User Infos for profile
+
+// User Infos
 export const userInfos = async(req,res)=>{
     const username = req.params.username;
     try {
         const userDetails = await User.findOne({username},{
             username: 1,
+            publicName: 1,
             photo: 1,
             state: 1,
             city: 1
@@ -32,33 +33,60 @@ export const userInfos = async(req,res)=>{
         if (!userDetails) {
             return res.status(404).json({ message: "user not found" });
         }
-        const properties = await Property.find({uid:userDetails._id},{uid:0}).lean();
         delete userDetails._id;
-        return res.status(200).json({userInfo: userDetails, properties:properties});
+        return res.status(200).json(userDetails);
     } catch(err){
         console.error("user property details error:",err);
         return res.status(500).send({ message: err });
     }
 }
-// My Info
-export const myInfo = async(req,res)=>{
-    const id = req.token.id;
+// User Properties
+export const userProperties = async(req,res)=>{
+    const {username} = req.params;
     try {
-        if(!mongoose.Types.ObjectId.isValid(id)){
-            return res.status(400).json({ message: 'user id is not valid' });
-        }
-        const userDetails = await User.findById(id).lean();
-        if (!userDetails) {
+        const user = await User.findOne({username}).lean();
+        if (!user) {
             return res.status(404).json({ message: "user not found" });
         }
-        const properties = await Property.find({uid:userDetails._id},{uid:0}).lean();
-        delete userDetails._id;
-        return res.status(200).json({userInfo: userDetails, properties:properties});
+        const properties = await Property.find({uid:user._id},{uid:0}).lean();
+        return res.status(200).json(properties);
     } catch(err){
         console.error("user property details error:",err);
         return res.status(500).send({ message: err });
     }
 }
+// Favorite List
+export const favoriteList = async(req,res)=>{
+    const {id} = req.token;
+    try {
+        const favorite = await Favorite.find({userId:id},{propertyId:1}).lean();
+        if(!favorite){
+            return res.status(200).json(favorite);
+        }
+        const propertyIds = favorite.map(fav => fav.propertyId);
+        const properties = await Property.find({ _id: { $in: propertyIds } },{uid:0}).lean();
+        return res.status(200).json(properties);
+    } catch(err){
+        console.error("favorite error:",err);
+        return res.status(500).send({ message: err });
+    }
+}
+// Delete favorite
+export const deleteFavorite = async(req,res)=>{
+    const {id:propertyId} = req.params;
+    const {id:userId} = req.token;
+    try {
+        const fav = await Favorite.findOneAndDelete({ userId,propertyId });
+        if (fav) {
+            return res.status(200).json({ success: true });
+        }
+        return res.status(404).json({ success: false, message: "Favorite not found" });
+    } catch(err){
+        console.error("delete favorite error:",err);
+        return res.status(500).send({ message: err });
+    }
+}
+
 // Check Password
 export const checkPwd = async(req,res)=>{
     const id = req.token.id;
@@ -103,6 +131,7 @@ export const checkEmail = async(req,res)=>{
         return res.status(500).send({ message: err });
     }
 }
+
 // Update profile
 export const updateProfile = async(req,res)=>{
     const {data} = req.body;

@@ -18,7 +18,7 @@ import { RiEdit2Fill } from "react-icons/ri";
 
 type params = Record<string, string | undefined>;
 
-export default function Profile(){
+export default function UserProfile(){
     const {userNameUrl}:any = useParams<params>();
     // console.log(userNameUrl);
     const [open, setOpen] = useState<boolean>(false);

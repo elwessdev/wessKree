@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // User Info
-export const getUserInfos = async(name:number)=>{
+export const getUserInfos = async(name:string)=>{
     try {
         const res = await axios.get(`/api/user/info/${name}`);
         return res?.data;
@@ -9,10 +9,28 @@ export const getUserInfos = async(name:number)=>{
         return err;
     }
 }
-// Get My Infos
-export const getMyInfo = async()=>{
+// User Properties
+export const userProperties = async(name:string|undefined)=>{
     try {
-        const res = await axios.get(`/api/user/myInfo`);
+        const res = await axios.get(`/api/user/userProperties/${name}`);
+        return res?.data;
+    } catch(err) {
+        return err;
+    }
+}
+// Favorite List
+export const favorite = async()=>{
+    try {
+        const res = await axios.get(`/api/user/favorite`);
+        return res?.data;
+    } catch(err) {
+        return err;
+    }
+}
+// Delete Favorite
+export const deleteFav = async(id:string)=>{
+    try {
+        const res = await axios.delete(`/api/user/deleteFavorite/${id}`);
         return res?.data;
     } catch(err) {
         return err;

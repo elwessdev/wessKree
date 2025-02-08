@@ -2,12 +2,13 @@ import "./style.scss"
 import Filter from "../Filter/filter"
 import PropertyItem from "./property-item"
 import { useQuery } from "@tanstack/react-query";
-import { Empty, Spin } from "antd";
+import { Affix, Empty, Spin } from "antd";
 import { getProperties } from "../../API/property";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 export default function Properties(){
     const searchRef = useRef();
+    const [top, setTop] = useState<number>(100);
     const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
     const [filterList, setFilterList] = useState<any>(null);
 
@@ -66,12 +67,16 @@ export default function Properties(){
     
     return (
         <div id="properties">
-            <Filter sRef={searchRef} onClick={handleSearch} onReset={handleReset}/>
+            <Affix offsetTop={10}>
+                <Filter sRef={searchRef} onClick={handleSearch} onReset={handleReset}/>
+            </Affix>
             <div className="items">
                 {(isLoading || loadingSearch) && (
                     <Spin size="large" />
                 )}
-                {error && <h1>There is an error to load items</h1>}
+                {error && (
+                    <h1>There is an error to load Properties</h1>
+                )}
                 {(!loadingSearch&&filterList==null) && properties?.map((property:any,idx:number)=>(
                     // <Skeleton loading={isLoading} active avatar>
                         <PropertyItem key={idx} data={property} />
