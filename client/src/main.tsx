@@ -61,7 +61,7 @@ const componentsTheme = {
     "handleActiveOutlineColor": "rgba(112,101,239,0.18)"
   },
   "Empty": {
-    "colorTextDescription": "rgb(112,101,239)",
+    "colorTextDescription": "rgb(141 147 157)",
     "fontSize": 13,
     "controlHeightLG": 44
   }

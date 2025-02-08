@@ -12,6 +12,7 @@ interface User {
     city?: string;
     isActive?: boolean;
     pfpId?:string;
+    _id?: string
 }
 interface UserContextType {
     user: User | null;

@@ -6,18 +6,46 @@ import { BiHomeAlt } from "react-icons/bi";
 import { TbBrandYoutube } from "react-icons/tb";
 import { TbHomeHand } from "react-icons/tb";
 
-const Apply = () => {
+type props = {
+    price: any
+}
+
+const Apply = ({price}:props) => {
     const [chooseTour, setChooseTour]=useState<string | null>(null);
+    const [selectedPrice, setSelectedPrice]=useState<string|null>(null);
 
     const handleChooseTour = (type: string) => {
         setChooseTour(type);
+    }
+
+    const handleSelectPrice = (p:string) => {
+        setSelectedPrice(p)
     }
 
     return (
         <div className="apply">
             <div className="price">
                 <h3>Rent Price</h3>
-                <p>2,600<b>DT</b> <span>/Month</span></p>
+                {(Object.entries(price).length>1)
+                    ?(
+                        <div className="many">
+                            {price && Object.entries(price).map((p:any,idx:number)=>(
+                                <p
+                                    key={idx}
+                                    className={`nrml ${selectedPrice==p[0] ?"active" :""}`}
+                                    onClick={()=>handleSelectPrice(p[0])}
+                                >
+                                    {p[1]}
+                                    <b>DT</b>
+                                    <span>/{p[0]}</span>
+                                </p>
+                            ))}
+                        </div>
+                    )
+                    :(
+                        <p className="nrml">{Object.entries(price)[0][1]}<b>DT</b> <span>/{Object.entries(price)[0][0]}</span></p>
+                    )
+                }
             </div>
             <Button>
                 <FaRegFileLines /> Apply now

@@ -44,7 +44,7 @@ const Owner = ({userInfo}:props) => {
                         </Button>
                     </>
                 )}
-                <NavLink to={userInfo?.username==user?.username ?`/profile/my-profile` :`/profile/${userInfo?.username}`}>
+                <NavLink to={userInfo?.username==user?.username ?`/my-profile` :`/profile/${userInfo?.username}`}>
                     <LuBadgeInfo /> Get more info
                 </NavLink>
             </div>

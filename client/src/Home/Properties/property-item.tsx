@@ -6,20 +6,24 @@ import { featuresList } from "../../Data/features";
 import { memo } from "react";
 import { useUser } from "../../context/userContext";
 import { addFavorite } from "../../API/property";
+import { deleteFav } from "../../API/user";
 
 // Icons
 import { FaRegHeart } from "react-icons/fa";
 import { PiRectangleDashedBold } from "react-icons/pi";
-import { BiBath } from "react-icons/bi";
 import { LuBedSingle } from "react-icons/lu";
+import { BiBath } from "react-icons/bi";
 import { IoTimeOutline } from "react-icons/io5";
+import { IoHeartDislike } from "react-icons/io5";
+import { QueryClient } from "@tanstack/react-query";
 
 
 type props = {
-    data: any
+    data: any,
+    page?:string 
 }
 
-const PropertyItem = ({data}:props)=>{
+const PropertyItem = ({data,page}:props)=>{
     const {user} = useUser();
 
     // Add favorite
@@ -36,6 +40,27 @@ const PropertyItem = ({data}:props)=>{
         }
     }
 
+    const removeFavorite = async() => {
+        try {
+            const res = await deleteFav(data?._id);
+            if(res?.success){
+                message.success("Deleted!");
+            }
+            if(!res?.success){
+                message.error("Something wrong, Try again");
+            }
+        } catch(err) {
+            console.log(err);
+            message.error("Something wrong, Try again");
+        }
+    }
+    const editProperty = () => {
+        console.log("editProperty");
+    }
+    const deleteProperty = () => {
+        console.log("deleteProperty");
+    }
+
     return (
         <div className="property-item">
             <div className="photos">
@@ -48,11 +73,10 @@ const PropertyItem = ({data}:props)=>{
                         />
                     ))}
                 </Image.PreviewGroup>
-                
                 <div className="price">
-                    <p>2,600 <span>/Month</span></p>
-                    <p>2,600 <span>/Week</span></p>
-                    <p>2,600 <span>/Day</span></p>
+                    {data?.price && Object.entries(data?.price).map((p:any,idx:number)=>(
+                        <p key={idx}>{p[1]} <span>/{p[0]}</span></p>
+                    ))}
                 </div>
             </div>
             <div className="details">
@@ -73,19 +97,30 @@ const PropertyItem = ({data}:props)=>{
                     ))}
                 </div>
                 <hr />
-                <NavLink to={`/property/${data?._id}`} className="explore">Explore</NavLink>
-                {user?.email 
-                    ?(
-                        <Tooltip placement="top" title={"Add to favorite"} arrow={true}>
+                <div className="btns">
+                    <NavLink to={`/property/${data?._id}`} className="explore">Explore</NavLink>
+                    {page=="owner"&&(
+                        <>
+                            <Button color="primary" variant="dashed" onClick={editProperty} className="ed">Edit</Button>
+                            <Button color="danger" variant="dashed"  onClick={deleteProperty} danger className="ed">Delete</Button>
+                        </>
+                    )}
+                </div>
+                {user != null && page !== "owner" ? (
+                    page == "ownerFav" ? (
+                        <Tooltip placement="top" title={"Remove From Favorite"} arrow={true}>
+                            <Button onClick={removeFavorite} className="favorite"><IoHeartDislike /></Button>
+                        </Tooltip>
+                    ) : (
+                        <Tooltip placement="top" title={"Add to Favorite"} arrow={true}>
                             <Button onClick={addToFavorite} className="favorite"><FaRegHeart /></Button>
                         </Tooltip>
                     )
-                    :(
-                        <Tooltip placement="top" title={"Please login first"} arrow={true}>
-                            <Button className="favorite"><FaRegHeart /></Button>
-                        </Tooltip>
-                    )
-                }
+                ) : user == null && page !== "owner" ? (
+                    <Tooltip placement="top" title={"Please login first"} arrow={true}>
+                        <Button className="favorite"><FaRegHeart /></Button>
+                    </Tooltip>
+                ) : null}
             </div>
         </div>
     )
