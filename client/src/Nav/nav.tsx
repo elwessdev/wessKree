@@ -8,13 +8,15 @@ import Logo from '../assets/logo2.jpeg'
 import SearchNav from "./search";
 
 // Icons
-import { TbHomeHand } from "react-icons/tb";
+// import { TbHomeHand } from "react-icons/tb";
 import { FaHouseUser } from "react-icons/fa";
 import { FaUserCog } from "react-icons/fa";
 import { RiLogoutCircleRFill } from "react-icons/ri";
 import { IoIosNotifications } from "react-icons/io";
 import { TbHomeStats } from "react-icons/tb";
 import { FaUserCheck } from "react-icons/fa";
+import { MdOutlineAddHomeWork } from "react-icons/md";
+
 
 
 export default function Nav(){
@@ -83,7 +85,7 @@ export default function Nav(){
                     }
                     {user?.isActive==true && (
                         <>
-                            <NavLink to={"/post-property"}><TbHomeHand /> Post Property</NavLink>
+                            <NavLink to={"/post-property"}><MdOutlineAddHomeWork /> Post Property</NavLink>
                             <NavLink to={"/post-property"}><TbHomeStats /> Requests</NavLink>
                             <Dropdown menu={{ items:notifications }} trigger={['click']} placement="bottom">
                                 <div className="notif"><IoIosNotifications /></div>

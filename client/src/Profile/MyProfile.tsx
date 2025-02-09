@@ -4,6 +4,9 @@ import { Button, Spin, Tabs, Tooltip } from 'antd';
 import { useQuery } from "@tanstack/react-query";
 import { getUserInfos } from "../API/user";
 import { useUser } from "../context/userContext";
+import MyProperty from "./Tabs/MyProperty";
+import Favorite from "./Tabs/Favorite";
+import { NavLink, useNavigate } from "react-router-dom";
 
 
 // Icons
@@ -11,12 +14,12 @@ import { MdSettings, MdOutlineLocationOn, MdMapsHomeWork, MdFavorite } from "rea
 import { TbHomeStats } from "react-icons/tb";
 import { FaSquareWhatsapp, FaSquarePhone } from "react-icons/fa6";
 import { RiEdit2Fill } from "react-icons/ri";
-import MyProperty from "./Tabs/MyProperty";
-import Favorite from "./Tabs/Favorite";
+import { MdContacts } from "react-icons/md";
 
 
 export default function MyProfile(){
     const { user }: any = useUser();
+    const navigate = useNavigate();
 
     // User info
     const { data, isLoading, error } = useQuery({
@@ -42,22 +45,35 @@ export default function MyProfile(){
                         <h3>{data?.username}</h3>
                         <p><MdOutlineLocationOn /> {data?.state}, {data?.city}</p>
                         <div className="contact">
-                            <p>
-                                <FaSquarePhone />
-                                <span>226589652</span>
-                                <RiEdit2Fill className="copy" />
-                            </p>
-                            <p>
-                                <FaSquareWhatsapp />
-                                <span>226589652</span>
-                                <RiEdit2Fill className="copy" />
-                            </p>
+                            {data?.contact 
+                                ? (
+                                    <>
+                                        {data?.contact?.phone &&
+                                            <p>
+                                                <FaSquarePhone />
+                                                <span>{data?.contact?.phone}</span>
+                                                <RiEdit2Fill className="copy" />
+                                            </p>
+                                        }
+                                        {data?.contact?.whatsapp && 
+                                            <p>
+                                                <FaSquareWhatsapp />
+                                                <span>{data?.contact?.whatsapp}</span>
+                                                <RiEdit2Fill className="copy" />
+                                            </p>
+                                        }
+                                    </>
+                                )
+                                : (
+                                    <NavLink to={"/settings"} className="addContact"><MdContacts /> Add Contact</NavLink>
+                                )
+                            }
                             <Button className="ask"><TbHomeStats /> Requests</Button>
                         </div>
                         <Tooltip placement="top" title={"Settings"}>
-                            <Button className="notif"><MdSettings /></Button>
+                            <Button className="notif" onClick={()=>navigate("/settings")}><MdSettings /></Button>
                         </Tooltip>
-                        </>
+                    </>
                 )}
             </div>
             <div className="r-s">

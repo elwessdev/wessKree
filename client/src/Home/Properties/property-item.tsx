@@ -1,12 +1,11 @@
 import "./style.scss"
-import { Button, Tooltip, Image, message } from 'antd';
+import { Button, Tooltip, Image, message, Popconfirm } from 'antd';
 import { NavLink } from "react-router-dom";
 import { formatDistance } from 'date-fns'
 import { featuresList } from "../../Data/features";
-import { memo } from "react";
+import { memo, useImperativeHandle } from "react";
 import { useUser } from "../../context/userContext";
 import { addFavorite } from "../../API/property";
-import { deleteFav } from "../../API/user";
 
 // Icons
 import { FaRegHeart } from "react-icons/fa";
@@ -20,10 +19,11 @@ import { QueryClient } from "@tanstack/react-query";
 
 type props = {
     data: any,
-    page?:string 
+    page?:string,
+    delFavBtn?:any
 }
 
-const PropertyItem = ({data,page}:props)=>{
+const PropertyItem = ({data,page,delFavBtn}:props)=>{
     const {user} = useUser();
 
     // Add favorite
@@ -40,20 +40,6 @@ const PropertyItem = ({data,page}:props)=>{
         }
     }
 
-    const removeFavorite = async() => {
-        try {
-            const res = await deleteFav(data?._id);
-            if(res?.success){
-                message.success("Deleted!");
-            }
-            if(!res?.success){
-                message.error("Something wrong, Try again");
-            }
-        } catch(err) {
-            console.log(err);
-            message.error("Something wrong, Try again");
-        }
-    }
     const editProperty = () => {
         console.log("editProperty");
     }
@@ -102,15 +88,31 @@ const PropertyItem = ({data,page}:props)=>{
                     {page=="owner"&&(
                         <>
                             <Button color="primary" variant="dashed" onClick={editProperty} className="ed">Edit</Button>
-                            <Button color="danger" variant="dashed"  onClick={deleteProperty} danger className="ed">Delete</Button>
+                            <Popconfirm
+                            title="Delete Property ?"
+                            description="Are you sure to delete this property?"
+                            onConfirm={deleteProperty}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button color="danger" variant="dashed" danger className="ed">Delete</Button>
+                        </Popconfirm>
                         </>
                     )}
                 </div>
                 {user != null && page !== "owner" ? (
                     page == "ownerFav" ? (
-                        <Tooltip placement="top" title={"Remove From Favorite"} arrow={true}>
-                            <Button onClick={removeFavorite} className="favorite"><IoHeartDislike /></Button>
-                        </Tooltip>
+                        <Popconfirm
+                            title="Remove from Favorites?"
+                            description="Are you sure to unfavorite this property ?"
+                            onConfirm={()=>delFavBtn(data?._id)}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            {/* <Tooltip placement="top" title={"Unfavorite"} arrow={true}> */}
+                                <Button className="favorite"><IoHeartDislike /></Button>
+                            {/* </Tooltip> */}
+                        </Popconfirm>
                     ) : (
                         <Tooltip placement="top" title={"Add to Favorite"} arrow={true}>
                             <Button onClick={addToFavorite} className="favorite"><FaRegHeart /></Button>
