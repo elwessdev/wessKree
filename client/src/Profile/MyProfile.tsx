@@ -1,8 +1,8 @@
 import "./style.scss"
-import { Button, Spin, Tabs, Tooltip } from 'antd';
+import { Button, Tabs, Tooltip } from 'antd';
 // import { AndroidOutlined, AppleOutlined } from '@ant-design/icons';
-import { useQuery } from "@tanstack/react-query";
-import { getUserInfos } from "../API/user";
+// import { useQuery } from "@tanstack/react-query";
+// import { getUserInfos } from "../API/user";
 import { useUser } from "../context/userContext";
 import MyProperty from "./Tabs/MyProperty";
 import Favorite from "./Tabs/Favorite";
@@ -21,45 +21,45 @@ export default function MyProfile(){
     const { user }: any = useUser();
     const navigate = useNavigate();
 
-    // User info
-    const { data, isLoading, error } = useQuery({
-        queryFn: () => getUserInfos(user?.username),
-        queryKey: ["myData", user?.username],
-        enabled: !!user?.username,
-        refetchOnWindowFocus: true,
-    });
+    // // User info
+    // const { data, isLoading, error } = useQuery({
+    //     queryFn: () => getUserInfos(user?.username),
+    //     queryKey: ["myData", user?.username],
+    //     enabled: !!user?.username,
+    //     refetchOnWindowFocus: true,
+    // });
     
 
-    // console.log(user);
+    // console.log(data);
 
     return (
         <div id="profile">
             <div className="l-s">
-                {isLoading && (
+                {/* {isLoading && (
                     <Spin size="large" />
                 )}
-                {error && <h1>Can't load profile, Try again</h1>}
-                {data && (
+                {error && <h1>Can't load profile, Try again</h1>} */}
+                {user && (
                     <>
-                        <img src={data?.photo} />
-                        <h3>{data?.username}</h3>
-                        <p><MdOutlineLocationOn /> {data?.state}, {data?.city}</p>
+                        <img src={user?.photo} />
+                        <h3>{user?.username}</h3>
+                        <p><MdOutlineLocationOn /> {user?.state}, {user?.city}</p>
                         <div className="contact">
-                            {data?.contact 
+                            {user?.contact 
                                 ? (
                                     <>
-                                        {data?.contact?.phone &&
+                                        {user?.contact?.phone &&
                                             <p>
                                                 <FaSquarePhone />
-                                                <span>{data?.contact?.phone}</span>
-                                                <RiEdit2Fill className="copy" />
+                                                <span>{user?.contact?.phone}</span>
+                                                <RiEdit2Fill onClick={()=>navigate("/settings")} className="copy" />
                                             </p>
                                         }
-                                        {data?.contact?.whatsapp && 
+                                        {user?.contact?.whatsapp && 
                                             <p>
                                                 <FaSquareWhatsapp />
-                                                <span>{data?.contact?.whatsapp}</span>
-                                                <RiEdit2Fill className="copy" />
+                                                <span>{user?.contact?.whatsapp}</span>
+                                                <RiEdit2Fill onClick={()=>navigate("/settings")} className="copy" />
                                             </p>
                                         }
                                     </>

@@ -12,7 +12,11 @@ interface User {
     city?: string;
     isActive?: boolean;
     pfpId?:string;
-    _id?: string
+    _id?: string;
+    contact: {
+        phone: string,
+        whatsapp: string
+    }
 }
 interface UserContextType {
     user: User | null;

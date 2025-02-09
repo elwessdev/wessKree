@@ -26,11 +26,11 @@ const Title = ({title,state,city,zip,neighborhood,username,id,scrollToNear,creat
 
     const addToFavorite = async() => {
         const res = await addFavorite(id);
-        if(res?.data.exist){
+        if(res?.exist){
             message.success("Already in my favorite");
             return;
         }
-        if(res?.data.success){
+        if(res?.success){
             message.success("The property added to favorite");
         } else {
             message.error("Something error, Try again");

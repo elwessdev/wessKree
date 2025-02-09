@@ -26,7 +26,7 @@ const Login: FC<props> = ({open,cancel}) => {
         // console.log("Login values:", values);
         setloading(true);
         try{
-            const res = await signin(values);
+            const res:any = await signin(values);
             if(res.status==200){
                 setloading(false);
                 userDetails();

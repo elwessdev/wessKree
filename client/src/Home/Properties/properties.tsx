@@ -8,7 +8,7 @@ import { useRef, useState } from "react";
 
 export default function Properties(){
     const searchRef = useRef();
-    const [top, setTop] = useState<number>(100);
+    // const [top, setTop] = useState<number>(100);
     const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
     const [filterList, setFilterList] = useState<any>(null);
 

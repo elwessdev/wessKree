@@ -1,7 +1,7 @@
 import "./style.scss"
 import { useEffect, useState } from "react";
 import ImgCrop from 'antd-img-crop';
-import { Form, Input, Select, Button, Flex, message, Upload, Avatar, UploadProps, Spin } from 'antd';
+import { Form, Input, Select, Button, Flex, message, Upload, Avatar, UploadProps, Spin, Space } from 'antd';
 import {StateCity} from "../Data/stateCity.ts";
 import { useUser } from "../context/userContext.tsx";
 import { checkEmail, checkPwd } from "../API/auth.ts";
@@ -11,6 +11,8 @@ import { checkEmail, checkPwd } from "../API/auth.ts";
 import { RiImageEditLine } from "react-icons/ri";
 import { deleteCloud, uploadCloud } from "../API/cloudinary.ts";
 import { updateProfile } from "../API/user.ts";
+import { MdPhone } from "react-icons/md";
+import { FaWhatsapp } from "react-icons/fa";
 
 // Type
 type stateCityType = { value: string; label: string }[];
@@ -22,7 +24,11 @@ type values = {
     city: string,
     currentPassword: string | undefined,
     newPassword: string | undefined,
-    confirmNewPassword: string | undefined;
+    confirmNewPassword: string | undefined,
+    contact: {
+        phone: string | undefined,
+        whatsapp: string | undefined
+    }
 }
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -73,6 +79,7 @@ export default function Settings(){
 
     // Submit
     const handleFormSubmit = async(values:values) => {
+        console.log(values);
         if(values.currentPassword){
             let newData = {};
             const checkPwdRes:any = await checkPwd(values.currentPassword);
@@ -135,23 +142,25 @@ export default function Settings(){
                 newData = {...newData, city: values.city};
             }
             if(Object.keys(newData).length > 0){
-                const updatePfRes = await updateProfile(newData);
+                setLoading(true);
+                const updatePfRes:any = await updateProfile(newData);
                 if(updatePfRes.status!=200){
+                    setLoading(false);
                     message.error("Something wrong when update profile, Try again");
                     return;
                 }
-                console.log(newData);
+                // console.log(newData);
                 message.success("You profile has been updated");
+                setLoading(false);
             }
+            setLoading(false);
         }
         return;
     }
     return (
         <div id="settings">
             {!user ?(
-                <>
-                    <Spin size="large" />
-                </>
+                <Spin size="large" />
             ): (
                 <>
                     <div className="pfp">
@@ -225,6 +234,35 @@ export default function Settings(){
                                         // disabled={!selectedState}
                                         options={delegations}
                                     />
+                                </Form.Item>
+                            </Flex>
+                            <Flex>
+                                <Form.Item
+                                    style={{ flex: 1 }} 
+                                    label="Contact"
+                                    >
+                                        <Space.Compact className='con' style={{ flex: 1, gap: 5, width: "100%" }}  >
+                                            <Form.Item
+                                                style={{ flex: 1 }} 
+                                                name={["contact", "phone"]}
+                                                initialValue={user?.contact.phone}
+                                                rules={[
+                                                    { min: 8, max: 8, message: 'Number format not valid' },
+                                                ]}
+                                            >
+                                                <Input type="number" prefix={<MdPhone />} placeholder='Phone'/>
+                                            </Form.Item>
+                                            <Form.Item
+                                                style={{ flex: 1 }} 
+                                                name={["contact", "whatsapp"]}
+                                                initialValue={user?.contact.whatsapp}
+                                                rules={[
+                                                    { min: 8, max: 8, message: 'Number format not valid' },
+                                                ]}
+                                            >
+                                                <Input type="number" prefix={<FaWhatsapp />} placeholder='WhatsApp'/>
+                                            </Form.Item>
+                                        </Space.Compact>
                                 </Form.Item>
                             </Flex>
                             <Flex gap={15}>

@@ -2,7 +2,7 @@ import { memo } from "react"
 import { userProperties } from "../../API/user"
 import { useQuery } from "@tanstack/react-query";
 import PropertyItem from "../../Home/Properties/property-item";
-import { Empty, message, Spin, Typography } from 'antd';
+import { Empty, Spin, Typography } from 'antd';
 import { NavLink } from "react-router-dom";
 
 type props = {
@@ -20,6 +20,9 @@ const MyProperty = ({username}:props) => {
     
     return (
         <div className="porps">
+            {error && (
+                <h3>Something wrong, Refresh page</h3>
+            )}
             {isLoading && (
                 <Spin size="large" />
             )}

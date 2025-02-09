@@ -19,10 +19,10 @@ export const propertyDetails = async(id:number)=>{
     }
 }
 // Add favorite
-export const addFavorite = async(id:string)=>{
+export const addFavorite = async(id:string|undefined)=>{
     try {
         const res = await axios.post("/api/user/favorite",{id});
-        return res;
+        return res?.data;
     } catch(err){
         return err;
     }
