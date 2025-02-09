@@ -21,7 +21,8 @@ connectDB().then(_=>{
 
 app.use(express.json());
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://wesskree.vercel.app'],
+    origin: ['http://localhost:5173', 'https://wesskree.vercel.app', 'https://dev-wesskree.vercel.app'],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
 app.use(cookieParser());

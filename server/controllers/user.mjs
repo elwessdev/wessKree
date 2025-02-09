@@ -24,6 +24,7 @@ export const userInfos = async(req,res)=>{
     const username = req.params.username;
     try {
         const userDetails = await User.findOne({username},{
+            _id:0,
             username: 1,
             publicName: 1,
             photo: 1,
