@@ -92,7 +92,7 @@
                     // color: #7065ef;
                 }
             }
-            .ask{
+            .ask,.addContact{
                 display: block;
                 height: 35px;
                 font-weight: 700;
@@ -110,6 +110,16 @@
                     position: relative;
                     top: 3px;
                     transition: color .2s;
+                }
+            }
+            .addContact{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-decoration: none;
+                svg{
+                    top: -1px;
+                    margin-right: 5px;
                 }
             }
         }
@@ -141,16 +151,16 @@
         display: flex;
         flex-wrap: wrap;
         grid-gap: 25px;
+        .ant-spin-spinning{
+            margin: 0 auto;
+            margin-top: 60px;
+        }
         .porps{
             display: flex;
             flex-wrap: wrap;
             display: flex;
             flex-wrap: wrap;
             grid-gap: 25px;
-            .ant-spin-spinning{
-                margin: 0 auto;
-                margin-top: 60px;
-            }
             .ant-empty{
                 margin: 0 auto;
                 margin-top: 40px;
