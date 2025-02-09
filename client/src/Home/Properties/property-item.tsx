@@ -3,7 +3,7 @@ import { Button, Tooltip, Image, message, Popconfirm } from 'antd';
 import { NavLink } from "react-router-dom";
 import { formatDistance } from 'date-fns'
 import { featuresList } from "../../Data/features";
-import { memo, useImperativeHandle } from "react";
+import { memo } from "react";
 import { useUser } from "../../context/userContext";
 import { addFavorite } from "../../API/property";
 
@@ -14,7 +14,6 @@ import { LuBedSingle } from "react-icons/lu";
 import { BiBath } from "react-icons/bi";
 import { IoTimeOutline } from "react-icons/io5";
 import { IoHeartDislike } from "react-icons/io5";
-import { QueryClient } from "@tanstack/react-query";
 
 
 type props = {
@@ -29,11 +28,11 @@ const PropertyItem = ({data,page,delFavBtn}:props)=>{
     // Add favorite
     const addToFavorite = async() => {
         const res = await addFavorite(data?._id);
-        if(res?.data.exist){
+        if(res?.exist){
             message.success("Already in my favorite");
             return;
         }
-        if(res?.data.success){
+        if(res?.success){
             message.success("The property added to favorite");
         } else {
             message.error("Something error, Try again");

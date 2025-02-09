@@ -23,7 +23,7 @@ const Favorite = () => {
     const mutationDel = useMutation({
         mutationFn: deleteFav,
         onSuccess: () => {
-            queryClient.invalidateQueries(["myFavorite"]);
+            queryClient.invalidateQueries({ queryKey: ['myFavorite'] });
             message.success("Unfavorite Done!");
         },
         onError: () => {

@@ -1,5 +1,5 @@
 import "./style.scss"
-import { Button, message, Modal, Spin, Tabs, Tooltip } from 'antd';
+import { Button, message, Modal, Spin, Tooltip } from 'antd';
 // import { AndroidOutlined, AppleOutlined } from '@ant-design/icons';
 import PropertyItem from "../Home/Properties/property-item";
 // import { Tabs } from 'antd';
@@ -10,8 +10,8 @@ import { useState } from "react";
 
 
 // Icons
-import { MdContentCopy, MdOutlineLocationOn, MdNotificationsActive, MdMapsHomeWork, MdFavorite } from "react-icons/md";
-import { TbHomeStats, TbHomeQuestion } from "react-icons/tb";
+import { MdContentCopy, MdOutlineLocationOn, MdNotificationsActive } from "react-icons/md";
+import { TbHomeQuestion } from "react-icons/tb";
 import { FaSquareWhatsapp, FaSquarePhone } from "react-icons/fa6";
 import { useParams } from "react-router-dom";
 

@@ -26,7 +26,7 @@ const Apply = ({price}:props) => {
         <div className="apply">
             <div className="price">
                 <h3>Rent Price</h3>
-                {(Object.entries(price).length>1)
+                {price.length>1
                     ?(
                         <div className="many">
                             {price && Object.entries(price).map((p:any,idx:number)=>(
@@ -43,7 +43,7 @@ const Apply = ({price}:props) => {
                         </div>
                     )
                     :(
-                        <p className="nrml">{Object.entries(price)[0][1]}<b>DT</b> <span>/{Object.entries(price)[0][0]}</span></p>
+                        <p className="nrml">{price[0][1]}<b>DT</b> <span>/{price[0][0]}</span></p>
                     )
                 }
             </div>

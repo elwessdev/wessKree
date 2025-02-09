@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { getProperties } from "../../API/property";
 import PropertyItem from "../../Home/Properties/property-item";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+// import { Swiper, SwiperSlide } from 'swiper/react';
+// import 'swiper/css';
 import { Empty, Spin } from "antd";
 import { forwardRef, useEffect, useState } from "react";
 
@@ -31,6 +31,9 @@ const Nearby = forwardRef<HTMLDivElement,props>(({postId,postState,postCity}, re
         <div className="nearby" ref={ref}>
             <h1>Nearby Property</h1>
             <div className="items">
+                {error && (
+                    <h3>Something wrong, Refresh page</h3>
+                )}
                 {isLoading && (
                     <Spin size="large" />
                 )}

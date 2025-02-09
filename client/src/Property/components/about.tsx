@@ -6,7 +6,7 @@ import { LuBedSingle, LuSofa } from "react-icons/lu";
 import { GrStatusGood } from "react-icons/gr";
 import { MdOutlineFamilyRestroom } from "react-icons/md";
 import { TbHome2 } from "react-icons/tb";
-import { BiBath } from 'react-icons/bi';
+// import { BiBath } from 'react-icons/bi';
 import { MdOutlineBathroom } from "react-icons/md";
 import { MdOutlineBedroomParent } from "react-icons/md";
 import { TbToolsKitchen } from "react-icons/tb";

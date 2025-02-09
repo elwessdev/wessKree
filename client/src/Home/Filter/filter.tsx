@@ -48,7 +48,7 @@ export default function Filter({sRef,onClick,onReset}:any){
         if(!value) return;
         const state:any = StateCity.find((s) => capitalize(s.Name) === value);
         setFilter({...filter,state:capitalize(state.Name)});
-        setDelegations(state ?state.Delegations.map((d) => ({ value: capitalize(d.Value), label: capitalize(d.Name) })) :[]);
+        setDelegations(state ?state.Delegations.map((d:any) => ({ value: capitalize(d.Value), label: capitalize(d.Name) })) :[]);
     };
 
     // Send Filter data to parent

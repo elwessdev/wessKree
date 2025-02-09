@@ -19,7 +19,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Property(){
     const {id}:any = useParams();
-    const nearRef = useRef(null);
+    const nearRef = useRef<any>(null);
 
     const [loading,setLoading]=useState<boolean>();
     const {data,isLoading,error} = useQuery({
@@ -44,10 +44,10 @@ export default function Property(){
     return (
         <div id="property">
             {error && <h1>There is an error to load property details</h1>}
-            {isLoading && (
+            {isLoading||loading && (
                 <Spin size="large" />
             )}
-            {data && (
+            {data&&!loading && (
                 <>
                     <Title 
                         title={data?.title}
@@ -93,7 +93,7 @@ export default function Property(){
                             />
                         </div>
                         <Affix offsetTop={10}>
-                            <Apply price={data?.price} />
+                            <Apply price={Object.entries(data?.price)} />
                         </Affix>
                     </div>
                 </>
