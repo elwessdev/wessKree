@@ -3,7 +3,7 @@ import axios from "axios";
 // User Info
 export const getUserInfos = async(name:string)=>{
     try {
-        const res = await axios.get(`/api/user/info/${name}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/user/info/${name}`);
         return res?.data;
     } catch(err) {
         return err;
@@ -12,7 +12,7 @@ export const getUserInfos = async(name:string)=>{
 // User Properties
 export const userProperties = async(name:string|undefined)=>{
     try {
-        const res = await axios.get(`/api/user/userProperties/${name}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/user/userProperties/${name}`);
         return res?.data;
     } catch(err) {
         return err;
@@ -21,7 +21,7 @@ export const userProperties = async(name:string|undefined)=>{
 // Favorite List
 export const favorite = async()=>{
     try {
-        const res = await axios.get(`/api/user/favorite`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/user/favorite`);
         return res?.data;
     } catch(err) {
         return err;
@@ -30,7 +30,7 @@ export const favorite = async()=>{
 // Delete Favorite
 export const deleteFav = async(id:string)=>{
     try {
-        const res = await axios.delete(`/api/user/deleteFavorite/${id}`);
+        const res = await axios.delete(`${import.meta.env.VITE_API_URL}/user/deleteFavorite/${id}`);
         return res?.data;
     } catch(err) {
         return err;
@@ -48,7 +48,7 @@ type updateType = {
 }
 export const updateProfile = async(data:updateType)=>{
     try {
-        const res = await axios.put("/api/user/update",{data});
+        const res = await axios.put(`${import.meta.env.VITE_API_URL}/user/update`,{data});
         return res;
     } catch(err){
         return err;

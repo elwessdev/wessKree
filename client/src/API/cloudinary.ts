@@ -15,7 +15,7 @@ export const uploadCloud = async(file:File) => {
 // Delete Image
 export const deleteCloud = async(id:string|undefined) => {
     try {
-        const res = await axios.delete(`/api/user/deleteCloudImg/${id}`);
+        const res = await axios.delete(`${import.meta.env.VITE_API_URL}/user/deleteCloudImg/${id}`);
         return res?.data;
     } catch(err){
         return err;

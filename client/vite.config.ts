@@ -17,10 +17,5 @@ export default defineConfig(({ mode }) => {
     //     },
     //   },
     // },
-    resolve: {
-      alias: {
-        '/api': env.VITE_API_URL,
-      },
-    },
   };
 });
