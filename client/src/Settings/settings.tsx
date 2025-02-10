@@ -79,9 +79,9 @@ export default function Settings(){
 
     // Submit
     const handleFormSubmit = async(values:values) => {
-        console.log(values);
+        // console.log(values);
         if(values.currentPassword){
-            let newData = {};
+            let newData:any = {};
             const checkPwdRes:any = await checkPwd(values.currentPassword);
             if(checkPwdRes.status!=200){
                 await form.setFields([{
@@ -108,6 +108,17 @@ export default function Settings(){
                     photo: upToCloud.data.secure_url,
                     pfpId: upToCloud.data.public_id
                 }
+            }
+            
+            const contactData:any = user?.contact;
+            if (values.contact.phone !== user?.contact?.phone) {
+                contactData.phone = values.contact.phone;
+            }
+            if (values.contact.whatsapp !== user?.contact?.whatsapp) {
+                contactData.whatsapp = values.contact.whatsapp;
+            }
+            if(Object.entries(contactData).length){
+                newData = {...newData,contact:contactData};
             }
 
             if(values.newPassword && values.confirmNewPassword){
@@ -153,6 +164,7 @@ export default function Settings(){
                 message.success("You profile has been updated");
                 setLoading(false);
             }
+            console.log(newData);
             setLoading(false);
         }
         return;

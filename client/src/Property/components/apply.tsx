@@ -21,6 +21,7 @@ const Apply = ({price}:props) => {
     const handleSelectPrice = (p:string) => {
         setSelectedPrice(p)
     }
+    // console.log(Object.entries(price));
 
     return (
         <div className="apply">
@@ -35,9 +36,9 @@ const Apply = ({price}:props) => {
                                     className={`nrml ${selectedPrice==p[0] ?"active" :""}`}
                                     onClick={()=>handleSelectPrice(p[0])}
                                 >
-                                    {p[1]}
+                                    {p[1][1]}
                                     <b>DT</b>
-                                    <span>/{p[0]}</span>
+                                    <span>/{p[1][0]}</span>
                                 </p>
                             ))}
                         </div>

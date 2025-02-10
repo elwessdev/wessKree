@@ -28,6 +28,10 @@ const PropertyItem = ({data,page,delFavBtn}:props)=>{
     // Add favorite
     const addToFavorite = async() => {
         const res = await addFavorite(data?._id);
+        if(res?.myProperty){
+            message.error("Can't added, It's my property");
+            return;
+        }
         if(res?.exist){
             message.success("Already in my favorite");
             return;

@@ -93,7 +93,7 @@ export default function PostPerperty(){
 
     const handleSubmit = async (imgsURL:{cloudId:string,url:string}[]) => {
         try {
-            const res = await axios.post("/api/property/post",{
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/property/post`,{
                 title: step1Data?.title,
                 type: step1Data?.type,
                 category: step1Data?.category,

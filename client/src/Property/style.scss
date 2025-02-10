@@ -438,48 +438,50 @@
                     margin: 0;
                     color: #7065ef;
                     font-weight: 800;
-                    font-size: 22px;
+                    font-size: 30px;
                     b{
                         position: relative;
                         font-size: 12px;
                     }
                     span{
                         font-weight: 500;
-                        font-size: 14px;
+                        font-size: 17px;
                         color: #7f7f80;
                         position: relative;
-                        top: 7px;
-                        margin-left: 2px;
+                        top: 11px;
+                        margin-left: 0;
                         text-transform: lowercase;
+                        height: fit-content;
                     }
                 }
                 .many{
                     display: flex;
                     justify-content: center;
                     gap: 10px;
+                    margin-top: 10px;
                     p{
                         cursor: pointer;
                         font-size: 17px;
                         background: #FFF;
                         width: fit-content;
                         user-select: none;
-                        padding: 10px;
+                        padding: 12px 15px;
                         border-radius: 5px;
-                        border: 1px solid #7065ef33;
-                        box-shadow: 0 0 4px 3px #7065ef0a;
-                        transition: all .2s;
+                        border: 1px solid rgba(112, 101, 239, 0.2);
+                        box-shadow: 0 0 4px 3px rgba(112, 101, 239, 0.0392156863);
+                        transition: all 0.2s;
                         &.active{
                             border-color: #7065ef;
                             background-color: #7165ef10;
                         }
                         span{
                             font-weight: 600;
-                            font-size: 12px;
+                            font-size: 13px;
                             color: #7f7f80;
                             position: relative;
                             top: 4px;
                             margin-left: 2px;
-                            text-transform: lowercase;
+                            text-transform: capitalize;
                             height: fit-content;
                         }
                     }

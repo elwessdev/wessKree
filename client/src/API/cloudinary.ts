@@ -6,7 +6,9 @@ export const uploadCloud = async(file:File) => {
     formData.append("file", file);
     formData.append("upload_preset", import.meta.env.VITE_PRESET);
     try{
-        const res = await axios.post(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD}/image/upload/`, formData);
+        const res = await axios.post(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD}/image/upload/`, formData, {
+            withCredentials: false
+        });
         return res;
     } catch(err){
         return err;

@@ -56,37 +56,6 @@ export const userProperties = async(req,res)=>{
         return res.status(500).send({ message: err });
     }
 }
-// Favorite List
-export const favoriteList = async(req,res)=>{
-    const {id} = req.token;
-    try {
-        const favorite = await Favorite.find({userId:id},{propertyId:1}).lean();
-        if(!favorite){
-            return res.status(200).json(favorite);
-        }
-        const propertyIds = favorite.map(fav => fav.propertyId);
-        const properties = await Property.find({ _id: { $in: propertyIds } },{uid:0}).lean();
-        return res.status(200).json(properties);
-    } catch(err){
-        console.error("favorite error:",err);
-        return res.status(500).send({ message: err });
-    }
-}
-// Delete favorite
-export const deleteFavorite = async(req,res)=>{
-    const {id:propertyId} = req.params;
-    const {id:userId} = req.token;
-    try {
-        const fav = await Favorite.findOneAndDelete({ userId,propertyId });
-        if (fav) {
-            return res.status(200).json({ success: true });
-        }
-        return res.status(404).json({ success: false, message: "Favorite not found" });
-    } catch(err){
-        console.error("delete favorite error:",err);
-        return res.status(500).send({ message: err });
-    }
-}
 
 // Check Password
 export const checkPwd = async(req,res)=>{
@@ -138,7 +107,7 @@ export const updateProfile = async(req,res)=>{
     const {data} = req.body;
     const {id} = req.token;
     try {
-        const updatedUser = await User.findByIdAndUpdate(id, data, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(id, data);
         if (!updatedUser) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -148,11 +117,16 @@ export const updateProfile = async(req,res)=>{
         return res.status(500).json({ message: "update profile error" });
     }
 }
+
 // Add favorite
 export const addFavorite = async(req,res)=>{
     const {id:propertyId} = req.body;
     const {id:userId} = req.token;
     try{
+        const propUID = await Property.findById(propertyId,{uid:1}).lean();
+        if(propUID.uid==userId){
+            return res.status(200).json({myProperty:true});
+        }
         const isExist = await Favorite.findOne({userId:userId,propertyId:propertyId});
         if(isExist){
             return res.status(200).json({exist:true});
@@ -166,5 +140,36 @@ export const addFavorite = async(req,res)=>{
     } catch(error){
         console.error("add favorite error:", error);
         return res.status(500).json({ message: "add favorite", error });
+    }
+}
+// Favorite List
+export const favoriteList = async(req,res)=>{
+    const {id} = req.token;
+    try {
+        const favorite = await Favorite.find({userId:id},{propertyId:1}).lean();
+        if(!favorite){
+            return res.status(200).json(favorite);
+        }
+        const propertyIds = favorite.map(fav => fav.propertyId);
+        const properties = await Property.find({ _id: { $in: propertyIds } },{uid:0}).lean();
+        return res.status(200).json(properties);
+    } catch(err){
+        console.error("favorite error:",err);
+        return res.status(500).send({ message: err });
+    }
+}
+// Delete favorite
+export const deleteFavorite = async(req,res)=>{
+    const {id:propertyId} = req.params;
+    const {id:userId} = req.token;
+    try {
+        const fav = await Favorite.findOneAndDelete({ userId,propertyId });
+        if (fav) {
+            return res.status(200).json({ success: true });
+        }
+        return res.status(404).json({ success: false, message: "Favorite not found" });
+    } catch(err){
+        console.error("delete favorite error:",err);
+        return res.status(500).send({ message: err });
     }
 }

@@ -13,7 +13,7 @@ type filter = {
     state: string | null,
     city: string | null,
     type: string | null,
-    price: number[] | number | null,
+    price: number[] | number,
     rooms: string | null,
     category:  string | null,
 }
@@ -27,16 +27,18 @@ export default function Filter({sRef,onClick,onReset}:any){
         state: null,
         city: null,
         type: null,
-        price: null,
+        price: [0,5000],
         rooms: null,
         category: null
     })
 
     // Price
-    const onChangeComplete = (value: number | number[]) => {
-        // console.log('Price interval: ', value);
+    const onChange = (value: number | number[]) => {
         setFilter({...filter,price:value})
     };
+    // const onChangeComplete = (value: number | number[]) => {
+    //     setFilter({...filter,price:value})
+    // };
 
     // State and city
     const [delegations, setDelegations] = useState<stateCityType>([]);
@@ -110,10 +112,12 @@ export default function Filter({sRef,onClick,onReset}:any){
             <div className="p_s price">
                 <span className="subTitle">Price</span>
                 <Slider
-                    range={{ draggableTrack: false }}
-                    defaultValue={[0, 10000]}
-                    // onChange={onChange}
-                    onChangeComplete={onChangeComplete}
+                    range={{draggableTrack: false}}
+                    min={0}
+                    max={5000}
+                    value={filter.price}
+                    onChange={onChange}
+                    // onChangeComplete={onChangeComplete}
                 />
             </div>
             {/* <div className="p_s">

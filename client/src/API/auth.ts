@@ -23,7 +23,7 @@ export const signup = async(username:string,publicName:string,email:string,passw
 // Setup profile
 export const setupProfile = async(data:any) => {
     try{
-        const res = await axios.put(`${import.meta.env.VITE_API_URL}/auth/setupProfile`,{data},{withCredentials: true});
+        const res = await axios.put(`${import.meta.env.VITE_API_URL}/auth/setupProfile`,{data});
         return res;
     } catch(err){
         return err;
@@ -32,7 +32,7 @@ export const setupProfile = async(data:any) => {
 // Check Password
 export const checkPwd = async(pwd:string)=>{
     try{
-        const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/checkPwd`,{password:pwd},{withCredentials: true});
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/checkPwd`,{password:pwd});
         return res;
     } catch(err){
         return err;
@@ -41,7 +41,7 @@ export const checkPwd = async(pwd:string)=>{
 // Check Username
 export const checkUsername = async(username:string)=>{
     try {
-        const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/checkUsername`,{username},{withCredentials: true});
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/checkUsername`,{username});
         return res;
     } catch(err){
         return err;
@@ -50,7 +50,7 @@ export const checkUsername = async(username:string)=>{
 // Check Mail
 export const checkEmail = async(email:string)=>{
     try {
-        const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/checkEmail`,{email},{withCredentials: true});
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/checkEmail`,{email});
         return res;
     } catch(err){
         return err;

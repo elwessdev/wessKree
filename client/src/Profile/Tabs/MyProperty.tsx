@@ -26,7 +26,7 @@ const MyProperty = ({username}:props) => {
             {isLoading && (
                 <Spin size="large" />
             )}
-            {data?.length==0 && (
+            {(data?.length==0) && (
                 <Empty
                     image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
                     styles={{ image: { height: 60 } }}
@@ -39,11 +39,7 @@ const MyProperty = ({username}:props) => {
                     <NavLink type="primary" to={"/post-property"}>Post now</NavLink>
                 </Empty>
             )}
-            {data?.length && data?.map((property:any,idx:number)=>
-                (
-                    <PropertyItem data={property} key={idx} page="owner" />
-                )
-            )}
+            {(data?.length>0) && data?.map((property:any,idx:number)=> <PropertyItem data={property} key={idx} page="owner" />)}
         </div>
     )
 }
