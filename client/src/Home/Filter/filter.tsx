@@ -112,10 +112,10 @@ export default function Filter({sRef,onClick,onReset}:any){
             <div className="p_s price">
                 <span className="subTitle">Price</span>
                 <Slider
-                    range={{draggableTrack: false}}
+                    range
                     min={0}
                     max={5000}
-                    value={filter.price}
+                    value={filter.price as number[]}
                     onChange={onChange}
                     // onChangeComplete={onChangeComplete}
                 />
