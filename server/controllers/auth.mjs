@@ -1,13 +1,12 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import User from "../models/user.mjs"
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 
 // Signup
 export const signup = async(req,res)=>{
     const {username,publicName,email,password} = req.body;
     try{
-
         const userExist = await User.findOne({email});
         if (userExist) {
             return res.status(400).json({ message: 'user already exists' });
@@ -33,7 +32,8 @@ export const signup = async(req,res)=>{
         res.cookie('tkn', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'prod',
-            maxAge: new Date(Date.now() + 8 * 60 * 60 * 1000),
+            maxAge: 8 * 60 * 60 * 1000,
+            sameSite: process.env.NODE_ENV === 'prod' ? "None" : undefined,
             path: '/',
         });
         return res.status(200).json({message: 'user created successfully' });
@@ -94,7 +94,8 @@ export const signin = async (req, res) => {
         res.cookie('tkn', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'prod',
-            maxAge: new Date(Date.now() + 8 * 60 * 60 * 1000),
+            maxAge: 8 * 60 * 60 * 1000,
+            sameSite: process.env.NODE_ENV === 'prod' ? "None" : undefined,
             path: '/',
         });
         return res.status(200).json({message: 'Login successful'});
