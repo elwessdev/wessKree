@@ -4,9 +4,13 @@ import { RouterProvider } from 'react-router-dom'
 import router from './Routes/routes'
 import { ConfigProvider } from 'antd';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import axios from 'axios';
 
 // Css
 import "./main.scss"
+
+
+axios.defaults.withCredentials = true;
 
 // Antd Theme
 const componentsTheme = {

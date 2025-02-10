@@ -36,9 +36,7 @@ export const UserProvider = ({children}: UserProviderProps) => {
 
     const userDetails = async () => {
         try {
-            const res = await axios.get<User>("/api/user/getUser", { 
-                withCredentials: true 
-            });
+            const res = await axios.get<User>(`${import.meta.env.VITE_API_URL}/user/getUser`);
             setUser(res.data);
             console.log("get user",res.data);
             if (res.data&&!res.data.isActive){
@@ -52,9 +50,7 @@ export const UserProvider = ({children}: UserProviderProps) => {
 
     const logout = async () => {
         try {
-            const res = await axios.get("/api/auth/logout", { 
-                withCredentials: true 
-            });
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/auth/logout`);
             if (res.status === 200) {
                 setUser(null);
                 navigate("/");

@@ -45,7 +45,7 @@ export default function MyProfile(){
                         <h3>{user?.username}</h3>
                         <p><MdOutlineLocationOn /> {user?.state}, {user?.city}</p>
                         <div className="contact">
-                            {user?.contact 
+                            {(user?.contact?.phone.length || user?.contact?.whatsapp.length)
                                 ? (
                                     <>
                                         {user?.contact?.phone &&

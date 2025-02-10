@@ -71,24 +71,30 @@ export default function SetupProfile(){
             photo: upPfp.data.secure_url,
             pfpId: upPfp.data.public_id
         };
+        let contactInfo:any = {};
         if(values.phone){
-            fullData = {...fullData, phone:values.phone};
+            contactInfo = {phone:values.phone}
         }
         if(values.whatsapp){
-            fullData = {...fullData, whatsapp:values.whatsapp};
+            contactInfo = {...contactInfo,whatsapp:values.whatsapp}
         }
+        if(Object.entries(contactInfo).length){
+            fullData = {...fullData,contact:contactInfo};
+        }
+        console.log(fullData);
         const setupRes:any = await setupProfile(fullData);
         if(setupRes.status!=200){
             setLoading(false);
             message.error("Something wrong, try again :)");
             return;
         }
-        setLoading(false);
         message.success("Your profile completed");
+        setLoading(false);
         setTimeout(()=>{
             userDetails();
             navigate("/");
-        },2000);
+        },1200);
+        console.log(fullData);
     };
 
     return (

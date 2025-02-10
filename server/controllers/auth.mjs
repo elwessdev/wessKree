@@ -30,7 +30,7 @@ export const signup = async(req,res)=>{
             { expiresIn: '8h' }
         );
 
-        res.cookie('authToken', token, {
+        res.cookie('tkn', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'prod',
             maxAge: new Date(Date.now() + 8 * 60 * 60 * 1000),
@@ -44,23 +44,17 @@ export const signup = async(req,res)=>{
 }
 // Setup profile
 export const setupProfile = async(req,res) => {
-    const {state,city,photo,pfpId,whatsapp,phone} = req.body.data;
+    const {data} = req.body;
     const id = req.token.id;
-    console.log(req.body.data);
-    console.log(id);
     try{
         const user = await User.findById({_id:id});
         if(!user){
             return res.status(400).json({ message: 'user not found' });
         }
-        await User.findByIdAndUpdate({_id:id},{
-            state,
-            city,
-            photo,
-            pfpId,
-            isActive: true,
-            contact: {phone,whatsapp}
-        })
+        await User.findByIdAndUpdate(id,{
+            ...data,
+            isActive: true
+        },{})
         return res.status(200).json({message: "user profile has been setup"});
     } catch(err){
         console.error("setupProfile error:",err);
@@ -69,7 +63,7 @@ export const setupProfile = async(req,res) => {
 }
 // Logout
 export const logout = (req,res)=>{
-    res.clearCookie('authToken', {
+    res.clearCookie('tkn', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'prod',
     });
@@ -95,7 +89,9 @@ export const signin = async (req, res) => {
             { expiresIn: '8h' }
         );
 
-        res.cookie('authToken', token, {
+        console.log(token);
+
+        res.cookie('tkn', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'prod',
             maxAge: new Date(Date.now() + 8 * 60 * 60 * 1000),
@@ -112,7 +108,4 @@ export const signin = async (req, res) => {
 
 export const forgotpwd = (req,res)=>{
     res.send("forgotpassword done")
-}
-export const settings = (req,res)=>{
-    res.send("settings done")
 }

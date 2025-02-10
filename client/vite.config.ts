@@ -7,15 +7,15 @@ export default defineConfig(({ mode }) => {
   console.log("Proxy Target:", env.VITE_API_URL);
   return {
     plugins: [react()],
-    server: {
-      proxy: {
-        '/api': {
-          target: env.VITE_API_URL,
-          changeOrigin: true,
-          secure: false,
-          rewrite: (path) => path.replace(/^\/api/, ''),
-        },
-      },
-    },
+    // server: {
+    //   proxy: {
+    //     '/api': {
+    //       target: env.VITE_API_URL,
+    //       changeOrigin: true,
+    //       secure: false,
+    //       rewrite: (path) => path.replace(/^\/api/, ''),
+    //     },
+    //   },
+    // },
   };
 });

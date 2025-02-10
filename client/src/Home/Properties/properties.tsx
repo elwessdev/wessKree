@@ -21,23 +21,24 @@ export default function Properties(){
     });
 
     const handleSearch = () => {
+        if (!searchRef.current) return;
         const {filter}:any = searchRef.current;
         const activeFilters = Object.fromEntries(
             Object.entries(filter).filter(([_, value]) => value !== null)
         );
+        // console.log(activeFilters);
         if(Object.entries(activeFilters).length){
-            // console.log(activeFilters);
-            // console.log(properties);
             setLoadingSearch(true);
             setFilterList(properties.filter((item:any) => {
                 return Object.entries(activeFilters).every(([key, value]) => {
-                    if(key=="category"){
-                        // console.log(item["category"].includes(value));
-                        return item["category"].includes(value);
+                    if (key === "category") {
+                        return item["category"]?.includes(value);
                     }
                     if (Array.isArray(value)) {
                         if (key === "price") {
-                            return item.price >= value[0] && item.price <= value[1];
+                            return Object.values(item.price).some((price) => {
+                                return Number(price) >= value[0] && Number(price) <= value[1];
+                            });
                         }
                         return value.includes(item[key]);
                     }
@@ -56,7 +57,7 @@ export default function Properties(){
                 state: null,
                 city: null,
                 type: null,
-                price: null,
+                price: [0,5000],
                 rooms: null,
                 category: null
             })
@@ -67,7 +68,7 @@ export default function Properties(){
     
     return (
         <div id="properties">
-            <Affix offsetTop={10}>
+            <Affix offsetTop={0} style={{width:"100%"}}>
                 <Filter sRef={searchRef} onClick={handleSearch} onReset={handleReset}/>
             </Affix>
             <div className="items">

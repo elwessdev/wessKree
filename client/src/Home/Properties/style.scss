@@ -2,6 +2,11 @@
     padding: 20px;
     margin: 0 auto;
     min-height: 600px;
+    // .ant-affix #properties_filter{
+    //     width: 100%;
+    //     background-color: #FFF;
+    //     transition: all .2s;
+    // }
     #properties_filter{
         height: 40px;
         border: 1px solid rgba(112, 101, 239, 0.24);
@@ -11,6 +16,8 @@
         margin: 0 auto;
         display: flex;
         width: fit-content;
+        transition: all .2s;
+        justify-self: center;
         .p_s{
             width: 150px;
             position: relative;
