@@ -2,7 +2,11 @@ import mongoose, {Schema} from "mongoose";
 
 export default mongoose.model("properties", new Schema(
     {
-        uid: String,
+        uid: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'users',
+            required: true
+        },
         // Step 1
         title: {
             type: String,

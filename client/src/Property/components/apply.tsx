@@ -1,16 +1,21 @@
 import { useState, memo } from "react";
-import { Button, DatePicker } from "antd"
+import { Button, DatePicker, message } from "antd"
 
 import { FaRegFileLines } from "react-icons/fa6";
 import { BiHomeAlt } from "react-icons/bi";
 import { TbBrandYoutube } from "react-icons/tb";
 import { TbHomeHand } from "react-icons/tb";
+import { sendApply } from "../../API/request";
+import { useUser } from "../../context/userContext";
 
 type props = {
-    price: any
+    price?: any,
+    id?: string,
+    name?:string
 }
 
-const Apply = ({price}:props) => {
+const Apply = ({price,id,name}:props) => {
+    const {user} = useUser();
     const [chooseTour, setChooseTour]=useState<string | null>(null);
     const [selectedPrice, setSelectedPrice]=useState<string|null>(null);
 
@@ -22,6 +27,19 @@ const Apply = ({price}:props) => {
         setSelectedPrice(p)
     }
     // console.log(Object.entries(price));
+
+    const handleApply = async()=>{
+        const res = await sendApply({
+            property:id,
+            renter:user?._id,
+            message: `👋 Hello! ${name}, I'm interested in your property. Is it still available? 🏡"`
+        });
+        if(res?.status!=200){
+            message.error(res?.data?.message);
+            return;
+        }
+        message.success("Apply sent successfully, wait response from owner");
+    }
 
     return (
         <div className="apply">
@@ -48,7 +66,7 @@ const Apply = ({price}:props) => {
                     )
                 }
             </div>
-            <Button>
+            <Button onClick={handleApply}>
                 <FaRegFileLines /> Apply now
             </Button>
             <div className="line"></div>

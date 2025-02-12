@@ -10,7 +10,7 @@ export default mongoose.model("favorite", new Schema(
         propertyId: { 
             type: mongoose.Schema.Types.ObjectId, 
             ref: "properties", 
-            required: true 
+            required: true
         },
     },
     {timestamps:true}

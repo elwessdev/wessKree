@@ -702,6 +702,10 @@ export const StateCity = [
         {
             "Name": "BENI HASSEN",
             "Value": "BENI HASSEN"
+        },
+        {
+            "Name": "MANZEL NOUR",
+            "Value": "MANZEL NOUR"
         }
         ]
     },
