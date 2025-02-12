@@ -10,6 +10,7 @@ import SetupProfile from '../Auth/Setup-profile/setup';
 import Settings from '../Settings/settings.tsx';
 import MyProfile from '../Profile/MyProfile.tsx';
 import UserProfile from '../Profile/UserProfile.tsx';
+import Requests from '../Requests/requests.tsx';
 
 
 const router = createBrowserRouter([
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
             { path: "post-property", element: <PostPerperty /> },
             { path: "setup-profile", element: <SetupProfile /> },
             { path: "settings", element: <Settings /> },
+            { path: "requests", element: <Requests /> },
         ],
     },
 ]);

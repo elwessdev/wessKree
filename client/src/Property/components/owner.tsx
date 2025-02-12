@@ -11,6 +11,7 @@ type props = {
     title?: string,
     userInfo: {
         username: string,
+        publicName: string,
         state: string,
         city: string,
         photo: string
@@ -32,7 +33,7 @@ const Owner = ({userInfo}:props) => {
             <div className="profile">
                 <img src={userInfo?.photo} alt={userInfo?.username} />
                 <div className="det">
-                    <p>{userInfo?.username}</p>
+                    <p>{userInfo?.publicName}</p>
                     <span>{userInfo?.state}, {userInfo?.city}</span>
                 </div>
             </div>

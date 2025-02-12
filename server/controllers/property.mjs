@@ -44,6 +44,7 @@ export const propertyDetails = async(req,res) => {
             const userDetails = await User.findOne({ _id: userId },{
                 _id: 0,
                 username: 1,
+                publicName: 1,
                 photo: 1,
                 state: 1,
                 city: 1

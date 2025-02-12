@@ -93,7 +93,11 @@ export default function Property(){
                             />
                         </div>
                         <Affix offsetTop={10}>
-                            <Apply price={Object.entries(data?.price)} />
+                            <Apply
+                                price={Object.entries(data?.price)}
+                                id={data?._id}
+                                name={data?.user?.publicName}
+                            />
                         </Affix>
                     </div>
                 </>

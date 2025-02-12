@@ -86,7 +86,7 @@ export default function Nav(){
                     {user?.isActive==true && (
                         <>
                             <NavLink to={"/post-property"}><MdOutlineAddHomeWork /> Post Property</NavLink>
-                            <NavLink to={"/post-property"}><TbHomeStats /> Requests</NavLink>
+                            <NavLink to={"/requests"}><TbHomeStats /> Requests</NavLink>
                             <Dropdown menu={{ items:notifications }} trigger={['click']} placement="bottom">
                                 <div className="notif"><IoIosNotifications /></div>
                             </Dropdown>

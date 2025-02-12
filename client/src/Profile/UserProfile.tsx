@@ -1,5 +1,5 @@
 import "./style.scss"
-import { Button, message, Modal, Spin, Tooltip } from 'antd';
+import { Button, message, Modal, Spin, Tooltip, Empty, Typography } from 'antd';
 // import { AndroidOutlined, AppleOutlined } from '@ant-design/icons';
 import PropertyItem from "../Home/Properties/property-item";
 // import { Tabs } from 'antd';
@@ -85,7 +85,19 @@ export default function UserProfile(){
                     <Spin size="large" />
                 )}
                 {propertiesError && <h1>Something wrong, Refresh page</h1>}
-                {properties && (
+                {properties?.length==0 && (
+                    <Empty
+                        image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                        styles={{ image: { height: 60 } }}
+                        description={
+                            <Typography.Text>
+                                No properties listed yet. Ready to showcase your first property?
+                            </Typography.Text>
+                        }
+                        >
+                    </Empty>
+                )}
+                {properties?.length>0 && (
                     properties.map((property:any,idx:number)=>(<PropertyItem data={property} key={idx} />))
                 )}
             </div>
