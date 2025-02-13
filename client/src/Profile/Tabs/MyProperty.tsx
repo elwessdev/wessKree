@@ -15,8 +15,10 @@ const MyProperty = ({username}:props) => {
     const { data, isLoading, error } = useQuery({
         queryFn: () => userProperties(username),
         queryKey: ["MyProperties", username],
+        enabled: !!username
         // refetchOnWindowFocus: true,
     });
+    console.log(data);
     
     return (
         <div className="porps">
