@@ -3,8 +3,7 @@ import mongoose, {Schema} from "mongoose";
 export default mongoose.model("properties", new Schema(
     {
         uid: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'users',
+            type: String,
             required: true
         },
         // Step 1

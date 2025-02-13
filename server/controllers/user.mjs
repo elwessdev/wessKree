@@ -45,7 +45,7 @@ export const userInfos = async(req,res)=>{
 export const userProperties = async(req,res)=>{
     const {username} = req.params;
     try {
-        const user = await User.findOne({username}).lean();
+        const user = await User.findOne({username},{_id:1});
         if (!user) {
             return res.status(404).json({ message: "user not found" });
         }

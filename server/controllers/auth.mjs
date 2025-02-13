@@ -89,7 +89,7 @@ export const signin = async (req, res) => {
             { expiresIn: '8h' }
         );
 
-        console.log(token);
+        // console.log(token);
 
         res.cookie('tkn', token, {
             httpOnly: true,

@@ -31,7 +31,7 @@ export default mongoose.model("applies", new Schema({
     },
     status: {
         type: String,
-        enum: ["accepted","rejected","pending"],
+        enum: ["accepted","rejected","pending","closed"],
         default: "pending"
     },
     messages: [MessageSchema]

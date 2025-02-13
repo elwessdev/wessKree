@@ -2,15 +2,29 @@ import { useQuery } from "@tanstack/react-query";
 import { memo } from "react"
 import { getApplications } from "../../API/request";
 import { Spin } from "antd";
+import { useUser } from "../../context/userContext";
+
+// Icons
+import { FaMapPin } from "react-icons/fa6";
+import { formatDistance } from "date-fns";
+import { MdAccessTimeFilled } from "react-icons/md";
 
 
-const Applies = ()=>{
+type props = {
+    openChat: any
+}
+
+const Applies = ({openChat}:props)=>{
+    // const [appSelected, setAppSelected]=useState<string|null>(null);
+    const {user} = useUser();
     const {data,isLoading,error} = useQuery({
         queryFn: () => getApplications(),
         queryKey: ["applications"],
         refetchOnWindowFocus: true
-    })
-    console.log(data);
+    });
+    // console.log(data?.data);
+    // useImperativeHandle(appRef,()=>(appSelected),[appSelected])
+    const appls = data?.data;
     return (
         <div className="appliesList ll">
             {error && (
@@ -20,14 +34,17 @@ const Applies = ()=>{
                 <Spin size="large" />
             )}
             {/* {data && (<>test</>)} */}
-            {new Array(5).fill(0).map(()=>(
-                    <div className="pp">
-                        <img src="https://res.cloudinary.com/dvttfm7ns/image/upload/v1738786998/why-choose-mern-stack-for-developing-web-apps_r3ayho.webp" alt="osama img" />
-                        <p>
-                            <span>Osama11</span>
-                            <span>Ask Question for test test</span>
-                            {/* <span>Apply</span> */}
-                        </p>
+            {appls && appls?.map((app:any,idx:number)=>(
+                <div className="pp" key={idx} onClick={()=>openChat(app?._id)}>
+                    <img src={app?.property?.imgs[0].url} alt={app?.property?.title} />
+                    <p>
+                        <span>{app?.property?.title}</span>
+                        <span className="add"><FaMapPin />{app?.property?.city}, {app?.property?.state}</span>
+                        <span className="add"><MdAccessTimeFilled />{formatDistance(new Date(app?.createdAt), new Date(), { addSuffix: true }).replace("about ", "")}</span>
+                        {app?.owner?.username === user?.username &&
+                            <span className="tg">My Property</span>
+                        }
+                    </p>
                 </div>
             ))}
         </div>

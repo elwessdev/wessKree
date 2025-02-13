@@ -32,8 +32,12 @@ const Apply = ({price,id,name}:props) => {
         const res = await sendApply({
             property:id,
             renter:user?._id,
-            message: `👋 Hello! ${name}, I'm interested in your property. Is it still available? 🏡"`
+            message: `👋 Hello! ${name}, I'm interested in your property. Is it still available? 🏡`
         });
+        if(res?.status==203){
+            message.error(res?.data?.message);
+            return;
+        }
         if(res?.status!=200){
             message.error(res?.data?.message);
             return;
