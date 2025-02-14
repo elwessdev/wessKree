@@ -1,12 +1,14 @@
 import "./style.scss"
-import Applies from "./components/applies";
+import Applies from "./apply/applies";
 import { Tabs } from "antd";
-import Chat from "./components/chat";
+import Chat from "./apply/chat";
+import { useState } from "react";
+import Tour from "./tour/tour";
+
+// Icons
 import { BsFillPatchQuestionFill } from "react-icons/bs";
 import { RiEye2Line } from "react-icons/ri";
 import { FaFileSignature } from "react-icons/fa";
-import { useState } from "react";
-
 
 export default function Requests(){
     const [chatId,setChatId]=useState<string|null>(null);
@@ -26,7 +28,7 @@ export default function Requests(){
                         {
                             key: "1",
                             label: `Tour`,
-                            // children: <Questions />,
+                            children: <Tour openChat={setChatId} />,
                             icon: <RiEye2Line />,
                         },
                         {

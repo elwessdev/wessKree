@@ -24,6 +24,7 @@ export const sendApply = async (req, res) => {
             renter: renterId,
             owner: property.uid,
             property: data.property,
+            type: data.type,
             messages: [{
                 content: data.message || "👋 Hello! I'm interested in your property. Is it still available? 🏡",
                 type: "renter",
@@ -46,6 +47,7 @@ export const sendApply = async (req, res) => {
 export const fetchApplications = async(req,res) => {
     try {
         const {id} = req.token;
+        const {type} = req.params;
         const appls = await Apply.find({
             $or: [{ owner: id }, { renter: id }]
         })

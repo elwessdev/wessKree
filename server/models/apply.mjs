@@ -34,5 +34,10 @@ export default mongoose.model("applies", new Schema({
         enum: ["accepted","rejected","pending","closed"],
         default: "pending"
     },
+    type: {
+        type: String,
+        enum: ["apply","tour","question"],
+        required: true
+    },
     messages: [MessageSchema]
 }, { timestamps: true }))

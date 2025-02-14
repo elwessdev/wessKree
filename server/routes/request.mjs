@@ -15,7 +15,7 @@ const router = Router();
 // Send Apply
 router.post("/apply",verifyToken,validID,sendApply)
 // Fetch applications
-router.get("/fetchApplications",verifyToken,validID,fetchApplications);
+router.get("/fetchApplications/:type",verifyToken,validID,fetchApplications);
 // Chat Details
 router.get("/chatDetails/:id",verifyToken,validID,chatDetails);
 // Apply Chat status

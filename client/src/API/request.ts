@@ -10,9 +10,9 @@ export const sendApply = async(data:any) => {
     }
 }
 // Get Applications
-export const getApplications = async() => {
+export const getApplications = async(type:string) => {
     try {
-        const res:any = await axios.get(`${import.meta.env.VITE_API_URL}/request/fetchApplications`,);
+        const res:any = await axios.get(`${import.meta.env.VITE_API_URL}/request/fetchApplications/${type}`);
         return res;
     } catch(err){
         return err;

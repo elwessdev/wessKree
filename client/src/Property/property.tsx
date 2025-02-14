@@ -97,6 +97,7 @@ export default function Property(){
                                 price={Object.entries(data?.price)}
                                 id={data?._id}
                                 name={data?.user?.publicName}
+                                username={data?.user?.username}
                             />
                         </Affix>
                     </div>
