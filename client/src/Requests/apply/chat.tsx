@@ -148,7 +148,7 @@ const Chat = ({id}:props) => {
                                     :(
                                         <p className="worning">
                                             {/* <MdOutlinePendingActions />  */}
-                                            Wait a Response From {details?.owner?.publicName}
+                                            Wait {details?.owner?.publicName} response 
                                         </p>
                                     )
                                 )

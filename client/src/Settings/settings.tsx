@@ -248,7 +248,7 @@ export default function Settings(){
                                     />
                                 </Form.Item>
                             </Flex>
-                            <Flex>
+                            <Flex> 
                                 <Form.Item
                                     style={{ flex: 1 }} 
                                     label="Contact"
@@ -333,8 +333,8 @@ export default function Settings(){
                             </Flex>
                             <Flex gap={15}>
                                 <Form.Item style={{ flex: 1 }}>
-                                    <Button type="primary" htmlType="submit" block loading={loading}>
-                                        {loading ?'' : "Save"}
+                                    <Button type="primary" htmlType="submit" block loading={loading} className="btn-with-load">
+                                        {loading ?"" :"Save"}
                                     </Button>
                                 </Form.Item>
                             </Flex>

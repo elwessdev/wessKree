@@ -14,16 +14,14 @@ type props = {
     openChat: any
 }
 
-const Applies = ({openChat}:props)=>{
-    // const [appSelected, setAppSelected]=useState<string|null>(null);
+const Tour = ({openChat}:props)=>{
     const {user} = useUser();
     const {data,isLoading,error} = useQuery({
-        queryFn: () => getApplications(),
-        queryKey: ["applications"],
+        queryFn: () => getApplications("tour"),
+        queryKey: ["tours"],
         refetchOnWindowFocus: true
     });
-    // console.log(data?.data);
-    // useImperativeHandle(appRef,()=>(appSelected),[appSelected])
+
     const appls = data?.data;
     return (
         <div className="appliesList ll">
@@ -33,7 +31,6 @@ const Applies = ({openChat}:props)=>{
             {isLoading && (
                 <Spin size="large" />
             )}
-            {/* {data && (<>test</>)} */}
             {appls && appls?.map((app:any,idx:number)=>(
                 <div className="pp" key={idx} onClick={()=>openChat(app?._id)}>
                     <img src={app?.property?.imgs[0].url} alt={app?.property?.title} />
@@ -50,4 +47,4 @@ const Applies = ({openChat}:props)=>{
         </div>
     )
 }
-export default memo(Applies);
+export default memo(Tour);

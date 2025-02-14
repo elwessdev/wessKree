@@ -40,7 +40,7 @@ const Owner = ({userInfo}:props) => {
             <div className="btns">
                 {userInfo?.username != user?.username && (
                     <>
-                        <Button onClick={()=>setOpen(true)}>
+                        <Button onClick={()=>setOpen(true)} disabled={user?.username ?true :false}>
                             <TbHomeQuestion /> Ask a question
                         </Button>
                     </>
