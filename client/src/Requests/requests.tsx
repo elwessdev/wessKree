@@ -15,8 +15,8 @@ export default function Requests(){
 
     return (
         <div className="requests">
-            <Splitter style={{ width: "100%", height: "100%", boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
-                <Splitter.Panel defaultSize="25%" min="20%" max="50%">
+            {/* <Splitter style={{ width: "100%", height: "100%", boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+                <Splitter.Panel defaultSize="25%" min="20%" max="50%"> */}
                     <div className="l-s">
                         <Tabs
                             defaultActiveKey="0"
@@ -43,14 +43,14 @@ export default function Requests(){
                         />
                         {/* <Applies /> */}
                     </div>
-                </Splitter.Panel>
-                <Splitter.Panel defaultSize="70%" min="50%" max="70%">
+                {/* </Splitter.Panel>
+                <Splitter.Panel defaultSize="70%" min="50%" max="70%"> */}
                     <div className="r-s">
                         {/* Applies */}
                         {chatId && <Chat id={chatId} />}
                     </div>
-                </Splitter.Panel>
-            </Splitter>
+                {/* </Splitter.Panel>
+            </Splitter> */}
         </div>
     )
 }
