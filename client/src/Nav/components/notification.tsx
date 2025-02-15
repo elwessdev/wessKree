@@ -7,8 +7,8 @@ import { fetchNotifications } from "../../API/notification";
 
 // Icons
 import { IoIosNotifications } from "react-icons/io";
-import { SmileOutlined } from "@ant-design/icons";
-import Notiff from '../../assets/notif.webm'
+// import { SmileOutlined } from "@ant-design/icons";
+// import Notiff from '../../assets/notif.webm'
 import NotiffNew from '../../assets/newNotif.webm'
 
 
@@ -30,6 +30,8 @@ const Notification = ({userId}:props)=>{
         queryKey: ['notifications', userId],
         enabled: !!userId, 
     });
+
+    console.log(isLoading,error);
     
 
     useEffect(() => {
@@ -89,7 +91,7 @@ const Notification = ({userId}:props)=>{
                             </div>
                         ),
                     }))
-                    : []}} 
+                    : [{}]}} 
                 trigger={['click']}
                 placement="bottomRight"
             >

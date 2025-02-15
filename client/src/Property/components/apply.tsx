@@ -1,5 +1,5 @@
 import { useState, memo } from "react";
-import { Button, DatePicker, DatePickerProps, message, Tooltip } from "antd"
+import { Button, DatePicker, message, Tooltip } from "antd"
 import { sendApply } from "../../API/request";
 import { useUser } from "../../hooks/userContext";
 import dayjs from 'dayjs';
