@@ -1,6 +1,6 @@
 import "./style.scss"
 import Applies from "./apply/applies";
-import { Splitter, Tabs } from "antd";
+import { Tabs } from "antd";
 import Chat from "./apply/chat";
 import { useState } from "react";
 import Tour from "./tour/tour";
