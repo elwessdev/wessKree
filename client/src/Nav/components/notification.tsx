@@ -12,7 +12,7 @@ import { IoIosNotifications } from "react-icons/io";
 import NotiffNew from '../../assets/newNotif.webm'
 
 
-const socket = io("http://localhost:3000");
+const socket = io(import.meta.env.VITE_API_URL);
 
 // Types
 type props = {
