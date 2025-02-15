@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
-import { UserProvider } from '../context/userContext.tsx';
+import { UserProvider } from '../hooks/userContext.tsx';
 
 import App from "../App";
 import Home from '../Home/Home'

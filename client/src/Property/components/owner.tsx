@@ -2,7 +2,7 @@ import { memo, useState } from 'react';
 import { Button, message, Modal } from 'antd';
 import { NavLink } from 'react-router-dom';
 import TextArea from 'antd/es/input/TextArea';
-import { useUser } from '../../context/userContext';
+import { useUser } from '../../hooks/userContext';
 
 import { LuBadgeInfo } from "react-icons/lu";
 import { TbHomeQuestion } from "react-icons/tb";

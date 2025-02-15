@@ -3,7 +3,7 @@ import { useState } from 'react';
 import ImgCrop from 'antd-img-crop';
 import { Form, Input, Select, Button, Flex, message, Upload, Avatar, UploadProps } from 'antd';
 import {StateCity} from "../../Data/stateCity.ts";
-import { useUser } from "../../context/userContext.tsx";
+import { useUser } from "../../hooks/userContext.tsx";
 import { uploadCloud } from "../../API/cloudinary.ts";
 import { setupProfile } from "../../API/auth.ts";
 

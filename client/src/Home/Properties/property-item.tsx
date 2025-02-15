@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { formatDistance } from 'date-fns'
 import { featuresList } from "../../Data/features";
 import { memo } from "react";
-import { useUser } from "../../context/userContext";
+import { useUser } from "../../hooks/userContext";
 import { addFavorite } from "../../API/property";
 
 // Icons
