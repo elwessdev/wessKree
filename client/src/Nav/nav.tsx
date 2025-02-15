@@ -3,7 +3,7 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Button, Dropdown,MenuProps } from 'antd';
 import Login from "../Auth/Login/login";
-import { useUser } from "../context/userContext";
+import { useUser } from "../hooks/userContext";
 import Logo from '../assets/logo2.jpeg'
 import SearchNav from "./search";
 
@@ -12,10 +12,10 @@ import SearchNav from "./search";
 import { FaHouseUser } from "react-icons/fa";
 import { FaUserCog } from "react-icons/fa";
 import { RiLogoutCircleRFill } from "react-icons/ri";
-import { IoIosNotifications } from "react-icons/io";
 import { TbHomeStats } from "react-icons/tb";
 import { FaUserCheck } from "react-icons/fa";
 import { MdOutlineAddHomeWork } from "react-icons/md";
+import Notification from "./components/notification";
 
 
 
@@ -47,24 +47,11 @@ export default function Nav(){
             ),
         },
     ];
-    const notifications: MenuProps['items'] = [
-        {
-            key: '1',
-            label: (<p>test</p>),
-        },
-        {
-            key: '2',
-            label: (<p>test</p>),
-        },
-        {
-            key: '3',
-            label: (<p>test</p>),
-        },
-    ];
 
     const showModal = () => {
         setIsLoginOpen(true);
     };
+
     return(
         <div id="nav" className="container mx-auto">
             <div className="l-s">
@@ -87,9 +74,7 @@ export default function Nav(){
                         <>
                             <NavLink to={"/post-property"}><MdOutlineAddHomeWork /> Post Property</NavLink>
                             <NavLink to={"/requests"}><TbHomeStats /> Requests</NavLink>
-                            <Dropdown menu={{ items:notifications }} trigger={['click']} placement="bottom">
-                                <div className="notif"><IoIosNotifications /></div>
-                            </Dropdown>
+                            <Notification userId={user?._id} />
                             <Dropdown menu={{items:profile}} placement="bottomRight" arrow>
                                 <img className="profile" src={user?.photo} />
                             </Dropdown>

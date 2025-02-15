@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { memo } from "react"
 import { getApplications } from "../../API/request";
 import { Spin } from "antd";
-import { useUser } from "../../context/userContext";
+import { useUser } from "../../hooks/userContext";
 
 // Icons
 import { FaMapPin } from "react-icons/fa6";

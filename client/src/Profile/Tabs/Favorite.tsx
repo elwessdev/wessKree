@@ -3,7 +3,7 @@ import { favorite } from "../../API/user"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import PropertyItem from "../../Home/Properties/property-item";
 import { Empty, message, Spin, Typography } from 'antd';
-import { useUser } from "../../context/userContext";
+import { useUser } from "../../hooks/userContext";
 import { deleteFav } from "../../API/user";
 
 

@@ -49,6 +49,7 @@ export const fetchApplications = async(req,res) => {
         const {id} = req.token;
         const {type} = req.params;
         const appls = await Apply.find({
+            type,
             $or: [{ owner: id }, { renter: id }]
         })
         .populate("owner", "publicName photo username")

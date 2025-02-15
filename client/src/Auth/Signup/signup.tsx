@@ -1,7 +1,7 @@
 import "./signup.scss"
 import {Form,Input,Button,message, Spin} from "antd";
 import {NavLink, useNavigate} from "react-router-dom"
-import { useUser } from "../../context/userContext";
+import { useUser } from "../../hooks/userContext";
 import { useState } from "react";
 import { checkEmail, checkUsername, signup } from "../../API/auth";
 

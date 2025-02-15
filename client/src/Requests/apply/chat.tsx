@@ -1,8 +1,11 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Input, message, Spin } from "antd";
 import { memo, useEffect, useRef, useState } from "react"
-import { useUser } from "../../context/userContext";
+import { useUser } from "../../hooks/userContext";
 import { changeApplyStatus, chatDetails, sendMsg } from "../../API/request";
+import { createNotification } from "../../API/notification";
+import { NavLink } from "react-router-dom";
+import { formatRelative } from "date-fns";
 
 // Icons
 import { FaHandPointRight } from "react-icons/fa";
@@ -16,8 +19,7 @@ import { MdLocationOn } from "react-icons/md";
 import { FaHouseUser } from "react-icons/fa6";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoCloseCircle } from "react-icons/io5";
-import { NavLink } from "react-router-dom";
-import { formatRelative } from "date-fns";
+import { LoadingOutlined } from "@ant-design/icons";
 
 
 
@@ -31,6 +33,7 @@ const Chat = ({id}:props) => {
     const {user} = useUser();
     const queryClient = useQueryClient();
     const [msgValue,setMsgValue]=useState<string>("");
+    const [loading,setLoading]=useState<boolean>(false);
 
     // Chat details
     const {data,isLoading,error} = useQuery({
@@ -48,20 +51,32 @@ const Chat = ({id}:props) => {
     // console.log(myType);
 
     const handleChangeStatus = async(status:string) => {
+        setLoading(true);
         const res = await changeApplyStatus(status,details?._id);
         if(res?.data?.success){
+            const notif = await createNotification(
+                `${details?.owner?.publicName} ${status} your application for property ${details?.property?.title}`,
+                details?.renter?.username
+            );
+            console.log(notif);
+            setLoading(false);
             queryClient.invalidateQueries({ queryKey: ['chatDetails'] });
             return;
         }
+        setLoading(false);
         message.error("Something erro, Try again");
     }
+
     const handleSendMsg = async()=>{
+        setLoading(true);
         const res = await sendMsg(myType,msgValue,details?._id);
         if(res?.data.success){
+            setLoading(false);
             setMsgValue("");
             queryClient.invalidateQueries({ queryKey: ['chatDetails'] });
             return;
         }
+        setLoading(false);
         message.error("Something erro, Try again");
     }
 
@@ -141,8 +156,17 @@ const Chat = ({id}:props) => {
                                     details?.owner?.username === user?.username
                                     ?(
                                         <div className="btns">
-                                            <Button type="primary" onClick={()=>handleChangeStatus("accepted")}>Accept</Button>
-                                            <Button type="primary" onClick={()=>handleChangeStatus("rejected")} danger >Reject</Button>
+                                            {loading
+                                                ? <Spin indicator={<LoadingOutlined spin />} />
+                                                :(
+                                                    <>
+                                                        <Button type="primary" onClick={()=>handleChangeStatus("accepted")}>
+                                                            Accept
+                                                        </Button>
+                                                        <Button type="primary" onClick={()=>handleChangeStatus("rejected")} danger >Reject</Button>
+                                                    </>
+                                                )
+                                            }
                                         </div>
                                     )
                                     :(
@@ -166,39 +190,6 @@ const Chat = ({id}:props) => {
                     </div>
                 </>
             )}
-
-            {/* Questions */}
-            {/* <h3 className="tit"><TbHomeQuestion /> Question About Test test test</h3>
-            <div className="sec">
-                <div className="msg">
-                    <div className="notes">
-                        <p><FaHandPointRight /> When answer atleast with one reply, The chat will open</p>
-                    </div>
-                    <div className="msgr you">
-                        <img src="https://res.cloudinary.com/dvttfm7ns/image/upload/v1738786998/why-choose-mern-stack-for-developing-web-apps_r3ayho.webp" />
-                        <div className="df">
-                            <p className="mss">
-                                kjgfsoifh sof hsiof jsdofi sdf sdfhj shdfsho doshf sdoh f
-                            </p>
-                            <span>15/56/69</span>
-                        </div>
-                    </div>
-                    <div className="msgr me">
-                        <div className="df">
-                            <p className="mss">
-                                kjgfsoifh sof hsiof jsdofi sdf sdfhj shdfsho doshf sdoh f
-                            </p>
-                            <span>15/56/69</span>
-                        </div>
-                    </div>
-                </div>
-                <div className="btmm">
-                    <div className="inpt">
-                        <Input placeholder="Write here..." />
-                        <Button type="primary"><IoSendSharp /></Button>
-                    </div>
-                </div>
-            </div> */}
         </>
     )
 }

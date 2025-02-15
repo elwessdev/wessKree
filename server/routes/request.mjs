@@ -1,4 +1,3 @@
-export {Router} from "express";
 import { Router } from "express";
 import verifyToken from "../middleware/JWT.mjs"
 import validID from "../middleware/validID.mjs";

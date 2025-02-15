@@ -3,7 +3,7 @@ import { Button, Tabs, Tooltip } from 'antd';
 // import { AndroidOutlined, AppleOutlined } from '@ant-design/icons';
 // import { useQuery } from "@tanstack/react-query";
 // import { getUserInfos } from "../API/user";
-import { useUser } from "../context/userContext";
+import { useUser } from "../hooks/userContext";
 import MyProperty from "./Tabs/MyProperty";
 import Favorite from "./Tabs/Favorite";
 import { NavLink, useNavigate } from "react-router-dom";

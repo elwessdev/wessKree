@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 import User from "../models/user.mjs";
 
 const validID = async(req,res,next) => {
-    if(!mongoose.Types.ObjectId.isValid(req.token.id)){
-        return res.status(403).json({ message: 'invalid id' });
-    } 
     try {
+        if(!mongoose.Types.ObjectId.isValid(req.token.id)){
+            return res.status(403).json({ message: 'invalid id' });
+        } 
         const user = await User.findOne({_id:req.token.id});
         if(!user){
             return res.status(404).json({ message: 'user not found' });

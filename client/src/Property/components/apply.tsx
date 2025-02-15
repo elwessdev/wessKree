@@ -1,7 +1,7 @@
 import { useState, memo } from "react";
 import { Button, DatePicker, DatePickerProps, message, Tooltip } from "antd"
 import { sendApply } from "../../API/request";
-import { useUser } from "../../context/userContext";
+import { useUser } from "../../hooks/userContext";
 import dayjs from 'dayjs';
 
 
@@ -42,7 +42,7 @@ const Apply = ({price,id,name,username}:props) => {
             property:id,
             renter:user?._id,
             type:"tour",
-            message: `👋 Hi! ${name}, I'd love to visit your property for an <b>${tourType}</b> tour on <b>${tourDate}</b>. Is that possible? 🚶‍♂️🏠`
+            message: `👋 Hi! ${name}, I'd love to visit your property for an ${tourType} tour on ${tourDate}. Is that possible? 🚶‍♂️🏠`
         });
         if(res?.status==203){
             message.error(res?.data?.message);

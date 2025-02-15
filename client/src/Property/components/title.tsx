@@ -4,7 +4,7 @@ import { Button, message, Tooltip } from 'antd';
 import { IoShareSocialOutline, IoTimeOutline } from "react-icons/io5";
 import { MdFavoriteBorder } from "react-icons/md";
 import { IoMdSearch } from "react-icons/io";
-import { useUser } from '../../context/userContext';
+import { useUser } from '../../hooks/userContext';
 import { addFavorite } from '../../API/property';
 import { formatDistance } from 'date-fns';
 
