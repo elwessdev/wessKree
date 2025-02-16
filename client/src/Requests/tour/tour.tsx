@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { memo } from "react"
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { memo, useEffect, useState } from "react"
 import { getApplications } from "../../API/request";
-import { Spin } from "antd";
+import { Empty, Spin } from "antd";
 import { useUser } from "../../hooks/userContext";
 
 // Icons
@@ -16,11 +16,17 @@ type props = {
 
 const Tour = ({openChat}:props)=>{
     const {user} = useUser();
+    const queryClient = useQueryClient();
+    const [appSelected, setAppSelected]=useState<any>(null);
     const {data,isLoading,error} = useQuery({
         queryFn: () => getApplications("tour"),
         queryKey: ["tours"],
         refetchOnWindowFocus: true
     });
+
+    useEffect(()=>{
+        setAppSelected(null);
+    },[]);
 
     const appls = data?.data;
     return (
@@ -31,8 +37,16 @@ const Tour = ({openChat}:props)=>{
             {isLoading && (
                 <Spin size="large" />
             )}
-            {appls && appls?.map((app:any,idx:number)=>(
-                <div className="pp" key={idx} onClick={()=>openChat(app?._id)}>
+            {data?.data && data?.data?.length>0 && appls?.map((app:any,idx:number)=>(
+                <div 
+                    className={appSelected==app?._id ?"pp active" :"pp"}
+                    key={idx} 
+                    onClick={()=>{
+                        openChat(app?._id);
+                        setAppSelected(app?._id);
+                        queryClient.invalidateQueries({queryKey: ["tours"]});
+                    }}
+                >
                     <img src={app?.property?.imgs[0].url} alt={app?.property?.title} />
                     <p>
                         <span>{app?.property?.title}</span>
@@ -43,7 +57,9 @@ const Tour = ({openChat}:props)=>{
                         }
                     </p>
                 </div>
-            ))}
+            ))
+        }
+        {data?.data && data?.data?.length==0 && <Empty description="You don't have tours yet" />}
         </div>
     )
 }

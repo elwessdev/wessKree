@@ -46,8 +46,11 @@
             cursor: pointer;
             border-bottom: 1px solid #EEE;
             transition: all 0.2s;
+            &.active{
+                background-color: #7165ef61;
+            }
             &:hover{
-                background-color: #7065ef54;
+                background-color: #7165ef26;
             }
             &.active{
                 background-color: #7065ef54;
@@ -147,6 +150,15 @@
                 top: 4px;
             }
         }
+        .ant-empty{
+            margin-top: 50px;
+            .ant-empty-image{
+                margin-bottom: 0;
+            }
+            svg{
+                width: 100px;
+            }
+        }
     }
     .r-s{
         width: calc(100% - 300px);
@@ -157,6 +169,14 @@
         border-right: 1px solid rgba(112, 101, 239, 0.4196078431);
         border-radius: 0 30px 30px 0;
         position: relative;
+        .cov{
+            display: block;
+            width: 200px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
         .ant-spin{
             position: absolute;
             top: 50%;

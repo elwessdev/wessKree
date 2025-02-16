@@ -1,15 +1,18 @@
-import { Badge, Dropdown, notification } from "antd";
+import { Badge, Dropdown, notification, Spin } from "antd";
 // import { useSocket } from "../../hooks/socket";
 import { memo, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchNotifications } from "../../API/notification";
+import { fetchNotifications, seenNotifs } from "../../API/notification";
+import { formatDistance } from "date-fns";
+import NotiffNew from '../../assets/newNotif.webm'
+// import Notiff from '../../assets/notif.webm'
 
 // Icons
 import { IoIosNotifications } from "react-icons/io";
 // import { SmileOutlined } from "@ant-design/icons";
-// import Notiff from '../../assets/notif.webm'
-import NotiffNew from '../../assets/newNotif.webm'
+import { LoadingOutlined } from "@ant-design/icons";
+import { MdOutlineAccessTime } from "react-icons/md";
 
 
 const socket = io(import.meta.env.VITE_API_URL);
@@ -22,28 +25,31 @@ type props = {
 const Notification = ({userId}:props)=>{
     const queryClient = useQueryClient();
     const [api, contextHolder] = notification.useNotification();
-    const [newNotif, setNewNotif]=useState<boolean>(false);
+    const [notifCount, setNotifCount]=useState<number>(0);
 
     // Get notifications
     const { data, isLoading, error } = useQuery({
         queryFn: () => fetchNotifications(),
         queryKey: ['notifications', userId],
-        enabled: !!userId, 
+        enabled: !!userId
     });
 
-    console.log(isLoading,error);
-    
+    useEffect(() => {
+        if (data && Array.isArray(data)) {
+            setNotifCount(data.filter((notif: any) => !notif.seen).length);
+        }
+    }, [data]);
+
 
     useEffect(() => {
+        console.log(data);
         if (!userId) return;
 
         // Register the user on the socket
         // socket.emit('registerUser', userId);
 
-        // Listen for notifications for the user
         socket.on(`notify_${userId}`, (msg) => {
             queryClient.invalidateQueries({ queryKey: ['notifications'] });
-            setNewNotif(true);
             api.open({
                 message: 'New Notification',
                 description: msg,
@@ -60,46 +66,105 @@ const Notification = ({userId}:props)=>{
                 showProgress: true,
                 pauseOnHover: true,
             });
+            setNotifCount((prev) => prev + 1);
         });
 
-        // Cleanup the socket listener when the component is unmounted or userId changes
         return () => {
             socket.off(`notify_${userId}`);
         };
     }, [userId, queryClient]);
 
-    // // Handle loading and error states
-    // if (isLoading) return <div>Loading...</div>;
-    // if (error) return <div>Error loading notifications</div>;
+    const handleSeen = async() => {
+        try {
+            const res = await seenNotifs();
+            if(res.status==200){
+                setNotifCount(0);
+            }
+        } catch(err){
+            console.log("seen error",err);
+        }
+    }
 
     return (
         <>
             {contextHolder}
             <Dropdown
-                onOpenChange={()=>setNewNotif(false)}
+                onOpenChange={handleSeen}
                 className="notif-dropdown"
                 dropdownRender={(menu) => (
                     <div className="custom-notif-dropdown">{menu}</div>
                 )}
-                menu={{items:data?.length
-                    ? data.map((notif:any) => ({
-                        key: notif._id,
-                        label: (
-                            <div className={`notif-item ${notif.seen ? "seen" : "unseen"}`}>
-                                <p>{notif.message}</p>
-                                <span className="notif-time">{new Date(notif.createdAt).toLocaleString()}</span>
-                            </div>
-                        ),
-                    }))
-                    : [{}]}} 
+                // open={true}
+                menu={{ items: isLoading
+                        ? [{
+                            key: "loading",
+                            label: (
+                                <div className="notif-loading">
+                                    <Spin indicator={<LoadingOutlined spin />} />
+                                </div>
+                            ),
+                        }]
+                        : error
+                        ? [{
+                            key: "error",
+                            label: (
+                                <div className="notif-error">
+                                    <p
+                                        style={{
+                                            textAlign: "center",
+                                            fontWeight: "500",
+                                            fontSize: "15px"
+                                        }}
+                                    >
+                                        Failed to load notifications.
+                                    </p>
+                                </div>
+                            ),
+                        }]
+                        : data && Array.isArray(data) && data.length > 0
+                        ? data.map((notif: any) => ({
+                            key: notif._id,
+                            label: (
+                                <div className={`notif-item ${notif.seen ? "seen" : "unseen"}`}>
+                                    <img src={notif?.img} alt="img" />
+                                    <div className="cntn">
+                                        <p>{notif.message}</p>
+                                        <span className="notif-time">
+                                            <MdOutlineAccessTime /> 
+                                            {formatDistance(new Date(notif?.createdAt), new Date(), { addSuffix: true }).replace("about ", "")}
+                                        </span>
+                                    </div>
+                                </div>
+                            ),
+                        }))
+                        : [{
+                            key: "empty",
+                            label: (
+                                <div className="empty-notif">
+                                    <p 
+                                        style={{
+                                            textAlign: "center",
+                                            fontWeight: "500",
+                                            fontSize: "15px"
+                                        }}
+                                    >
+                                        No notifications available
+                                    </p>
+                                </div>
+                            ),
+                        }]
+                }}
                 trigger={['click']}
                 placement="bottomRight"
             >
                 <div className="contt">
                     <div className="notif">
-                        <Badge dot={newNotif}>
-                        <IoIosNotifications />
-                        </Badge>
+                        {notifCount>0 && 
+                            <Badge count={notifCount}>
+                                <IoIosNotifications />
+                            </Badge>
+                        }
+                        {notifCount==0 && <IoIosNotifications /> }
                     </div>
                     {/* <video
                         autoPlay

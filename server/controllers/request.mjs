@@ -1,5 +1,8 @@
 import Apply from "../models/apply.mjs";
+import Notification from "../models/notification.mjs";
 import Property from "../models/property.mjs";
+import User from "../models/user.mjs";
+import { chatSessions, io, users } from "../server.mjs";
 
 
 // Send Apply
@@ -55,10 +58,11 @@ export const fetchApplications = async(req,res) => {
         .populate("owner", "publicName photo username")
         .populate("renter", "publicName photo username")
         .populate("property", "title location imgs city state")
-        .sort({createdAt:-1})
+        .sort({updatedAt:-1})
         .lean();
         if (!appls.length) {
-            return res.status(404).json({ message: "No applications found" });
+            // return res.status(404).json({ message: "No applications found" });
+            return res.status(200).json(appls);
         }
         appls.forEach(app => {
             if (app.renter) delete app.renter._id;
@@ -102,9 +106,11 @@ export const changeApplyStatus = async(req,res)=>{
         if(!application){
             return res.status(400).json({ message: "Application not found" });
         }
+        application.updatedAt = new Date();
         if(status=="rejected"||status=="closed"){
             application.status=status;
             await application.save();
+            io.to(id).emit(`receiveMessage`);
             return res.status(200).json({success:true});
         }
         if(status=="accepted"){
@@ -114,6 +120,7 @@ export const changeApplyStatus = async(req,res)=>{
                 type: "owner",
             });
             await application.save();
+            io.to(id).emit(`receiveMessage`);
             return res.status(200).json({success:true});
         }
         return res.status(200).json({message:"nothing"});
@@ -134,7 +141,31 @@ export const sendMsg = async(req,res)=>{
             content: msg,
             type:type
         })
+        addMsg.updatedAt = new Date();
         await addMsg.save();
+
+        let userId;
+        if(type=="renter"){
+            userId = addMsg.owner;
+        } else {
+            userId = addMsg.renter;
+        }
+        
+        // const isReceiverInChat = chatSessions.get(id)?.includes(userId.toString());
+        const check = users.get(userId.toString())?.activeChats?.includes(id);
+        console.log(check);
+        if (check) {
+            io.to(id).emit(`receiveMessage`);
+        } else {
+            const myIfo = await User.findOne({_id:req.token.id});
+            const notif = new Notification({
+                user: userId,
+                img: myIfo?.photo,
+                message: `You have new message from ${myIfo.publicName} in `
+            });
+            await notif.save();
+            io.emit(`notify_${userId.toString()}`,`You have new message from ${myIfo.publicName}`);
+        }
         return res.status(200).json({success:true});
     } catch(err){
         console.error("send message error", err);
