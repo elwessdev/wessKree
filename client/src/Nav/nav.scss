@@ -206,6 +206,18 @@
 .custom-notif-dropdown {
     width: 400px;
     margin-top: 10px;
+    ul{
+        max-height: 391px;
+        &::-webkit-scrollbar {
+            width: 5px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: #7165ef; 
+        }
+        &::-webkit-scrollbar-thumb:hover {
+            background: #7065ef6b; 
+        }
+    }
 }
 .notif_icon{
     video{
@@ -219,5 +231,46 @@
 }
 .ant-badge .ant-badge-dot{
     top: 6px;
-    left: 10px;
+    left: 7px;
+    width: 10px;
+    height: 10px;
+}
+.notif-loading{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.notif-item{
+    padding: 10px 0;
+    display: flex;
+    gap: 10px;
+    img{
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        position: relative;
+        top: 5px;
+    }
+    .cntn{
+        p{
+            margin: 0;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        span{
+            font-size: 13px;
+            color: #6a6969;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 2px;
+            // text-transform: capitalize;
+            svg{
+                font-size: 14px;
+                position: relative;
+                top: 3px;
+                margin-right: 2px;
+            }
+        }
+    }
 }

@@ -98,6 +98,7 @@ export default function Property(){
                                 id={data?._id}
                                 name={data?.user?.publicName}
                                 username={data?.user?.username}
+                                title={data?.title}
                             />
                         </Affix>
                     </div>

@@ -6,6 +6,7 @@ import { changeApplyStatus, chatDetails, sendMsg } from "../../API/request";
 import { createNotification } from "../../API/notification";
 import { NavLink } from "react-router-dom";
 import { formatRelative } from "date-fns";
+import { io } from "socket.io-client";
 
 // Icons
 import { FaHandPointRight } from "react-icons/fa";
@@ -21,12 +22,12 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoCloseCircle } from "react-icons/io5";
 import { LoadingOutlined } from "@ant-design/icons";
 
-
-
 // Types
 type props = {
     id: string
 }
+
+const socket = io(import.meta.env.VITE_API_URL);
 
 const Chat = ({id}:props) => {
     const bottomRef = useRef<any>(null);
@@ -34,6 +35,8 @@ const Chat = ({id}:props) => {
     const queryClient = useQueryClient();
     const [msgValue,setMsgValue]=useState<string>("");
     const [loading,setLoading]=useState<boolean>(false);
+    const [closeLoading,setCloseLoading]=useState<boolean>(false);
+    const [sendLoading,setSendLoading]=useState<boolean>(false);
 
     // Chat details
     const {data,isLoading,error} = useQuery({
@@ -41,6 +44,29 @@ const Chat = ({id}:props) => {
         queryKey: ["chatDetails",[id]],
         enabled: !!id,
     });
+
+    // Socket
+    useEffect(() => {
+        if (user?._id && id) {
+            socket.emit("registerUser",user?._id)
+            socket.emit("joinChat", { userId:user?._id, chatId:id });
+            socket.on("receiveMessage", () => {
+                console.log("Received message");
+                queryClient.invalidateQueries({queryKey: ["chatDetails"]});
+                if(data?.data?.type=="apply"){
+                    queryClient.invalidateQueries({ queryKey: ['applications'] });
+                }
+                if(data?.data?.type=="tour"){
+                    queryClient.invalidateQueries({ queryKey: ['tours'] });
+                }
+            });
+
+            return () => {
+                socket.emit("leaveChat", { userId:user?._id, chatId:id });
+                socket.off("receiveMessage");
+            };
+        }
+    }, [user?._id,id]);
 
     useEffect(()=>{
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -51,33 +77,53 @@ const Chat = ({id}:props) => {
     // console.log(myType);
 
     const handleChangeStatus = async(status:string) => {
-        setLoading(true);
+        if(status=="closed"){
+            setCloseLoading(true);
+        } else {
+            setLoading(true);
+        }
         const res = await changeApplyStatus(status,details?._id);
         if(res?.data?.success){
-            const notif = await createNotification(
+            await createNotification(
                 `${details?.owner?.publicName} ${status} your application for property ${details?.property?.title}`,
                 details?.renter?.username
             );
-            console.log(notif);
-            setLoading(false);
+            // console.log(notif);
+            if(status=="closed"){
+                setCloseLoading(false);
+            } else {
+                setLoading(false);
+            }
             queryClient.invalidateQueries({ queryKey: ['chatDetails'] });
             return;
         }
-        setLoading(false);
+        if(status=="closed"){
+            setCloseLoading(false);
+        } else {
+            setLoading(false);
+        }
         message.error("Something erro, Try again");
     }
 
     const handleSendMsg = async()=>{
-        setLoading(true);
-        const res = await sendMsg(myType,msgValue,details?._id);
-        if(res?.data.success){
-            setLoading(false);
-            setMsgValue("");
-            queryClient.invalidateQueries({ queryKey: ['chatDetails'] });
-            return;
+        if(msgValue){
+            setSendLoading(true);
+            const res = await sendMsg(myType,msgValue,details?._id);
+            if(res?.data.success){
+                setSendLoading(false);
+                setMsgValue("");
+                queryClient.invalidateQueries({ queryKey: ['chatDetails'] });
+                if(data?.data?.type=="apply"){
+                    queryClient.invalidateQueries({ queryKey: ['applications'] });
+                }
+                if(data?.data?.type=="tour"){
+                    queryClient.invalidateQueries({ queryKey: ['tours'] });
+                }
+                return;
+            }
+            setSendLoading(false);
+            message.error("Something erro, Try again");
         }
-        setLoading(false);
-        message.error("Something erro, Try again");
     }
 
     return (
@@ -99,7 +145,9 @@ const Chat = ({id}:props) => {
                         {details?.status=="pending"&& <p><MdOutlinePendingActions /> Pending</p>}
                         {details?.status=="closed"&& <p><IoCloseCircle /> Closed</p>}
                         {(details?.owner?.username==user?.username&&details?.status=="accepted") &&
-                            <Button onClick={()=>handleChangeStatus("closed")} type="primary" danger>Close chat</Button>
+                            <Button onClick={()=>handleChangeStatus("closed")} type="primary" danger loading={closeLoading}>
+                                {closeLoading ?"" :"Close chat"}
+                            </Button>
                         }
                     </div>
                     <div className="sec">
@@ -111,7 +159,7 @@ const Chat = ({id}:props) => {
                             )}
                             {details?.messages && 
                                 details?.messages?.map((msg:any,idx:number)=>(
-                                    <>
+                                    <div key={idx}>
                                         <div className="blk">
                                             <div className={
                                                     msg?.type===myType
@@ -142,7 +190,7 @@ const Chat = ({id}:props) => {
                                         {idx==0&&details?.status=="rejected" && (
                                             <p className="hint rejected"><IoMdCloseCircle /> The application rejected </p>
                                         )}
-                                    </>
+                                    </div>
                                 ))                      
                             }
                             {details?.status=="closed" && (
@@ -183,7 +231,9 @@ const Chat = ({id}:props) => {
                             {details?.status=="accepted" &&(
                                 <div className="inpt">
                                     <Input placeholder="Write here..." value={msgValue} onChange={e=>setMsgValue(e.target.value)} />
-                                    <Button type="primary" onClick={handleSendMsg}><IoSendSharp /></Button>
+                                    <Button type="primary" loading={sendLoading} onClick={handleSendMsg}>
+                                        {sendLoading ?"" :<IoSendSharp />}
+                                    </Button>
                                 </div>
                             )}
                         </div>

@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { memo } from "react"
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { memo, useEffect, useState } from "react"
 import { getApplications } from "../../API/request";
-import { Spin } from "antd";
+import { Empty, Spin } from "antd";
 import { useUser } from "../../hooks/userContext";
 
 // Icons
@@ -15,15 +15,19 @@ type props = {
 }
 
 const Applies = ({openChat}:props)=>{
-    // const [appSelected, setAppSelected]=useState<string|null>(null);
+    const queryClient = useQueryClient();
+    const [appSelected, setAppSelected]=useState<any>(null);
     const {user} = useUser();
     const {data,isLoading,error} = useQuery({
         queryFn: () => getApplications("apply"),
         queryKey: ["applications"],
         refetchOnWindowFocus: true
     });
-    // console.log(data?.data);
-    // useImperativeHandle(appRef,()=>(appSelected),[appSelected])
+
+    useEffect(()=>{
+        setAppSelected(null);
+    },[]);
+
     const appls = data?.data;
     return (
         <div className="appliesList ll">
@@ -34,19 +38,29 @@ const Applies = ({openChat}:props)=>{
                 <Spin size="large" />
             )}
             {/* {data && (<>test</>)} */}
-            {appls && appls?.map((app:any,idx:number)=>(
-                <div className="pp" key={idx} onClick={()=>openChat(app?._id)}>
+            {data?.data && data?.data?.length>0 && appls?.map((app:any,idx:number)=>(
+                <div 
+                    className={appSelected==app?._id ?"pp active" :"pp"}
+                    key={idx} 
+                    onClick={()=>{
+                        openChat(app?._id);
+                        setAppSelected(app?._id);
+                        queryClient.invalidateQueries({queryKey: ["applications"]});
+                    }}
+                >
                     <img src={app?.property?.imgs[0].url} alt={app?.property?.title} />
                     <p>
                         <span>{app?.property?.title}</span>
                         <span className="add"><FaMapPin />{app?.property?.city}, {app?.property?.state}</span>
-                        <span className="add"><MdAccessTimeFilled />{formatDistance(new Date(app?.createdAt), new Date(), { addSuffix: true }).replace("about ", "")}</span>
+                        <span className="add"><MdAccessTimeFilled />{formatDistance(new Date(app?.updatedAt), new Date(), { addSuffix: true }).replace("about ", "")}</span>
                         {app?.owner?.username === user?.username &&
                             <span className="tg">My Property</span>
                         }
                     </p>
                 </div>
-            ))}
+            ))
+        }
+            {data?.data && data?.data?.length==0 && <Empty description="You don't have applications yet" />}
         </div>
     )
 }

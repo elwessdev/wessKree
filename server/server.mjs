@@ -31,16 +31,44 @@ export const io = new Server(server, {
         methods: ["GET", "POST"],
     },
 });
+export const users = new Map();
+export const chatSessions = new Map();
 io.on("connection", (socket) => {
     console.log("A user connected:", socket.id);
 
-    // socket.on("registerUser", (userId) => {
-    //     socket.userId = userId;
-    //     console.log(`User registered: ${userId}`);
-    // });
-
+    // Register user
+    socket.on("registerUser", (userId) => {
+        users.set(userId, { socketId: socket.id, activeChats: [] });
+        console.log(`User registered: ${userId}`);
+    });
+    // Join chat
+    socket.on("joinChat", ({ chatId, userId }) => {
+        socket.join(chatId);
+        const user = users.get(userId);
+        if (user) {
+            user.activeChats.push(chatId);
+        }
+        chatSessions.set(chatId, chatSessions.get(chatId) || []);
+        chatSessions.get(chatId).push(userId);
+        console.log(`${userId} joined chat ${chatId}`);
+    });
+    // Leave chat
+    socket.on("leaveChat", ({ chatId, userId }) => {
+        socket.leave(chatId); 
+        const user = users.get(userId);
+        if (user) {
+            user.activeChats = user.activeChats.filter(id => id !== chatId);
+        }
+        console.log(`${userId} left chat ${chatId}`);
+    });
+    // Disconnect user
     socket.on("disconnect", () => {
-        console.log("User disconnected");
+        users.forEach((userData, userId) => {
+            if (userData.socketId === socket.id) {
+                users.delete(userId);
+                console.log(`User disconnected: ${userId}`);
+            }
+        });
     });
 });
 

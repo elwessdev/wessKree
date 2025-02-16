@@ -18,3 +18,12 @@ export const fetchNotifications = async()=>{
         return err;
     }
 }
+// Seen notifications
+export const seenNotifs = async()=>{
+    try {
+        const res:any = await axios.put(`${import.meta.env.VITE_API_URL}/notification/seen`);
+        return res;
+    } catch(err){
+        return err;
+    }
+}

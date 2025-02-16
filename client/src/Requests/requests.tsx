@@ -4,9 +4,10 @@ import { Tabs } from "antd";
 import Chat from "./apply/chat";
 import { useState } from "react";
 import Tour from "./tour/tour";
+import CovImg from "../assets/3dill.webp"
 
 // Icons
-import { BsFillPatchQuestionFill } from "react-icons/bs";
+// import { BsFillPatchQuestionFill } from "react-icons/bs";
 import { RiEye2Line } from "react-icons/ri";
 import { FaFileSignature } from "react-icons/fa";
 
@@ -33,12 +34,12 @@ export default function Requests(){
                                     children: <Tour openChat={setChatId} />,
                                     icon: <RiEye2Line />,
                                 },
-                                {
-                                    key: "2",
-                                    label: `Questions`,
-                                    // children: <Questions />,
-                                    icon: <BsFillPatchQuestionFill />,
-                                },
+                                // {
+                                //     key: "2",
+                                //     label: `Questions`,
+                                //     // children: <Questions />,
+                                //     icon: <BsFillPatchQuestionFill />,
+                                // },
                             ]}
                         />
                         {/* <Applies /> */}
@@ -47,7 +48,8 @@ export default function Requests(){
                 <Splitter.Panel defaultSize="70%" min="50%" max="70%"> */}
                     <div className="r-s">
                         {/* Applies */}
-                        {chatId && <Chat id={chatId} />}
+                        {chatId&& <Chat id={chatId} />}
+                        {!chatId && <img className="cov" src={CovImg} />}
                     </div>
                 {/* </Splitter.Panel>
             </Splitter> */}

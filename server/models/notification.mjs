@@ -11,8 +11,12 @@ export default mongoose.model("notification", new Schema(
             type: String,
             required: true
         },
-        seen: {
+        img: {
             type: String,
+            required: true
+        },
+        seen: {
+            type: Boolean,
             default: false
         }
     },{timestamps:true}

@@ -10,16 +10,18 @@ import { FaRegFileLines } from "react-icons/fa6";
 import { BiHomeAlt } from "react-icons/bi";
 import { TbBrandYoutube } from "react-icons/tb";
 import { TbHomeHand } from "react-icons/tb";
+import { createNotification } from "../../API/notification";
 
 
 type props = {
     price?: any,
     id?: string,
     name?:string,
-    username: string
+    username: string,
+    title: string,
 }
 
-const Apply = ({price,id,name,username}:props) => {
+const Apply = ({price,id,name,username,title}:props) => {
     const {user} = useUser();
     // const [selectedPrice, setSelectedPrice]=useState<string|null>(null);
     
@@ -27,6 +29,7 @@ const Apply = ({price,id,name,username}:props) => {
     const [tourType, setTourType]=useState<string | null>(null);
     const [tourDate, setTourDate]=useState<any>(null);
     const [tourError, setTourError]=useState<string|null>(null);
+    const [loading, setloading]=useState<boolean>(false);
 
     const handleRequestTour = async() => {
         setTourError("");
@@ -52,6 +55,10 @@ const Apply = ({price,id,name,username}:props) => {
             message.error(res?.data?.message);
             return;
         }
+        await createNotification(
+            `${user?.publicName} request a Tour to your property ${title}`,
+            username
+        );
         message.success("Tour sent successfully, wait response");
         console.log(tourType,tourDate);
     }
@@ -62,21 +69,49 @@ const Apply = ({price,id,name,username}:props) => {
     // console.log(Object.entries(price));
 
     const handleApply = async()=>{
-        const res = await sendApply({
-            property:id,
-            renter:user?._id,
-            type:"apply",
-            message: `👋 Hello! ${name}, I'm interested in your property. Is it still available? 🏡`
-        });
-        if(res?.status==203){
-            message.error(res?.data?.message);
-            return;
+        setloading(true);
+        try{
+            const res = await sendApply({
+                property:id,
+                renter:user?._id,
+                type:"apply",
+                message: `👋 Hello! ${name}, I'm interested in your property. Is it still available? 🏡`
+            });
+            if(res?.status==203){
+                throw new Error(res?.data?.message);
+            }
+            if(res?.status!=200){
+                throw new Error(res?.data?.message);
+            }
+            await createNotification(
+                `${user?.publicName} Apply to your property ${title}`,
+                username
+            );
+            message.success("Apply sent successfully, wait response");
+        } catch (err:any){
+            message.error(err);
+        } finally{
+            setloading(false);
         }
-        if(res?.status!=200){
-            message.error(res?.data?.message);
-            return;
-        }
-        message.success("Apply sent successfully, wait response");
+
+        // const res = await sendApply({
+        //     property:id,
+        //     renter:user?._id,
+        //     type:"apply",
+        //     message: `👋 Hello! ${name}, I'm interested in your property. Is it still available? 🏡`
+        // });
+        // if(res?.status==203){
+        //     setloading(false);
+        //     message.error(res?.data?.message);
+        //     return;
+        // }
+        // if(res?.status!=200){
+        //     setloading(false);
+        //     message.error(res?.data?.message);
+        //     return;
+        // }
+        // setloading(false);
+        // message.success("Apply sent successfully, wait response");
     }
 
     return (
@@ -106,15 +141,13 @@ const Apply = ({price,id,name,username}:props) => {
             </div>
             {user 
                 ?(
-                    <Button onClick={handleApply} disabled={user?.username==username ?true :false}>
-                        <FaRegFileLines /> Apply now
+                    <Button onClick={handleApply} disabled={user?.username==username ?true :false} loading={loading}>
+                        {loading ?"" :(<><FaRegFileLines className="ico" /> Apply now</>)}
                     </Button>
                 )
                 :(
                     <Tooltip placement="top" title={"Login to apply"}>
-                        <Button>
-                            <FaRegFileLines /> Apply now
-                        </Button>
+                        <Button><FaRegFileLines /> Apply now</Button>
                     </Tooltip>
                 )
             }
