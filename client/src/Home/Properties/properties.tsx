@@ -15,7 +15,7 @@ export default function Properties(){
     // Properties
     const {data:properties,isLoading,error} = useQuery({
         queryFn: () => getProperties(),
-        queryKey: ["properties"],
+        queryKey: ["homeProperties"],
         refetchOnWindowFocus: true
         // staleTime: Infinity
     });

@@ -153,7 +153,7 @@ export const sendMsg = async(req,res)=>{
         
         // const isReceiverInChat = chatSessions.get(id)?.includes(userId.toString());
         const check = users.get(userId.toString())?.activeChats?.includes(id);
-        console.log(check);
+        // console.log(check);
         if (check) {
             io.to(id).emit(`receiveMessage`);
         } else {

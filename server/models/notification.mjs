@@ -11,6 +11,7 @@ export default mongoose.model("notification", new Schema(
             type: String,
             required: true
         },
+        link: String,
         img: {
             type: String,
             required: true

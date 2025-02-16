@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Property from '../models/property.mjs';
 import User from '../models/user.mjs';
+import jwt from "jsonwebtoken";
 
 // Post Property
 export const postProperty = async(req,res) => {
@@ -21,7 +22,13 @@ export const postProperty = async(req,res) => {
 // Get Properties
 export const getProperties = async(req,res) => {
     try {
-        const properties = await Property.find({},{uid:0}).lean();
+        const token = req.cookies.tkn;
+        if (token) {
+            const {id} = jwt.verify(token, process.env.SECRET_KEY);
+            const properties = await Property.find({uid:{$ne:id}},{uid:0}).sort({createdAt:-1}).lean();
+            return res.status(200).json({properties});
+        }
+        const properties = await Property.find({},{uid:0}).sort({createdAt:-1}).lean();
         return res.status(200).json({properties});
     } catch(err){
         console.error("postProperty error:",err);
