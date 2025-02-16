@@ -10,6 +10,7 @@ import { signin } from "../../API/auth";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
 import { LoadingOutlined } from '@ant-design/icons';
+import { useQueryClient } from "@tanstack/react-query";
 
 
 interface props {
@@ -19,6 +20,7 @@ interface props {
 
 const Login: FC<props> = ({open,cancel}) => {
     const {userDetails} = useUser();
+    const queryClient = useQueryClient();
     const [form] = Form.useForm();
     const [loading, setloading] = useState<boolean>(false);
 
@@ -29,6 +31,7 @@ const Login: FC<props> = ({open,cancel}) => {
             const res:any = await signin(values);
             if(res.status==200){
                 setloading(false);
+                queryClient.invalidateQueries({queryKey: ["homeProperties"]});
                 userDetails();
                 cancel(false);
                 form.resetFields();

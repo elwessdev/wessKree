@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
@@ -31,6 +32,7 @@ interface UserProviderProps {
 const UserContext = createContext<UserContextType | null>(null);
 
 export const UserProvider = ({children}: UserProviderProps) => {
+    const queryClient = useQueryClient();
     const [user, setUser] = useState<User|null>(null);
     const navigate = useNavigate();
 
@@ -52,6 +54,7 @@ export const UserProvider = ({children}: UserProviderProps) => {
         try {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/auth/logout`);
             if (res.status === 200) {
+                queryClient.invalidateQueries({queryKey: ["homeProperties"]});
                 setUser(null);
                 navigate("/");
             }

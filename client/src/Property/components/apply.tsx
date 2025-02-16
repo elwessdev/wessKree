@@ -30,6 +30,7 @@ const Apply = ({price,id,name,username,title}:props) => {
     const [tourDate, setTourDate]=useState<any>(null);
     const [tourError, setTourError]=useState<string|null>(null);
     const [loading, setloading]=useState<boolean>(false);
+    const [loadingReq, setLoadingReq]=useState<boolean>(false);
 
     const handleRequestTour = async() => {
         setTourError("");
@@ -41,17 +42,20 @@ const Apply = ({price,id,name,username,title}:props) => {
             setTourError("Please Select Tour Date");
             return;
         }
+        setLoadingReq(true);
         const res = await sendApply({
             property:id,
             renter:user?._id,
             type:"tour",
-            message: `👋 Hi! ${name}, I'd love to visit your property for an ${tourType} tour on ${tourDate}. Is that possible? 🚶‍♂️🏠`
+            message: `👋 Hi! ${name}, I'd love to visit your property for an ${tourType} tour on ${dayjs(tourDate).format("DD MMMM YYYY")}. Is that possible? 🚶‍♂️🏠`
         });
         if(res?.status==203){
+            setLoadingReq(false);
             message.error(res?.data?.message);
             return;
         }
         if(res?.status!=200){
+            setLoadingReq(false);
             message.error(res?.data?.message);
             return;
         }
@@ -60,6 +64,9 @@ const Apply = ({price,id,name,username,title}:props) => {
             username
         );
         message.success("Tour sent successfully, wait response");
+        setTourType(null);
+        setTourDate(null);
+        setLoadingReq(false);
         console.log(tourType,tourDate);
     }
 
@@ -173,13 +180,14 @@ const Apply = ({price,id,name,username,title}:props) => {
                 <DatePicker 
                     disabled={user?.username==username ?true :false}
                     placeholder="Select tour date"
-                    onChange={(date) => setTourDate(dayjs(date).format("DD MMMM YYYY"))}
+                    onChange={(date) => setTourDate(date)}
+                    value={tourDate}
                 />
                 <p style={{color:" #F00", fontWeight: "500", fontSize: "14px"}}>{tourError}</p>
                 {user 
                     ?(
-                        <Button disabled={user?.username==username ?true :false} onClick={handleRequestTour}>
-                            <TbHomeHand /> Request a tour
+                        <Button disabled={user?.username==username ?true :false} loading={loadingReq} onClick={handleRequestTour}>
+                            {loadingReq ?"" :(<><TbHomeHand /> Request a tour</>)}
                         </Button>
                     )
                     :(

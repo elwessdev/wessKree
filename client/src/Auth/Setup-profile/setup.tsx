@@ -11,6 +11,7 @@ import { setupProfile } from "../../API/auth.ts";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RiImageEditLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 type stateCityType = { value: string; label: string }[];
@@ -21,6 +22,7 @@ const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).t
 
 export default function SetupProfile(){
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const [form] = Form.useForm();
     // User Context
     const {user,userDetails} = useUser();
@@ -89,6 +91,7 @@ export default function SetupProfile(){
             return;
         }
         message.success("Your profile completed");
+        queryClient.invalidateQueries({queryKey: ["homeProperties"]});
         setLoading(false);
         setTimeout(()=>{
             userDetails();
