@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import Property from '../models/property.mjs';
 import User from '../models/user.mjs';
 import Favorite from '../models/favorite.mjs';
+import jwt from "jsonwebtoken";
 
 
 // After Login Details
@@ -21,7 +22,7 @@ export const getUser = async(req,res)=>{
 
 // User Infos
 export const userInfos = async(req,res)=>{
-    const username = req.params.username;
+    const {username} = req.params;
     try {
         const userDetails = await User.findOne({username},{
             _id:0,
@@ -29,8 +30,15 @@ export const userInfos = async(req,res)=>{
             publicName: 1,
             photo: 1,
             state: 1,
-            city: 1
+            city: 1,
+            contact:1
         }).lean();
+        const token = req.cookies.tkn;
+        if(token){
+            const tokenData = jwt.verify(token, process.env.SECRET_KEY);
+            const isFollow = await User.findOne({username,followers:tokenData.id});
+            userDetails.isFollow = isFollow ? true : false;
+        }
         if (!userDetails) {
             return res.status(404).json({ message: "user not found" });
         }
@@ -170,6 +178,55 @@ export const deleteFavorite = async(req,res)=>{
         return res.status(404).json({ success: false, message: "Favorite not found" });
     } catch(err){
         console.error("delete favorite error:",err);
+        return res.status(500).send({ message: err });
+    }
+}
+
+// Follow
+export const follow = async(req,res)=>{
+    try {
+        const {username} = req.body;
+        const {id} = req.token;
+        const user = await User.findOne({username});
+        if(!user){
+            return res.status(404).json({message:"user not found"});
+        }
+        const idFollow = user.followers.find(follow => follow==id);
+        if(idFollow){
+            return res.status(200).json({message:"Already follow"});
+        }
+        const follow = await User.findByIdAndUpdate(user._id,{$push:{followers:id}});
+        if(!follow){
+            return res.status(404).json({message:"follow error"});
+        }
+        return res.status(200).json({message:"Follow success"});
+    } catch(err){
+        console.error("follow error:",err);
+        return res.status(500).send({ message: err });
+    }
+}
+// UnFollow
+export const unFollow = async(req,res)=>{
+    try {
+        const {username} = req.body;
+        const {id} = req.token;
+
+        const user = await User.findOne({username});
+        if(!user){
+            return res.status(404).json({message:"user not found"});
+        }
+
+        const idFollow = user.followers.find(follow => follow==id);
+        if(!idFollow){
+            return res.status(200).json({message:"Already unfollow"});
+        }
+        const unfollow = await User.findByIdAndUpdate(user._id,{$pull:{followers:id}});
+        if(!unfollow){
+            return res.status(404).json({message:"unfollow error"});
+        }
+        return res.status(200).json({message:"Unfollow success"});
+    } catch(err){
+        console.error("unfollow error:",err);
         return res.status(500).send({ message: err });
     }
 }

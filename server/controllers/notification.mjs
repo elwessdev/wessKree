@@ -1,11 +1,11 @@
 import Notification from '../models/notification.mjs';
 import User from '../models/user.mjs';
-import { io } from '../server.mjs';
+import { io, users } from '../server.mjs';
 
 // Create notification
 export const createNotif = async (req, res) => {
     try {
-        const { msg, user } = req.body;
+        const { msg, user, link } = req.body;
 
         const userData = await User.findOne({ username: user }, { _id: 1 });
         const myPhoto = await User.findOne({_id:req.token.id},{photo:1});
@@ -13,16 +13,22 @@ export const createNotif = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // console.log(`notify_${userData._id}`);
-
         const notif = new Notification({
             user: userData._id,
             img: myPhoto?.photo,
-            message: msg
+            message: msg,
+            link: link ? link : "/",
         });
 
         await notif.save();
-        io.emit(`notify_${userData._id}`,msg);
+        
+        // Send nitification when user is active
+        const userSocketActive = users.get(userData._id.toString());
+        if(userSocketActive){
+            // io.emit(`notify_${userData._id}`,msg);
+            io.to(userSocketActive.socketId).emit("notify",msg);
+            console.log("user active");
+        }
 
         return res.status(201).json({ message: "Notification created successfully" });
     } catch (err) {

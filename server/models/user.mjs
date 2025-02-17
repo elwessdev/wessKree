@@ -48,5 +48,9 @@ export default mongoose.model("users", new Schema(
             type: Boolean,
             default: false
         },
+        followers: {
+            type: [String],
+            default: []
+        }
     },{timestamps: true})
 )

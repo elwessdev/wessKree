@@ -11,7 +11,9 @@ import {
     updateProfile,
     addFavorite,
     favoriteList,
-    deleteFavorite
+    deleteFavorite,
+    follow,
+    unFollow
 } from "../controllers/user.mjs";
 import {deleteCloudImg } from "../controllers/cloudinary.mjs";
 
@@ -43,6 +45,9 @@ router.delete("/deleteCloudImg/:id",verifyToken,validID,deleteCloudImg);
 // Update profile
 router.put("/update",verifyToken,validID,updateProfile);
 
-
+// Follow
+router.post("/follow",verifyToken,validID,follow);
+// UnFollow
+router.post("/unfollow",verifyToken,validID,unFollow);
 
 export default router;
