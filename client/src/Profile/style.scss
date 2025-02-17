@@ -13,7 +13,7 @@
         height: fit-content;
         position: relative;
         box-shadow: 0 0 3px 2px rgba(112, 101, 239, 0.14);
-        min-height: 200px;
+        min-height: 150px;
         .ant-spin-spinning{
             position: absolute;
             left: 50%;
@@ -133,6 +133,10 @@
             border-color: #7065ef;
             color: #7065ef;
             padding: 0;
+            &.active{
+                background: #7065ef;
+                color: #FFF;
+            }
             &:hover{
                 background-color: #7065ef;
                 color: #FFF;

@@ -152,9 +152,9 @@ export const sendMsg = async(req,res)=>{
         }
         
         // const isReceiverInChat = chatSessions.get(id)?.includes(userId.toString());
-        const check = users.get(userId.toString())?.activeChats?.includes(id);
+        const check = users.get(userId.toString());
         // console.log(check);
-        if (check) {
+        if (check?.activeChats?.includes(id)) {
             io.to(id).emit(`receiveMessage`);
         } else {
             const myIfo = await User.findOne({_id:req.token.id});
@@ -164,7 +164,9 @@ export const sendMsg = async(req,res)=>{
                 message: `You have new message from ${myIfo.publicName} in `
             });
             await notif.save();
-            io.emit(`notify_${userId.toString()}`,`You have new message from ${myIfo.publicName}`);
+            // io.emit(`notify_${userId.toString()}`,`You have new message from ${myIfo.publicName}`);
+            io.to(check.socketId).emit("notify",`You have new message from ${myIfo.publicName}`);
+            
         }
         return res.status(200).json({success:true});
     } catch(err){

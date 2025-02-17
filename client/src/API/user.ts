@@ -54,3 +54,19 @@ export const updateProfile = async(data:updateType)=>{
         return err;
     }
 }
+// Follow
+export const follow = (username:string) => {
+    try {
+        return axios.post(`${import.meta.env.VITE_API_URL}/user/follow`,{username});
+    } catch(err) {
+        return err;
+    }
+}
+// unFollow
+export const unFollow = (username:string) => {
+    try {
+        return axios.post(`${import.meta.env.VITE_API_URL}/user/unfollow`,{username});
+    } catch(err) {
+        return err;
+    }
+}

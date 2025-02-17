@@ -3,45 +3,69 @@ import { Button, message, Modal, Spin, Tooltip, Empty, Typography } from 'antd';
 // import { AndroidOutlined, AppleOutlined } from '@ant-design/icons';
 import PropertyItem from "../Home/Properties/property-item";
 // import { Tabs } from 'antd';
-import { useQuery } from "@tanstack/react-query";
-import { getUserInfos, userProperties } from "../API/user";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { follow, getUserInfos, unFollow, userProperties } from "../API/user";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 
 // Icons
 import { MdContentCopy, MdOutlineLocationOn, MdNotificationsActive } from "react-icons/md";
-import { TbHomeQuestion } from "react-icons/tb";
+// import { TbHomeQuestion } from "react-icons/tb";
 import { FaSquareWhatsapp, FaSquarePhone } from "react-icons/fa6";
-import { useParams } from "react-router-dom";
 
 type params = Record<string, string | undefined>;
 
 export default function UserProfile(){
     const {userNameUrl}:any = useParams<params>();
-
+    const queryClient = useQueryClient();
     const [open, setOpen] = useState<boolean>(false);
     const [question, setQuestion] = useState<string>("");
 
     const {data:userInfo,isLoading:infoLoading,error:infoError} = useQuery({
         queryFn: () => getUserInfos(userNameUrl),
         queryKey: ["userInfos",[userNameUrl]],
-        refetchOnWindowFocus: true
+        refetchOnWindowFocus: true,
+        enabled: !!userNameUrl
         // staleTime: Infinity
     })
 
     const {data:properties,isLoading:propertiesLoading,error:propertiesError} = useQuery({
         queryFn: () => userProperties(userNameUrl),
         queryKey: ["properties",[userNameUrl]],
-        refetchOnWindowFocus: true
+        refetchOnWindowFocus: true,
+        enabled: !!userNameUrl
         // staleTime: Infinity
     })
 
     console.log(userInfo);
-    console.log(properties);
+    // console.log(properties);
 
     const handleQuestion = ()=>{
         message.success("Message sent")
+    }
+
+    const handleFollow = async() => {
+        const res:any = await follow(userNameUrl);
+        // console.log(res);
+        if(res?.status!=200){
+            message.error("Something went wrong, Try again later");
+            return;
+        }
+        queryClient.invalidateQueries({queryKey:["userInfos"]});
+        message.success(res?.data.message);
+    }
+
+    const handleUnFollow = async() => {
+        const res:any = await unFollow(userNameUrl);
+        // console.log(res);
+        if(res?.status!=200){
+            message.error("Something went wrong, Try again later");
+            return;
+        }
+        queryClient.invalidateQueries({queryKey:["userInfos"]});
+        message.success(res?.data.message);
     }
 
 
@@ -55,28 +79,41 @@ export default function UserProfile(){
                 {userInfo && (
                     <>
                         <img src={userInfo?.photo} />
-                        <h3>{userInfo?.username}</h3>
+                        <h3>{userInfo?.publicName}</h3>
                         <p><MdOutlineLocationOn /> {userInfo?.state}, {userInfo?.city}</p>
                         <div className="contact">
                             {userInfo?.contact && (
                                 <>
-                                    <p>
-                                        <FaSquarePhone />
-                                        <span>226589652</span>
-                                        <MdContentCopy className="copy" />
-                                    </p>
-                                    <p>
-                                        <FaSquareWhatsapp />
-                                        <span>226589652</span>
-                                        <MdContentCopy className="copy" />
-                                    </p>
+                                    {userInfo?.contact?.phone?.length && (
+                                        <p>
+                                            <FaSquarePhone />
+                                            <span>{userInfo?.contact?.phone}</span>
+                                            <MdContentCopy className="copy" />
+                                        </p>
+                                    )}
+                                    {userInfo?.contact?.whatsapp?.length && (
+                                        <p>
+                                            <FaSquareWhatsapp />
+                                            <span>{userInfo?.contact?.whatsapp}</span>
+                                            <MdContentCopy className="copy" />
+                                        </p>
+                                    )}
                                 </>
                             )}
-                            <Button className="ask" onClick={()=>setOpen(true)}><TbHomeQuestion /> Ask a question</Button>
+                            {/* <Button className="ask" onClick={()=>setOpen(true)}><TbHomeQuestion /> Ask a question</Button> */}
                         </div>
-                        <Tooltip placement="top" title={"Stay up to date"}>
-                            <Button className="notif"><MdNotificationsActive /></Button>
-                        </Tooltip>
+                        {userInfo?.isFollow
+                            ?(
+                                <Tooltip placement="top" title={"Unfollow"}>
+                                    <Button className="notif active" onClick={handleUnFollow}><MdNotificationsActive /></Button>
+                                </Tooltip>
+                            )
+                            :(
+                                <Tooltip placement="top" title={"Stay up to date"}>
+                                    <Button className="notif" onClick={handleFollow}><MdNotificationsActive /></Button>
+                                </Tooltip>
+                            )
+                        }
                     </>
                 )}
             </div>

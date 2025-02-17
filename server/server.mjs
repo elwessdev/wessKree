@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
         }
         chatSessions.set(chatId, chatSessions.get(chatId) || []);
         chatSessions.get(chatId).push(userId);
-        console.log(`${userId} joined chat ${chatId}`);
+        // console.log(`${userId} joined chat ${chatId}`);
     });
     // Leave chat
     socket.on("leaveChat", ({ chatId, userId }) => {
@@ -59,7 +59,7 @@ io.on("connection", (socket) => {
         if (user) {
             user.activeChats = user.activeChats.filter(id => id !== chatId);
         }
-        console.log(`${userId} left chat ${chatId}`);
+        // console.log(`${userId} left chat ${chatId}`);
     });
     // Disconnect user
     socket.on("disconnect", () => {

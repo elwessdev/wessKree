@@ -1,5 +1,14 @@
 import axios from "axios";
 
+// Post property
+export const postProperty = async(data:any)=>{
+    try {
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/property/post`,{data});
+        return res;
+    } catch(err) {
+        return err;
+    }
+}
 // Get Properites
 export const getProperties = async()=>{
     try {

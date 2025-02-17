@@ -2,18 +2,44 @@ import mongoose from 'mongoose';
 import Property from '../models/property.mjs';
 import User from '../models/user.mjs';
 import jwt from "jsonwebtoken";
+import { io, users } from '../server.mjs';
+import Notification from '../models/notification.mjs';
 
 // Post Property
 export const postProperty = async(req,res) => {
-    const data = req.body;
+    const {data} = req.body;
     const id = req.token.id;
+    // console.log(data);
     try {
         const property = new Property({
             uid: req.token.id,
             ...data
         });
         const savedProp = await property.save();
-        return res.status(200).json({message: "property has been posted",id:savedProp._id});
+        if(savedProp.error){
+            return res.status(400).json({message: saveProp.error});
+        }
+        const followers = await User.findOne({_id:id }).lean();
+        if(followers?.followers?.length > 0){
+            followers.followers.forEach(async(follower) => {
+                const userSocketIsActive = users.get(follower);
+                // const myInfo = await User.findOne({_id:id},{publicName:1,photo:1}).lean();
+                // if(followerInfo){
+                    await new Notification({
+                        user: follower,
+                        message: `${followers.publicName} post a new property`,
+                        link: `/property/${savedProp._id}`,
+                        img: followers.photo
+                    }).save();
+                    if(userSocketIsActive){
+                        io.to(userSocketIsActive.socketId).emit('notify', `${followers?.publicName} has posted a new property`);
+                        console.log(`${follower} is active send notif and save`);
+                    }
+                    console.log(`${follower} is not active send notif and save`);
+                // }
+            });
+        }
+        return res.status(200).json({message: "property has been posted", id: savedProp._id});
     } catch(err){
         console.error("postProperty error:",err);
         return res.status(500).json({message: err});

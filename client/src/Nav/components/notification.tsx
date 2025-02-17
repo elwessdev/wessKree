@@ -6,6 +6,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchNotifications, seenNotifs } from "../../API/notification";
 import { formatDistance } from "date-fns";
 import NotiffNew from '../../assets/newNotif.webm'
+import { NavLink } from "react-router-dom";
 // import Notiff from '../../assets/notif.webm'
 
 // Icons
@@ -13,6 +14,8 @@ import { IoIosNotifications } from "react-icons/io";
 // import { SmileOutlined } from "@ant-design/icons";
 import { LoadingOutlined } from "@ant-design/icons";
 import { MdOutlineAccessTime } from "react-icons/md";
+import { FaEye } from "react-icons/fa";
+
 
 
 const socket = io(import.meta.env.VITE_API_URL);
@@ -47,8 +50,30 @@ const Notification = ({userId}:props)=>{
 
         // Register the user on the socket
         // socket.emit('registerUser', userId);
+        socket.emit("registerUser",userId);
 
-        socket.on(`notify_${userId}`, (msg) => {
+        // socket.on(`notify_${userId}`, (msg) => {
+        //     queryClient.invalidateQueries({ queryKey: ['notifications'] });
+        //     api.open({
+        //         message: 'New Notification',
+        //         description: msg,
+        //         icon: <span className="notif_icon">
+        //             <video
+        //                 autoPlay
+        //                 loop
+        //                 muted
+        //             >
+        //                 <source src={NotiffNew} type="video/webm" />
+        //                 Your browser does not support the video tag.
+        //             </video>
+        //         </span>,
+        //         showProgress: true,
+        //         pauseOnHover: true,
+        //     });
+        //     setNotifCount((prev) => prev + 1);
+        // });
+
+        socket.on("notify", (msg) => {
             queryClient.invalidateQueries({ queryKey: ['notifications'] });
             api.open({
                 message: 'New Notification',
@@ -70,7 +95,8 @@ const Notification = ({userId}:props)=>{
         });
 
         return () => {
-            socket.off(`notify_${userId}`);
+            // socket.off(`notify_${userId}`);
+            socket.off("notify");
         };
     }, [userId, queryClient]);
 
@@ -91,6 +117,7 @@ const Notification = ({userId}:props)=>{
             <Dropdown
                 onOpenChange={handleSeen}
                 className="notif-dropdown"
+                // open={true}
                 dropdownRender={(menu) => (
                     <div className="custom-notif-dropdown">{menu}</div>
                 )}
@@ -134,6 +161,9 @@ const Notification = ({userId}:props)=>{
                                             {formatDistance(new Date(notif?.createdAt), new Date(), { addSuffix: true }).replace("about ", "")}
                                         </span>
                                     </div>
+                                    {notif?.link && notif?.link!="/" && (
+                                        <NavLink className={"prev"} to={`${notif?.link}`}><FaEye /></NavLink>
+                                    )}
                                 </div>
                             ),
                         }))
