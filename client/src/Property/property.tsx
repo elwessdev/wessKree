@@ -70,7 +70,7 @@ export default function Property(){
                                 area={`${data?.area?.width}x${data?.area?.length}`}
                                 furnishing={data?.furnishingStatus}
                                 category={data?.category}
-                                status={"active"}
+                                status={data?.status ?data?.status : "Available"}
                                 description={data?.description}
                                 type={data?.type}
                                 rooms={data?.rooms}
@@ -99,6 +99,7 @@ export default function Property(){
                                 name={data?.user?.publicName}
                                 username={data?.user?.username}
                                 title={data?.title}
+                                status={data?.status}
                             />
                         </Affix>
                     </div>

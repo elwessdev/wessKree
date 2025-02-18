@@ -66,6 +66,10 @@ export default mongoose.model("properties", new Schema(
             type: String,
             required: true
         },
+        status: {
+            type: String,
+            default: "available"
+        },
         // Step 2
         state: {
             type: String,

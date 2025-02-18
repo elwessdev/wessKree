@@ -46,7 +46,10 @@ const Title = ({title,state,city,zip,neighborhood,username,id,scrollToNear,creat
                 <p className='my'>My Property</p>
             )}
             <div className="btns">
-                <Button>
+                <Button onClick={()=>{
+                    navigator.clipboard.writeText(window.location.href);
+                    message.success("Link copied");
+                }}>
                     <IoShareSocialOutline /> Share
                 </Button>
                 {user==null&&(

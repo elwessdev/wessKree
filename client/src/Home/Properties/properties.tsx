@@ -4,9 +4,11 @@ import PropertyItem from "./property-item"
 import { useQuery } from "@tanstack/react-query";
 import { Affix, Empty, Spin } from "antd";
 import { getProperties } from "../../API/property";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearch } from "../../hooks/searchContext";
 
 export default function Properties(){
+    const {globalSearch} = useSearch();
     const searchRef = useRef();
     // const [top, setTop] = useState<number>(100);
     const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
@@ -19,6 +21,27 @@ export default function Properties(){
         refetchOnWindowFocus: true
         // staleTime: Infinity
     });
+
+    useEffect(()=>{
+        if(globalSearch){
+            const {state,city} = globalSearch;
+            if(state || city){
+                setLoadingSearch(true);
+                if(state && city){
+                    setFilterList(properties.filter((item:any) => {
+                        return item.state === state && item.city === city;
+                    }));
+                    
+                }
+                if(state && !city){
+                    setFilterList(properties.filter((item:any) => {
+                        return item?.state === state;
+                    }));
+                }
+                setTimeout(()=>setLoadingSearch(false),150);
+            }
+        }
+    },[globalSearch]);
 
     const handleSearch = () => {
         if (!searchRef.current) return;

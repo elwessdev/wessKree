@@ -2,7 +2,7 @@ import { memo } from "react"
 import { userProperties } from "../../API/user"
 import { useQuery } from "@tanstack/react-query";
 import PropertyItem from "../../Home/Properties/property-item";
-import { Empty, Spin, Typography } from 'antd';
+import { Badge, Empty, Spin, Typography } from 'antd';
 import { NavLink } from "react-router-dom";
 
 type props = {
@@ -41,7 +41,11 @@ const MyProperty = ({username}:props) => {
                     <NavLink type="primary" to={"/post-property"}>Post now</NavLink>
                 </Empty>
             )}
-            {(data?.length>0) && data?.map((property:any,idx:number)=> <PropertyItem data={property} key={idx} page="owner" />)}
+            {(data?.length>0) && data?.map((property:any,idx:number)=>
+                (
+                    <PropertyItem data={property} page="owner" key={idx} />
+                )
+            )}
         </div>
     )
 }

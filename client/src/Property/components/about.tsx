@@ -32,19 +32,19 @@ const About = ({area,furnishing,category,status,description,type,rooms,bedrooms,
             <div className="req">
                 <div className="r">
                     <p>Type</p>
-                    <span><TbHome2 /> {type}</span>
+                    <span><TbHome2 />{type}</span>
                 </div>
                 <div className="r">
                     <p>Rooms</p>
-                    <span><LuBedSingle /> {rooms}</span>
+                    <span><LuBedSingle />{rooms}</span>
                 </div>
                 <div className="r">
                     <p>Furnishing Status</p>
-                    <span><LuSofa /> {furnishing}</span>
+                    <span><LuSofa />{furnishing}</span>
                 </div>
                 <div className="r">
                     <p>Category</p>
-                    <span><MdOutlineFamilyRestroom /> {category.map((cat,idx)=>{
+                    <span><MdOutlineFamilyRestroom />{category.map((cat,idx)=>{
                         if(idx!=0){
                             return `/${cat}`;
                         } else {
@@ -54,11 +54,18 @@ const About = ({area,furnishing,category,status,description,type,rooms,bedrooms,
                 </div>
                 <div className="r">
                     <p>Square Area</p>
-                    <span><PiRectangleDashedBold /> {area} m²</span>
+                    <span><PiRectangleDashedBold />{area} m²</span>
                 </div>
                 <div className="r">
                     <p>Status</p>
-                    <span><GrStatusGood /> {status}</span>
+                    <span 
+                        style={status=="unavailable" ?{color:"#f44336"} :{}}
+                    >
+                        <GrStatusGood
+                            style={status=="unavailable" ?{color:"#f44336"} :{}}
+                        />
+                        {status}
+                    </span>
                 </div>
             </div>
             <div className='rooms'>
