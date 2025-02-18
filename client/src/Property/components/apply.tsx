@@ -19,9 +19,10 @@ type props = {
     name?:string,
     username: string,
     title: string,
+    status: string
 }
 
-const Apply = ({price,id,name,username,title}:props) => {
+const Apply = ({price,id,name,username,title,status}:props) => {
     const {user} = useUser();
     // const [selectedPrice, setSelectedPrice]=useState<string|null>(null);
     
@@ -122,7 +123,7 @@ const Apply = ({price,id,name,username,title}:props) => {
     }
 
     return (
-        <div className="apply">
+        <div className={(status=="unavailable"||user?.username==username) ?"apply disabled" :"apply"}>
             <div className="price">
                 <h3>Rent Price</h3>
                 {price.length>1
@@ -146,11 +147,19 @@ const Apply = ({price,id,name,username,title}:props) => {
                     )
                 }
             </div>
-            {user 
+            {user
                 ?(
-                    <Button onClick={handleApply} disabled={user?.username==username ?true :false} loading={loading}>
-                        {loading ?"" :(<><FaRegFileLines className="ico" /> Apply now</>)}
-                    </Button>
+                    (user?.username==username||status=="unavailable") 
+                    ? (
+                        <Button disabled={(user?.username==username||status=="unavailable")  ?true :false} loading={loading}>
+                            <FaRegFileLines className="ico" /> Apply now
+                        </Button>
+                    )
+                    : (
+                        <Button onClick={handleApply} disabled={user?.username==username ?true :false} loading={loading}>
+                            {loading ?"" :(<><FaRegFileLines className="ico" /> Apply now</>)}
+                        </Button>
+                    )
                 )
                 :(
                     <Tooltip placement="top" title={"Login to apply"}>
@@ -186,9 +195,17 @@ const Apply = ({price,id,name,username,title}:props) => {
                 <p style={{color:" #F00", fontWeight: "500", fontSize: "14px"}}>{tourError}</p>
                 {user 
                     ?(
-                        <Button disabled={user?.username==username ?true :false} loading={loadingReq} onClick={handleRequestTour}>
-                            {loadingReq ?"" :(<><TbHomeHand /> Request a tour</>)}
-                        </Button>
+                        (user?.username==username||status=="unavailable") 
+                        ? (
+                            <Button disabled={(user?.username==username||status=="unavailable") ?true :false}>
+                                <TbHomeHand /> Request a tour
+                            </Button>
+                        )
+                        : (
+                            <Button disabled={(user?.username==username||status=="unavailable") ?true :false} loading={loadingReq} onClick={handleRequestTour}>
+                                {loadingReq ?"" :(<><TbHomeHand /> Request a tour</>)}
+                            </Button>
+                        )
                     )
                     :(
                         <Tooltip placement="top" title={"Login to request a tour"}>

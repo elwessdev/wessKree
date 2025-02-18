@@ -68,6 +68,11 @@ export default function UserProfile(){
         message.success(res?.data.message);
     }
 
+    const copy = (num:string) => {
+        navigator.clipboard.writeText(num);
+        message.success("Copied");
+    }
+
 
     return (
         <div id="profile">
@@ -88,14 +93,14 @@ export default function UserProfile(){
                                         <p>
                                             <FaSquarePhone />
                                             <span>{userInfo?.contact?.phone}</span>
-                                            <MdContentCopy className="copy" />
+                                            <MdContentCopy onClick={()=>copy(userInfo?.contact?.phone)} className="copy" />
                                         </p>
                                     )}
                                     {userInfo?.contact?.whatsapp?.length && (
                                         <p>
                                             <FaSquareWhatsapp />
                                             <span>{userInfo?.contact?.whatsapp}</span>
-                                            <MdContentCopy className="copy" />
+                                            <MdContentCopy onClick={()=>copy(userInfo?.contact?.whatsapp)} className="copy" />
                                         </p>
                                     )}
                                 </>

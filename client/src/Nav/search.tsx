@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Select } from 'antd';
 import {StateCity} from "../Data/stateCity.ts";
+import { useNavigate } from "react-router-dom";
 
 // Icons
 import { TbHomeSearch } from "react-icons/tb";
+import { useSearch } from "../hooks/searchContext.tsx";
+import { set } from "date-fns";
 
 // Type
 type selectValues = {state: string | null, city: string | null};
@@ -12,6 +15,8 @@ type stateCityType = { value: string; label: string }[];
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 export default function SearchNav(){
+    const {setGlobalSearch} = useSearch();
+    const navigate = useNavigate();
     const [selectValues, setSelectValues] = useState<selectValues>({
         state: null,
         city: null
@@ -35,6 +40,23 @@ export default function SearchNav(){
             ...selectValues,
             city: capitalize(value)
         });
+    }
+
+    const handleSearch = () => {
+        if(selectValues.state){
+            navigate(
+                "/search",
+                selectValues
+            );
+            setGlobalSearch({
+                state: selectValues.state ?? null,
+                city: selectValues.city ?? null
+            });
+            setSelectValues({
+                state: null,
+                city: null
+            });
+        }
     }
 
     return (
@@ -71,7 +93,7 @@ export default function SearchNav(){
                     />
                 </div>
             </div>
-            <button>
+            <button onClick={handleSearch}>
                 <TbHomeSearch />
             </button>
         </div>

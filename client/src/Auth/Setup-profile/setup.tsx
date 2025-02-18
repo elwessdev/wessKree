@@ -61,17 +61,24 @@ export default function SetupProfile(){
             return;
         }
         setLoading(true);
-        const upPfp:any = await uploadCloud(fileToUpload);
-        if(upPfp.status!=200){
+        try {
+            const upPfp: any = await uploadCloud(fileToUpload);
+            console.log(upPfp);
+            if (!upPfp?.secure_url) {
             setLoading(false);
             message.error("There is problem in profile photo, try again :)");
+            return;
+            }
+        } catch (error) {
+            setLoading(false);
+            message.error("There was an error uploading the profile photo, please try again.");
             return;
         }
         let fullData:any = {
             state: capitalize(values.state),
             city: capitalize(values.city),
-            photo: upPfp.data.secure_url,
-            pfpId: upPfp.data.public_id
+            photo: upPfp.secure_url,
+            pfpId: upPfp.public_id
         };
         let contactInfo:any = {};
         if(values.phone){

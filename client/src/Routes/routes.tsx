@@ -11,15 +11,17 @@ import Settings from '../Settings/settings.tsx';
 import MyProfile from '../Profile/MyProfile.tsx';
 import UserProfile from '../Profile/UserProfile.tsx';
 import Requests from '../Requests/requests.tsx';
+import { SearchProvider } from '../hooks/searchContext.tsx';
 
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <UserProvider><App /></UserProvider>,
+        element: <UserProvider><SearchProvider><App /></SearchProvider></UserProvider>,
         errorElement: <h1>404 Not Found</h1>,
         children: [
             { path: "", element: <Home /> },
+            { path: "search", element: <Home /> },
             { path: "property/:id", element: <Property /> },
             { path: "signup", element: <Signup /> },
             { path: "profile/:userNameUrl", element: <UserProfile /> },

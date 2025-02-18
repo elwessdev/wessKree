@@ -9,14 +9,14 @@ export const uploadCloud = async(file:File) => {
     formData.append("upload_preset", import.meta.env.VITE_PRESET);
     try{
         const res = await fetch(
-            `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD}/image/upload`, 
+            `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD}/image/upload/`, 
             {
                 method: "POST",
                 body: formData,
                 credentials: "omit",
             }
         );
-        return res;
+        return res.json();
     } catch(err){
         return err;
     }
