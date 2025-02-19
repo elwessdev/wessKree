@@ -61,25 +61,41 @@ export default function SetupProfile(){
             return;
         }
         setLoading(true);
+        let fullData:any = {
+            state: capitalize(values.state),
+            city: capitalize(values.city),
+        };
         try {
-            const upPfp: any = await uploadCloud(fileToUpload);
-            console.log(upPfp);
-            if (!upPfp?.secure_url) {
-            setLoading(false);
-            message.error("There is problem in profile photo, try again :)");
-            return;
+            // const upPfp: any = await uploadCloud(fileToUpload);
+            const formData = new FormData();
+            formData.append("file", fileToUpload);
+            formData.append("upload_preset", import.meta.env.VITE_PRESET);
+            // formData.append("folder", "pfp");
+            const res = await fetch(
+                `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD}/image/upload/`, 
+                {
+                    method: "POST",
+                    body: formData,
+                    credentials: "omit",
+                }
+            );
+            const data = await res.json();
+            if (!data.secure_url) {
+                setLoading(false);
+                message.error("There is problem in profile photo, try again :)");
+                return;
             }
-        } catch (error) {
+            fullData = {
+                ...fullData,
+                photo: data.secure_url,
+                pfpId: data.public_id
+            };
+        } catch {
             setLoading(false);
             message.error("There was an error uploading the profile photo, please try again.");
             return;
         }
-        let fullData:any = {
-            state: capitalize(values.state),
-            city: capitalize(values.city),
-            photo: upPfp.secure_url,
-            pfpId: upPfp.public_id
-        };
+
         let contactInfo:any = {};
         if(values.phone){
             contactInfo = {phone:values.phone}
@@ -87,10 +103,13 @@ export default function SetupProfile(){
         if(values.whatsapp){
             contactInfo = {...contactInfo,whatsapp:values.whatsapp}
         }
+
         if(Object.entries(contactInfo).length){
             fullData = {...fullData,contact:contactInfo};
         }
-        console.log(fullData);
+
+        // console.log(fullData);
+
         const setupRes:any = await setupProfile(fullData);
         if(setupRes.status!=200){
             setLoading(false);
@@ -104,7 +123,7 @@ export default function SetupProfile(){
             userDetails();
             navigate("/");
         },1200);
-        console.log(fullData);
+        // console.log(fullData);
     };
 
     return (
