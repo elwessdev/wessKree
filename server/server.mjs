@@ -23,15 +23,15 @@ app.use(cors({
 }));
 app.use(cookieParser());
 
-// Rate Limiting
-const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	limit: 100, // 15 request per windowMS (15 minutes)
-    message: "Too many requests from this IP, please try again after 15 minutes",
-	standardHeaders: 'draft-8',
-	legacyHeaders: false
-});
-app.use(limiter);
+// // Rate Limiting
+// const limiter = rateLimit({
+// 	windowMs: 15 * 60 * 1000, // 15 minutes
+// 	limit: 100, // 15 request per windowMS (15 minutes)
+//     message: "Too many requests from this IP, please try again after 15 minutes",
+// 	standardHeaders: 'draft-8',
+// 	legacyHeaders: false
+// });
+// app.use(limiter);
 
 // Socket
 const server = http.createServer(app);
