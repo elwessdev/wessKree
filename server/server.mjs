@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import http from "http";
 import { Server } from "socket.io";
+import { rateLimit } from 'express-rate-limit'
 
 import authRoutes from "./routes/auth.mjs"
 import propertyRoutes from "./routes/property.mjs"
@@ -21,6 +22,16 @@ app.use(cors({
     credentials: true,
 }));
 app.use(cookieParser());
+
+// Rate Limiting
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // 15 request per windowMS (15 minutes)
+    message: "Too many requests from this IP, please try again after 15 minutes",
+	standardHeaders: 'draft-8',
+	legacyHeaders: false
+});
+app.use(limiter);
 
 // Socket
 const server = http.createServer(app);

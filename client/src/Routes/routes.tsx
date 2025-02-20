@@ -12,24 +12,30 @@ import MyProfile from '../Profile/MyProfile.tsx';
 import UserProfile from '../Profile/UserProfile.tsx';
 import Requests from '../Requests/requests.tsx';
 import { SearchProvider } from '../hooks/searchContext.tsx';
+import AuthProtection from './authProtection.tsx';
+import PublicRoute from './publicRoute.tsx';
 
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <UserProvider><SearchProvider><App /></SearchProvider></UserProvider>,
-        errorElement: <h1>404 Not Found</h1>,
+        element: <UserProvider>
+                    <SearchProvider>
+                            <App />
+                    </SearchProvider>
+                </UserProvider>,
+        errorElement: <h1>Page not found</h1>,
         children: [
             { path: "", element: <Home /> },
             { path: "search", element: <Home /> },
             { path: "property/:id", element: <Property /> },
-            { path: "signup", element: <Signup /> },
-            { path: "profile/:userNameUrl", element: <UserProfile /> },
-            { path: "my-profile", element: <MyProfile /> },
-            { path: "post-property", element: <PostPerperty /> },
-            { path: "setup-profile", element: <SetupProfile /> },
-            { path: "settings", element: <Settings /> },
-            { path: "requests", element: <Requests /> },
+            { path: "signup", element: <PublicRoute><Signup /></PublicRoute> },
+            { path: "profile/:userNameUrl", element: <UserProfile />},
+            { path: "my-profile", element: <AuthProtection><MyProfile /></AuthProtection> },
+            { path: "post-property", element: <AuthProtection><PostPerperty /></AuthProtection> },
+            { path: "setup-profile", element: <AuthProtection><SetupProfile /></AuthProtection> },
+            { path: "settings", element: <AuthProtection><Settings /></AuthProtection> },
+            { path: "requests", element: <AuthProtection><Requests /></AuthProtection> },
         ],
     },
 ]);

@@ -3,6 +3,8 @@ import { Button, DatePicker, message, Tooltip } from "antd"
 import { sendApply } from "../../API/request";
 import { useUser } from "../../hooks/userContext";
 import dayjs from 'dayjs';
+import { createNotification } from "../../API/notification";
+import { useNavigate } from "react-router-dom";
 
 
 // Icons
@@ -10,7 +12,6 @@ import { FaRegFileLines } from "react-icons/fa6";
 import { BiHomeAlt } from "react-icons/bi";
 import { TbBrandYoutube } from "react-icons/tb";
 import { TbHomeHand } from "react-icons/tb";
-import { createNotification } from "../../API/notification";
 
 
 type props = {
@@ -24,9 +25,10 @@ type props = {
 
 const Apply = ({price,id,name,username,title,status}:props) => {
     const {user} = useUser();
-    // const [selectedPrice, setSelectedPrice]=useState<string|null>(null);
+    const navigate = useNavigate();
     
     // Request Tour
+    // const [selectedPrice, setSelectedPrice]=useState<string|null>(null);
     const [tourType, setTourType]=useState<string | null>(null);
     const [tourDate, setTourDate]=useState<any>(null);
     const [tourError, setTourError]=useState<string|null>(null);
@@ -148,24 +150,21 @@ const Apply = ({price,id,name,username,title,status}:props) => {
                 }
             </div>
             {user
-                ?(
-                    (user?.username==username||status=="unavailable") 
-                    ? (
-                        <Button disabled={(user?.username==username||status=="unavailable")  ?true :false} loading={loading}>
+                ?   (user?.username==username||status=="unavailable") 
+                    ?   <Button disabled={(user?.username==username||status=="unavailable")  ?true :false} loading={loading}>
                             <FaRegFileLines className="ico" /> Apply now
                         </Button>
-                    )
-                    : (
-                        <Button onClick={handleApply} disabled={user?.username==username ?true :false} loading={loading}>
-                            {loading ?"" :(<><FaRegFileLines className="ico" /> Apply now</>)}
-                        </Button>
-                    )
-                )
-                :(
-                    <Tooltip placement="top" title={"Login to apply"}>
+                    
+                    :   user?.isActive
+                        ?   <Button onClick={handleApply} disabled={user?.username==username ?true :false} loading={loading}>
+                                {loading ?"" :(<><FaRegFileLines className="ico" /> Apply now</>)}
+                            </Button>
+                        :   <Tooltip placement="top" title={"Complete your profile to apply"}>
+                                <Button onClick={()=>navigate("/setup-profile")}><FaRegFileLines className="ico" /> Apply now</Button>
+                            </Tooltip>
+                :   <Tooltip placement="top" title={"Login to apply"}>
                         <Button><FaRegFileLines /> Apply now</Button>
                     </Tooltip>
-                )
             }
             <div className="line"></div>
             <div className="tour">
@@ -201,11 +200,19 @@ const Apply = ({price,id,name,username,title,status}:props) => {
                                 <TbHomeHand /> Request a tour
                             </Button>
                         )
-                        : (
-                            <Button disabled={(user?.username==username||status=="unavailable") ?true :false} loading={loadingReq} onClick={handleRequestTour}>
-                                {loadingReq ?"" :(<><TbHomeHand /> Request a tour</>)}
-                            </Button>
-                        )
+                        : user?.isActive
+                            ?(
+                                <Button disabled={(user?.username==username||status=="unavailable") ?true :false} loading={loadingReq} onClick={handleRequestTour}>
+                                    {loadingReq ?"" :(<><TbHomeHand /> Request a tour</>)}
+                                </Button>
+                            )
+                            :(
+                                <Tooltip placement="top" title={"Complete your profile to request a tour"}>
+                                    <Button onClick={()=>navigate("/setup-profile")}>
+                                        <TbHomeHand /> Request a tour
+                                    </Button>
+                                </Tooltip>
+                            )
                     )
                     :(
                         <Tooltip placement="top" title={"Login to request a tour"}>

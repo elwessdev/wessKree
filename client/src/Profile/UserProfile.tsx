@@ -7,7 +7,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { follow, getUserInfos, unFollow, userProperties } from "../API/user";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useUser } from "../hooks/userContext";
 
 
 // Icons
@@ -18,6 +19,8 @@ import { FaSquareWhatsapp, FaSquarePhone } from "react-icons/fa6";
 type params = Record<string, string | undefined>;
 
 export default function UserProfile(){
+    const {user} = useUser();
+    const navigate = useNavigate();
     const {userNameUrl}:any = useParams<params>();
     const queryClient = useQueryClient();
     const [open, setOpen] = useState<boolean>(false);
@@ -39,7 +42,7 @@ export default function UserProfile(){
         // staleTime: Infinity
     })
 
-    console.log(userInfo);
+    // console.log(userInfo);
     // console.log(properties);
 
     const handleQuestion = ()=>{
@@ -107,15 +110,28 @@ export default function UserProfile(){
                             )}
                             {/* <Button className="ask" onClick={()=>setOpen(true)}><TbHomeQuestion /> Ask a question</Button> */}
                         </div>
-                        {userInfo?.isFollow
-                            ?(
-                                <Tooltip placement="top" title={"Unfollow"}>
-                                    <Button className="notif active" onClick={handleUnFollow}><MdNotificationsActive /></Button>
-                                </Tooltip>
-                            )
+                        {
+                            user 
+                                ? user?.isActive 
+                                    ? userInfo?.isFollow
+                                        ?(
+                                            <Tooltip placement="top" title={"Unfollow"}>
+                                                <Button className="notif active" onClick={handleUnFollow}><MdNotificationsActive /></Button>
+                                            </Tooltip>
+                                        )
+                                        :(
+                                            <Tooltip placement="top" title={"Stay up to date"}>
+                                                <Button className="notif" onClick={handleFollow}><MdNotificationsActive /></Button>
+                                            </Tooltip>
+                                        )
+                                : (
+                                    <Tooltip placement="top" title={"Complete your profile"}>
+                                        <Button className="notif" onClick={()=>navigate("/setup-profile")}><MdNotificationsActive /></Button>
+                                    </Tooltip>
+                                )
                             :(
-                                <Tooltip placement="top" title={"Stay up to date"}>
-                                    <Button className="notif" onClick={handleFollow}><MdNotificationsActive /></Button>
+                                <Tooltip placement="top" title={"Login First"}>
+                                    <Button className="notif"><MdNotificationsActive /></Button>
                                 </Tooltip>
                             )
                         }

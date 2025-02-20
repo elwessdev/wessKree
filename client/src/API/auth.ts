@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Login
-export const signin = async (values: { username: string, password: string }) => {
+export const signin = async (values: { username: string, password: string, keepLogin:boolean }) => {
     try {
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/signin`,{...values});
         return res;

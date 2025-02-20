@@ -2,7 +2,7 @@ import "./style.scss"
 import { FC, memo, useState } from 'react';
 import { NavLink } from "react-router-dom";
 import { Modal,Input,Form,Button,Checkbox,Spin,message } from 'antd';
-import type { CheckboxChangeEvent } from "antd/es/checkbox";
+// import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useUser } from "../../hooks/userContext";
 import { signin } from "../../API/auth";
 
@@ -24,7 +24,7 @@ const Login: FC<props> = ({open,cancel}) => {
     const [form] = Form.useForm();
     const [loading, setloading] = useState<boolean>(false);
 
-    const handleFinish = async (values: { username: string; password: string }) => {
+    const handleFinish = async (values: { username: string; password: string; keepLogin:boolean }) => {
         // console.log("Login values:", values);
         setloading(true);
         try{
@@ -52,10 +52,6 @@ const Login: FC<props> = ({open,cancel}) => {
             setloading(false);
             message.error(`Something went wrong! Try again`);
         }
-    };
-
-    const handleKeepMe = (e: CheckboxChangeEvent) => {
-        console.log(`checked = ${e.target.checked}`);
     };
 
     return (
@@ -95,13 +91,15 @@ const Login: FC<props> = ({open,cancel}) => {
                 <Form.Item
                     name="keepLogin"
                     className="check"
+                    initialValue={false}
+                    valuePropName="checked"
                 >
-                    <>
-                        <Checkbox onChange={handleKeepMe}>
+                    <div>
+                        <Checkbox>
                             Keep me logged in
                         </Checkbox>
                         <NavLink to={"/forgot-password"} className="lnkP">Forgot Password ?</NavLink>
-                    </>
+                    </div>
                 </Form.Item>
                 <Form.Item>
                     <Button htmlType="submit" block>

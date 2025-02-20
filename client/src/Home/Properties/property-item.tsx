@@ -1,6 +1,6 @@
 import "./style.scss"
 import { Button, Tooltip, Image, message, Popconfirm, Badge } from 'antd';
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { formatDistance } from 'date-fns'
 import { featuresList } from "../../Data/features";
 import { memo } from "react";
@@ -24,6 +24,7 @@ type props = {
 
 const PropertyItem = ({data,page,delFavBtn}:props)=>{
     const {user} = useUser();
+    const navigate = useNavigate();
 
     // Add favorite
     const addToFavorite = async() => {
@@ -121,12 +122,18 @@ const PropertyItem = ({data,page,delFavBtn}:props)=>{
                                     {/* </Tooltip> */}
                                 </Popconfirm>
                             ) : (
-                                <Tooltip placement="top" title={"Add to Favorite"} arrow={true}>
-                                    <Button onClick={addToFavorite} className="favorite"><FaRegHeart /></Button>
-                                </Tooltip>
+                                user?.isActive ? (
+                                    <Tooltip placement="top" title={"Add to Favorite"} arrow={true}>
+                                        <Button onClick={addToFavorite} className="favorite"><FaRegHeart /></Button>
+                                    </Tooltip>
+                                ) :(
+                                    <Tooltip placement="top" title={"Complete your profile"} arrow={true}>
+                                        <Button onClick={()=>navigate("/setup-profile")} className="favorite"><FaRegHeart /></Button>
+                                    </Tooltip>
+                                )
                             )
                         ) : user == null && page !== "owner" ? (
-                            <Tooltip placement="top" title={"Please login first"} arrow={true}>
+                            <Tooltip placement="top" title={"Login first"} arrow={true}>
                                 <Button className="favorite"><FaRegHeart /></Button>
                             </Tooltip>
                         ) : null}

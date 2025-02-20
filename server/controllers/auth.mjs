@@ -71,8 +71,9 @@ export const logout = (req,res)=>{
 }
 // Signin
 export const signin = async (req, res) => {
-    const { email, password } = req.body;
     try {
+        const { email, password, keepLogin } = req.body;
+        // console.log(keepLogin);
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json({ message: 'Invalid credentials' });
@@ -84,9 +85,9 @@ export const signin = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { id: user._id}, 
+            {id: user._id}, 
             process.env.SECRET_KEY,
-            { expiresIn: '8h' }
+            {expiresIn: keepLogin ?'3d' :'1h'}
         );
 
         // console.log(token);
@@ -94,7 +95,7 @@ export const signin = async (req, res) => {
         res.cookie('tkn', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'prod',
-            maxAge: 8 * 60 * 60 * 1000,
+            maxAge: keepLogin ?3*24*60*60*1000 :60*60*1000,
             sameSite: process.env.NODE_ENV === 'prod' ? "None" : undefined,
             path: '/',
         });
