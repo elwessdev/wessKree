@@ -5,7 +5,7 @@ import TextArea from 'antd/es/input/TextArea';
 import { useUser } from '../../hooks/userContext';
 
 import { LuBadgeInfo } from "react-icons/lu";
-import { TbHomeQuestion } from "react-icons/tb";
+// import { TbHomeQuestion } from "react-icons/tb";
 
 type props = {
     title?: string,
@@ -38,13 +38,13 @@ const Owner = ({userInfo}:props) => {
                 </div>
             </div>
             <div className="btns">
-                {userInfo?.username != user?.username && (
+                {/* {userInfo?.username != user?.username && (
                     <>
                         <Button onClick={()=>setOpen(true)} disabled={user?.username ?true :false}>
                             <TbHomeQuestion /> Ask a question
                         </Button>
                     </>
-                )}
+                )} */}
                 <NavLink to={userInfo?.username==user?.username ?`/my-profile` :`/profile/${userInfo?.username}`}>
                     <LuBadgeInfo /> Get more info
                 </NavLink>

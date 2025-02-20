@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Select } from 'antd';
-import {StateCity} from "../Data/stateCity.ts";
+import {StateCity} from "../../Data/stateCity.ts";
 import { useNavigate } from "react-router-dom";
 
 // Icons
 import { TbHomeSearch } from "react-icons/tb";
-import { useSearch } from "../hooks/searchContext.tsx";
-import { set } from "date-fns";
+import { useSearch } from "../../hooks/searchContext.tsx";
+// import { set } from "date-fns";
 
 // Type
 type selectValues = {state: string | null, city: string | null};

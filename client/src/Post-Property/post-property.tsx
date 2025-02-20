@@ -1,6 +1,6 @@
 import "./style.scss"
 import { useState } from "react";
-import { Button, message, Steps } from 'antd';
+import { message, Steps } from 'antd';
 import Step1 from "./steps/step1";
 import Step2 from "./steps/step2";
 import Step3 from "./steps/step3";
@@ -243,7 +243,6 @@ export default function PostPerperty(){
 
     return (
         <div id="post-property">
-            <Button onClick={handleSubmit}>Test</Button>
             <Steps current={current} items={steps.map((step) => ({ key: step.title, title: step.title }))} />
             <div className="steps">
                 {steps[current].content}

@@ -5,7 +5,7 @@ import { Button, Dropdown,MenuProps } from 'antd';
 import Login from "../Auth/Login/login";
 import { useUser } from "../hooks/userContext";
 import Logo from '../assets/logo2.jpeg'
-import SearchNav from "./search";
+import SearchNav from "./components/search";
 
 // Icons
 // import { TbHomeHand } from "react-icons/tb";

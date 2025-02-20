@@ -2,7 +2,7 @@ import { memo } from "react"
 import { userProperties } from "../../API/user"
 import { useQuery } from "@tanstack/react-query";
 import PropertyItem from "../../Home/Properties/property-item";
-import { Badge, Empty, Spin, Typography } from 'antd';
+import { Empty, Spin, Typography } from 'antd';
 import { NavLink } from "react-router-dom";
 
 type props = {
