@@ -1,19 +1,23 @@
 import "./style.scss"
 import Filter from "../Filter/filter"
 import PropertyItem from "./property-item"
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Affix, Empty, Spin } from "antd";
 import { getProperties } from "../../API/property";
 import { useEffect, useRef, useState } from "react";
 import { useSearch } from "../../hooks/searchContext";
+import SearchGIF from "../../assets/House searching.gif"
+import { useLocation } from "react-router-dom";
 
 export default function Properties(){
+    const location = useLocation();
     const {globalSearch} = useSearch();
+    const queryClient = useQueryClient();
     const searchRef = useRef();
     // const [top, setTop] = useState<number>(100);
     const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
     const [filterList, setFilterList] = useState<any>(null);
-
+    
     // Properties
     const {data:properties,isLoading,error} = useQuery({
         queryFn: () => getProperties(),
@@ -21,6 +25,13 @@ export default function Properties(){
         refetchOnWindowFocus: true
         // staleTime: Infinity
     });
+
+    useEffect(()=>{
+        if(location.pathname=="/"){
+            setFilterList(null);
+            queryClient.invalidateQueries({queryKey:["homeProperties"]});
+        }
+    },[location]);
 
     useEffect(()=>{
         if(globalSearch){
@@ -38,12 +49,13 @@ export default function Properties(){
                         return item?.state === state;
                     }));
                 }
-                setTimeout(()=>setLoadingSearch(false),150);
+                setTimeout(()=>setLoadingSearch(false),1000);
             }
         }
     },[globalSearch]);
 
     const handleSearch = () => {
+        // console.log(searchRef.current?.filter);
         if (!searchRef.current) return;
         const {filter}:any = searchRef.current;
         const activeFilters = Object.fromEntries(
@@ -68,7 +80,7 @@ export default function Properties(){
                     return item[key] === value;
                 });
             }));
-            setTimeout(()=>setLoadingSearch(false),150);
+            setTimeout(()=>setLoadingSearch(false),1000);
         }
     }
 
@@ -95,8 +107,11 @@ export default function Properties(){
                 <Filter sRef={searchRef} onClick={handleSearch} onReset={handleReset}/>
             </Affix>
             <div className="items">
-                {(isLoading || loadingSearch) && (
+                {isLoading && (
                     <Spin size="large" />
+                )}
+                {loadingSearch && (
+                    <img src={SearchGIF} />
                 )}
                 {error && (
                     <h1>There is an error to load Properties</h1>

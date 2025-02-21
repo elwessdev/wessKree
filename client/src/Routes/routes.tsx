@@ -15,6 +15,7 @@ import { SearchProvider } from '../hooks/searchContext.tsx';
 import AuthProtection from './authProtection.tsx';
 import PublicRoute from './publicRoute.tsx';
 import NotFound from '../404/notFound.tsx';
+import ForgotPassword from '../Auth/Forgot-password/forgotPassword.tsx';
 
 
 const router = createBrowserRouter([
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
             { path: "setup-profile", element: <AuthProtection><SetupProfile /></AuthProtection> },
             { path: "settings", element: <AuthProtection><Settings /></AuthProtection> },
             { path: "requests", element: <AuthProtection><Requests /></AuthProtection> },
+            { path: "forgot-password", element: <PublicRoute><ForgotPassword /></PublicRoute> },
         ],
     },
 ]);
