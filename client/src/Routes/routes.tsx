@@ -14,6 +14,7 @@ import Requests from '../Requests/requests.tsx';
 import { SearchProvider } from '../hooks/searchContext.tsx';
 import AuthProtection from './authProtection.tsx';
 import PublicRoute from './publicRoute.tsx';
+import NotFound from '../404/notFound.tsx';
 
 
 const router = createBrowserRouter([
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
                             <App />
                     </SearchProvider>
                 </UserProvider>,
-        errorElement: <h1>Page not found</h1>,
+        errorElement: <NotFound />,
         children: [
             { path: "", element: <Home /> },
             { path: "search", element: <Home /> },
