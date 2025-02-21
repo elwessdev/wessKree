@@ -49,6 +49,7 @@ const Login: FC<props> = ({open,cancel}) => {
                 setloading(false);
             }
         } catch(err){
+            console.log(err);
             setloading(false);
             message.error(`Something went wrong! Try again`);
         }
@@ -98,7 +99,7 @@ const Login: FC<props> = ({open,cancel}) => {
                         <Checkbox>
                             Keep me logged in
                         </Checkbox>
-                        <NavLink to={"/forgot-password"} className="lnkP">Forgot Password ?</NavLink>
+                        <NavLink to={"/forgot-password"} onClick={()=>cancel(false)} className="lnkP">Forgot Password ?</NavLink>
                     </div>
                 </Form.Item>
                 <Form.Item>
