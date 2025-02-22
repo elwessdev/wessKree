@@ -16,7 +16,7 @@ export default mongoose.model("users", new Schema(
         },
         password: {
             type: String,
-            required: true
+            // required: true
         },
         photo: {
             type: String,
@@ -51,6 +51,14 @@ export default mongoose.model("users", new Schema(
         followers: {
             type: [String],
             default: []
-        }
+        },
+        resetPwd: {
+            OTP: String,
+            expireDate: Date
+        },
+        isGoogle: {
+            type: Boolean,
+            default: false
+        },
     },{timestamps: true})
 )

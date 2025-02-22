@@ -1,0 +1,51 @@
+.forgot-password{
+    max-width: 450px;
+    background-color: #FFF;
+    margin: 0 auto;
+    margin-top: 70px;
+    border-radius: 5px;
+    border: 2px solid rgba(112, 101, 239, 0.12);
+    overflow: hidden;
+    padding: 30px;
+    h3 {
+        color: #7065ef;
+        text-align: center;
+        font-size: 35px;
+        font-weight: 700;
+        margin: 10px 0 15px 0;
+        display: block;
+    }
+    p{
+        text-align: center;
+        font-weight: 400;
+        font-size: 15px;
+        color: #686868;
+        margin-bottom: 30px;
+    }
+    form{
+        .ant-form-item-label{
+            padding: 0;
+            padding-bottom: 3px !important;
+        }
+        .ant-form-item .ant-form-item-label > label{
+            font-size: 15px;
+            color: #0d133a;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+        button{
+            margin-top: 20px;
+        }
+        .ant-form-item{
+            margin-bottom: 15px;
+        }
+        .otp{
+            .ant-form-item-label{
+                text-align: center !important;
+            }
+        }
+    }
+    .ant-spin-spinning{
+        color: #FFF;
+    }
+}

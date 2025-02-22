@@ -14,6 +14,7 @@ interface User {
     isActive?: boolean;
     pfpId?:string;
     _id?: string;
+    isGoogle?: boolean;
     contact: {
         phone: string,
         whatsapp: string
@@ -40,7 +41,7 @@ export const UserProvider = ({children}: UserProviderProps) => {
         try {
             const res = await axios.get<User>(`${import.meta.env.VITE_API_URL}/user/getUser`);
             setUser(res.data);
-            console.log("get user",res.data);
+            // console.log("get user",res.data);
             if (res.data&&!res.data.isActive){
                 navigate("/setup-profile");
             }

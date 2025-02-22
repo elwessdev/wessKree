@@ -136,7 +136,8 @@ const PropertyItem = ({data,page,delFavBtn}:props)=>{
                             <Tooltip placement="top" title={"Login first"} arrow={true}>
                                 <Button className="favorite"><FaRegHeart /></Button>
                             </Tooltip>
-                        ) : null}
+                        ) : null
+                        }   
                     </div>
             </div>
         </Badge.Ribbon>

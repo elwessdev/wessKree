@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { UserProvider } from '../hooks/userContext.tsx';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import App from "../App";
 import Home from '../Home/Home'
@@ -23,7 +24,9 @@ const router = createBrowserRouter([
         path: "/",
         element: <UserProvider>
                     <SearchProvider>
-                            <App />
+                            <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_GOOGLE}>
+                                <App />
+                            </GoogleOAuthProvider>
                     </SearchProvider>
                 </UserProvider>,
         errorElement: <NotFound />,

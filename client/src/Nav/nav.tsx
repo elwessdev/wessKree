@@ -1,7 +1,7 @@
 import "./nav.scss"
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Button, Dropdown,MenuProps } from 'antd';
+import { Button, Dropdown } from 'antd';
 import Login from "../Auth/Login/login";
 import { useUser } from "../hooks/userContext";
 import Logo from '../assets/logo2.jpeg'
@@ -23,30 +23,6 @@ export default function Nav(){
     const {user, logout} = useUser();
     const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false);
     const navigate = useNavigate();
-
-    const profile: MenuProps['items'] = [
-        {
-            key: '1',
-            label: (
-                <NavLink to={"/my-profile"}><FaHouseUser /> Profile</NavLink>
-            ),
-        },
-        {
-            key: '2',
-            label: (
-                <NavLink to={"/settings"}><FaUserCog /> Settings</NavLink>
-            ),
-        },
-        {
-            key: '3',
-            label: (
-                <Button onClick={()=>{
-                    logout();
-                    navigate("/");
-                }}><RiLogoutCircleRFill /> Logout</Button>
-            ),
-        },
-    ];
 
     const showModal = () => {
         setIsLoginOpen(true);
@@ -75,7 +51,37 @@ export default function Nav(){
                             <NavLink to={"/post-property"}><MdOutlineAddHomeWork /> Post Property</NavLink>
                             <NavLink to={"/requests"}><TbHomeStats /> Requests</NavLink>
                             <Notification userId={user?._id} />
-                            <Dropdown menu={{items:profile}} placement="bottomRight" arrow>
+                            <Dropdown 
+                                menu={{
+                                    items:[
+                                        {
+                                            key: '1',
+                                            label: (
+                                                <NavLink to={"/my-profile"}><FaHouseUser /> Profile</NavLink>
+                                            ),
+                                        },
+                                        {
+                                            key: '2',
+                                            label: (
+                                                <NavLink to={"/settings"}><FaUserCog /> Settings</NavLink>
+                                            ),
+                                        },
+                                        {
+                                            key: '3',
+                                            label: (
+                                                <a onClick={()=>{
+                                                    logout();
+                                                    navigate("/");
+                                                }}>
+                                                    <RiLogoutCircleRFill /> Logout
+                                                </a>
+                                            ),
+                                        },
+                                    ]
+                                }}
+                                placement="bottomRight"
+                                arrow
+                            >
                                 <img className="profile" src={user?.photo} />
                             </Dropdown>
                         </>

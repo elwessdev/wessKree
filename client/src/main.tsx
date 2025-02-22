@@ -75,7 +75,7 @@ const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
   // <StrictMode>
-    <ConfigProvider 
+    <ConfigProvider
       theme={{
         components: componentsTheme,
         token: {

@@ -15,6 +15,7 @@ import { IoIosNotifications } from "react-icons/io";
 import { LoadingOutlined } from "@ant-design/icons";
 import { MdOutlineAccessTime } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
+import { useUser } from "../../hooks/userContext";
 
 
 
@@ -26,6 +27,7 @@ type props = {
 }
 
 const Notification = ({userId}:props)=>{
+    const {user} = useUser();
     const queryClient = useQueryClient();
     const [api, contextHolder] = notification.useNotification();
     const [notifCount, setNotifCount]=useState<number>(0);
@@ -46,7 +48,7 @@ const Notification = ({userId}:props)=>{
 
     useEffect(() => {
         // console.log(data);
-        if (!userId) return;
+        if (!userId||user?.username) return;
 
         // Register the user on the socket
         // socket.emit('registerUser', userId);

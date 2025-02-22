@@ -13,7 +13,8 @@ export default function Properties(){
     const location = useLocation();
     const {globalSearch} = useSearch();
     const queryClient = useQueryClient();
-    const searchRef = useRef();
+    const searchRef = useRef<any>();
+
     // const [top, setTop] = useState<number>(100);
     const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
     const [filterList, setFilterList] = useState<any>(null);
@@ -29,6 +30,14 @@ export default function Properties(){
     useEffect(()=>{
         if(location.pathname=="/"){
             setFilterList(null);
+            searchRef.current?.setFilter({
+                state: null,
+                city: null,
+                type: null,
+                price: null,
+                rooms: null,
+                category: null
+            })
             queryClient.invalidateQueries({queryKey:["homeProperties"]});
         }
     },[location]);
@@ -87,12 +96,11 @@ export default function Properties(){
     const handleReset = () => {
         if(filterList){
             setLoadingSearch(true);
-            const {setFilter}:any = searchRef.current;
-            setFilter({
+            searchRef.current?.setFilter({
                 state: null,
                 city: null,
                 type: null,
-                price: [0,5000],
+                price: null,
                 rooms: null,
                 category: null
             })
@@ -111,7 +119,7 @@ export default function Properties(){
                     <Spin size="large" />
                 )}
                 {loadingSearch && (
-                    <img src={SearchGIF} />
+                    <img width={300} src={SearchGIF} />
                 )}
                 {error && (
                     <h1>There is an error to load Properties</h1>

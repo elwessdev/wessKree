@@ -93,7 +93,7 @@ export default function Settings(){
 
             if(fileToUpload){
                 const deleteCloudRes:any = await deleteCloud(user?.pfpId);
-                console.log(deleteCloudRes);
+                // console.log(deleteCloudRes);
                 if(!deleteCloudRes.success){
                     message.error("Something wrong in change profile picture, Try again");
                     return;
@@ -164,7 +164,7 @@ export default function Settings(){
                 message.success("You profile has been updated");
                 setLoading(false);
             }
-            console.log(newData);
+            // console.log(newData);
             setLoading(false);
         }
         return;
@@ -287,7 +287,7 @@ export default function Settings(){
                                         { required: true, message: "Please Enter Email" }
                                     ]}
                                 >
-                                    <Input type="email" placeholder="Enter Email" />
+                                    <Input disabled={user?.isGoogle} type="email" placeholder="Enter Email" />
                                 </Form.Item>
                                 <Form.Item
                                     style={{flex: 1}}
