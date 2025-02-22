@@ -65,3 +65,21 @@ export const sendCode = async(email:string)=>{
         return err;
     }
 }
+// Verify OTP
+export const verifyOTP = async(email:string,otp:string)=>{
+    try {
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/verifyOTP`,{email,otp});
+        return res;
+    } catch(err){
+        return err;
+    }
+}
+// Verify OTP
+export const changePwd = async(email:string,otp:string,password:string)=>{
+    try {
+        const res = await axios.put(`${import.meta.env.VITE_API_URL}/auth/changePwd`,{email,otp,password});
+        return res;
+    } catch(err){
+        return err;
+    }
+}

@@ -51,6 +51,10 @@ export default mongoose.model("users", new Schema(
         followers: {
             type: [String],
             default: []
+        },
+        resetPwd: {
+            OTP: String,
+            expireDate: Date
         }
     },{timestamps: true})
 )
