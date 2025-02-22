@@ -56,3 +56,12 @@ export const checkEmail = async(email:string)=>{
         return err;
     }
 }
+// Send Code
+export const sendCode = async(email:string)=>{
+    try {
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/sendCode`,{email});
+        return res;
+    } catch(err){
+        return err;
+    }
+}

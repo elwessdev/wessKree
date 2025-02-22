@@ -13,7 +13,7 @@ type filter = {
     state: string | null,
     city: string | null,
     type: string | null,
-    price: number[] | number,
+    price: number[] | number | null,
     rooms: string | null,
     category:  string | null,
 }
@@ -27,7 +27,7 @@ export default function Filter({sRef,onClick,onReset}:any){
         state: null,
         city: null,
         type: null,
-        price: [0,5000],
+        price: null,
         rooms: null,
         category: null
     })
@@ -115,9 +115,8 @@ export default function Filter({sRef,onClick,onReset}:any){
                     range
                     min={0}
                     max={5000}
-                    value={filter.price as number[]}
+                    value={filter.price as number[] ?? [0,5000]}
                     onChange={onChange}
-                    // onChangeComplete={onChangeComplete}
                 />
             </div>
             {/* <div className="p_s">

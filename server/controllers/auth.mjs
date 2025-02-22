@@ -1,7 +1,27 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import User from "../models/user.mjs"
+import nodemailer from 'nodemailer';
+import crypto from "crypto";
+import dotenv from 'dotenv';
+dotenv.config();
 // import mongoose from 'mongoose';
+
+// Config nodemailer
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASS
+    },
+});
+// Gnerate secure code
+function generateSecureCode(length) {
+    return crypto.randomBytes(length)
+        .toString("base64")
+        .replace(/[^a-zA-Z0-9]/g, '')
+        .slice(0, length);
+}
 
 // Signup
 export const signup = async(req,res)=>{
@@ -105,9 +125,25 @@ export const signin = async (req, res) => {
         return res.status(500).json({ message: 'Server error' });
     }
 }
-
-
-
-export const forgotpwd = (req,res)=>{
-    res.send("forgotpassword done")
+// Send Code
+export const sendCode = async(req,res)=>{
+    try{
+        const {email} = req.body;
+        const user = await User.findOne({email});
+        if(!user){
+            return res.status(200).json({message: 'send code ++'});
+        }
+        const code = generateSecureCode(6);
+        await transporter.sendMail({
+            from: "WessKree",
+            to: email,
+            subject: "Verification Code",
+            text: `Your verification code is: ${code}`,
+            html: `<p>Your verification code is: <strong>${code}</strong></p>`
+        });
+        return res.status(200).json({message: 'send code'});
+    } catch(err){
+        console.error("send code error:",err);
+        return res.status(500).json({ message: 'server error' });
+    }
 }
