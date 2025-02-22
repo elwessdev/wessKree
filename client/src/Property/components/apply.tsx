@@ -70,7 +70,7 @@ const Apply = ({price,id,name,username,title,status}:props) => {
         setTourType(null);
         setTourDate(null);
         setLoadingReq(false);
-        console.log(tourType,tourDate);
+        // console.log(tourType,tourDate);
     }
 
     // const handleSelectPrice = (p:string) => {

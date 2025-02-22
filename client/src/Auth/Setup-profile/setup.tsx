@@ -1,5 +1,5 @@
 import "./style.scss"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ImgCrop from 'antd-img-crop';
 import { Form, Input, Select, Button, Flex, message, Upload, Avatar, UploadProps } from 'antd';
 import {StateCity} from "../../Data/stateCity.ts";
@@ -12,6 +12,7 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import { RiImageEditLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { TbLockPassword } from "react-icons/tb";
 
 
 type stateCityType = { value: string; label: string }[];
@@ -42,6 +43,12 @@ export default function SetupProfile(){
         }
     };
 
+    useEffect(()=>{
+        if(user?.photo?.length){
+            setImageUrl(user.photo);
+        }
+    },[user]);
+
     // Handle Select
     const [delegations, setDelegations] = useState<stateCityType>([]);
     const stateOptions = StateCity.map(state => ({
@@ -55,8 +62,15 @@ export default function SetupProfile(){
     };
 
     // Form
-    const handleFormSubmit = async (values: { state: string, city: string, phone: string, whatsapp: number }) => {
-        if(!fileToUpload){
+    const handleFormSubmit = async (values: { 
+        state: string,
+        city: string,
+        phone: string,
+        whatsapp: number,
+        password: string,
+        confirm: string
+    }) => {
+        if(!user?.isGoogle&&!fileToUpload){
             message.error("Please upload profile photo");
             return;
         }
@@ -65,35 +79,37 @@ export default function SetupProfile(){
             state: capitalize(values.state),
             city: capitalize(values.city),
         };
-        try {
-            // const upPfp: any = await uploadCloud(fileToUpload);
-            const formData = new FormData();
-            formData.append("file", fileToUpload);
-            formData.append("upload_preset", import.meta.env.VITE_PRESET);
-            // formData.append("folder", "pfp");
-            const res = await fetch(
-                `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD}/image/upload/`, 
-                {
-                    method: "POST",
-                    body: formData,
-                    credentials: "omit",
+        if(fileToUpload){
+            try {
+                // const upPfp: any = await uploadCloud(fileToUpload);
+                const formData = new FormData();
+                formData.append("file", fileToUpload);
+                formData.append("upload_preset", import.meta.env.VITE_PRESET);
+                // formData.append("folder", "pfp");
+                const res = await fetch(
+                    `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD}/image/upload/`, 
+                    {
+                        method: "POST",
+                        body: formData,
+                        credentials: "omit",
+                    }
+                );
+                const data = await res.json();
+                if (!data.secure_url) {
+                    setLoading(false);
+                    message.error("There is problem in profile photo, try again :)");
+                    return;
                 }
-            );
-            const data = await res.json();
-            if (!data.secure_url) {
+                fullData = {
+                    ...fullData,
+                    photo: data.secure_url,
+                    pfpId: data.public_id
+                };
+            } catch {
                 setLoading(false);
-                message.error("There is problem in profile photo, try again :)");
+                message.error("There was an error uploading the profile photo, please try again.");
                 return;
             }
-            fullData = {
-                ...fullData,
-                photo: data.secure_url,
-                pfpId: data.public_id
-            };
-        } catch {
-            setLoading(false);
-            message.error("There was an error uploading the profile photo, please try again.");
-            return;
         }
 
         let contactInfo:any = {};
@@ -106,6 +122,15 @@ export default function SetupProfile(){
 
         if(Object.entries(contactInfo).length){
             fullData = {...fullData,contact:contactInfo};
+        }
+
+        if(user?.isGoogle==true&&values.password){
+            if(values.password!=values.confirm){
+                setLoading(false);
+                message.error("Passwords do not match");
+                return;
+            }
+            fullData = {...fullData,password:values.password};
         }
 
         // console.log(fullData);
@@ -136,8 +161,10 @@ export default function SetupProfile(){
                         onChange={onChange}
                         className={imageUrl ?"edit":""}
                     >
-                    {imageUrl==null && <div className="up"><FaCloudUploadAlt /></div>}
-                    {imageUrl && <div className="edit"><RiImageEditLine /></div>}
+                    {user?.photo?.length
+                        ? <div className="edit"><RiImageEditLine /></div>
+                        : <div className="up"><FaCloudUploadAlt /></div>
+                    }
                     </Upload>
                 </ImgCrop>
             </div>
@@ -185,6 +212,42 @@ export default function SetupProfile(){
                             />
                         </Form.Item>
                     </Flex>
+                    {user?.isGoogle==true &&
+                        <Flex gap={15}>
+                            <Form.Item
+                                name="password"
+                                label="Password"
+                                style={{ flex: 1 }}
+                                rules={[
+                                    {required: true, message: '- Password is required'},
+                                    { min: 5, message: "- Password must be at least 5 characters" },
+                                ]}
+                                hasFeedback
+                            >
+                                <Input.Password size="large" placeholder="Enter password" prefix={<TbLockPassword />} />
+                            </Form.Item>
+                            <Form.Item
+                                name="confirm"
+                                label="Confirm Password"
+                                style={{ flex: 1 }}
+                                dependencies={['password']}
+                                hasFeedback
+                                rules={[
+                                    {required: true, message: '- Confirm password is required'},
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                        if (!value || getFieldValue('password') === value) {
+                                            return Promise.resolve();
+                                        }
+                                        return Promise.reject(new Error('Passwords do not match'));
+                                        },
+                                    }),
+                                ]}
+                            >
+                                <Input.Password size="large" placeholder="Enter confirm password" prefix={<TbLockPassword />} />
+                            </Form.Item>
+                        </Flex>
+                    }
                     <Flex gap={15}>
                         <Form.Item
                             style={{ flex: 1 }}

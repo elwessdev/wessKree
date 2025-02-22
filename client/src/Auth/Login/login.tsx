@@ -4,13 +4,14 @@ import { NavLink } from "react-router-dom";
 import { Modal,Input,Form,Button,Checkbox,Spin,message } from 'antd';
 // import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useUser } from "../../hooks/userContext";
-import { signin } from "../../API/auth";
+import { signin, signWithGoogle } from "../../API/auth";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useQueryClient } from "@tanstack/react-query";
 
 // Icon
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
 import { LoadingOutlined } from '@ant-design/icons';
-import { useQueryClient } from "@tanstack/react-query";
 
 
 interface props {
@@ -54,6 +55,26 @@ const Login: FC<props> = ({open,cancel}) => {
             message.error(`Something went wrong! Try again`);
         }
     };
+
+    const handleLoginWithGoogle = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            try {
+                const res:any = await signWithGoogle(tokenResponse.access_token)
+                if(res.status==200){
+                    queryClient.invalidateQueries({queryKey: ["homeProperties"]});
+                    userDetails();
+                    cancel(false);
+                } else {
+                    message.error("Something went wrong! Try again");
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        onError: (error) => {
+            console.error('Login Failed:', error);
+        },
+    });
 
     return (
         <Modal
@@ -108,7 +129,7 @@ const Login: FC<props> = ({open,cancel}) => {
                     </Button>
                 </Form.Item>
                 <div className="dvider"><span>Or Access Quickly</span></div>
-                <div className="google-button">
+                <div className="google-button" onClick={()=>handleLoginWithGoogle()}>
                     <div className="google-icon-wrapper">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 48 48">
                         <g>

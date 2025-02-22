@@ -4,6 +4,7 @@ import User from "../models/user.mjs"
 import nodemailer from 'nodemailer';
 import crypto from "crypto";
 import dotenv from 'dotenv';
+import axios from 'axios';
 dotenv.config();
 // import mongoose from 'mongoose';
 
@@ -71,10 +72,16 @@ export const setupProfile = async(req,res) => {
         if(!user){
             return res.status(400).json({ message: 'user not found' });
         }
+        if(data.password){
+            const salt = await bcrypt.genSalt(10);
+            const hashPwd = await bcrypt.hash(data.password, salt);
+            data.password = hashPwd;
+        }
         await User.findByIdAndUpdate(id,{
             ...data,
             isActive: true
         },{})
+        
         return res.status(200).json({message: "user profile has been setup"});
     } catch(err){
         console.error("setupProfile error:",err);
@@ -118,6 +125,57 @@ export const signin = async (req, res) => {
             maxAge: keepLogin ?3*24*60*60*1000 :60*60*1000,
             sameSite: process.env.NODE_ENV === 'prod' ? "None" : undefined,
             path: '/',
+        });
+        return res.status(200).json({message: 'Login successful'});
+    } catch (err) {
+        console.error("Signin error:", err.message); // Log only the error message
+        return res.status(500).json({ message: 'Server error' });
+    }
+}
+// Signin with Google
+export const signWithGoogle = async (req, res) => {
+    try {
+        const {token} = req.body;
+        const googleRes = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = googleRes.data;
+        const checkUser = await User.findOne({email: data.email});
+        if (!checkUser) {
+            const newUser = new User({
+                username: data.email.split('@')[0],
+                publicName: data.name,
+                email: data.email,
+                photo: data.picture,
+                isGoogle: true,
+            });
+            await newUser.save();
+            const id = newUser._id;
+            console.log(id);
+            const tokenJWT = jwt.sign(
+                {id: id}, 
+                process.env.SECRET_KEY,
+                {expiresIn: '1h'}
+            );
+            res.cookie('tkn', tokenJWT, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'prod',
+                maxAge: 60*60*1000,
+                sameSite: process.env.NODE_ENV === 'prod' ? "None" : undefined,
+                path: '/',
+            });
+            return res.status(200).json({message: 'Login successful'});
+        }
+        const tokenJWT = jwt.sign(
+            {id: checkUser._id}, 
+            process.env.SECRET_KEY,
+            {expiresIn: '1h'}
+        );
+        res.cookie('tkn', tokenJWT, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'prod',
+            maxAge: 60*60*1000,
+            sameSite: process.env.NODE_ENV === 'prod' ? "None" : undefined,
         });
         return res.status(200).json({message: 'Login successful'});
     } catch (err) {

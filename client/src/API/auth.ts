@@ -9,6 +9,16 @@ export const signin = async (values: { username: string, password: string, keepL
         return err;
     }
 };
+// Sign With Google
+export const signWithGoogle = async (token:string) => {
+    try {
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/signWithGoogle`,{token});
+        return res;
+    }
+    catch(err){
+        return err;
+    }
+}
 // Signup
 export const signup = async(username:string,publicName:string,email:string,password:string) => {
     try{

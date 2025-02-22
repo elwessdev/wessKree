@@ -18,7 +18,7 @@ const MyProperty = ({username}:props) => {
         enabled: !!username
         // refetchOnWindowFocus: true,
     });
-    console.log(data);
+    // console.log(data);
     
     return (
         <div className="porps">

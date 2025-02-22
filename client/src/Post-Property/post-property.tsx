@@ -111,7 +111,7 @@ export default function PostPerperty(){
 
             const uploadPromises = Object.entries(step3Data.images).map(async ([key, img]) => {
                 const res = await uploadImgs(img);
-                console.log(res);
+                // console.log(res);
                 return {
                     key,
                     cloudId: res?.asset_id,
@@ -124,7 +124,7 @@ export default function PostPerperty(){
             if (uploadedImages.some(img => !img.cloudId || !img.url)) {
                 throw new Error("Some images failed to upload.");
             }
-            console.log(uploadedImages);
+            // console.log(uploadedImages);
             handleSubmit(uploadedImages);
         } catch (err:any) {
             message.error(`Something went wrong while uploading images: ${err.message}`);

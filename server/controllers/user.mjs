@@ -9,7 +9,9 @@ import jwt from "jsonwebtoken";
 export const getUser = async(req,res)=>{
     const id = req.token.id;
     try{
-        const user = await User.findOne({_id:id});
+        const user = await User.findOne({_id:id},
+            {followers:0,password:0,resetPwd:0})
+            .lean();
         if(!user){
             return res.status(400).json({ message: 'user not found' });
         }
