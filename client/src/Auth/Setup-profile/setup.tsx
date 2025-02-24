@@ -46,6 +46,7 @@ export default function SetupProfile(){
     useEffect(()=>{
         if(user?.photo?.length){
             setImageUrl(user.photo);
+            console.log(user);
         }
     },[user]);
 
@@ -154,7 +155,7 @@ export default function SetupProfile(){
     return (
         <div className="setup-profile">
             <div className="pfp">
-                <Avatar src={imageUrl} />
+                <Avatar src={user?.photo?.length ?user.photo :imageUrl} />
                 <ImgCrop rotationSlider>
                     <Upload
                         showUploadList={false}

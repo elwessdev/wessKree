@@ -47,8 +47,8 @@ const Notification = ({userId}:props)=>{
 
 
     useEffect(() => {
-        // console.log(data);
-        if (!userId||user?.username) return;
+        console.log(user);
+        if (!userId||user===null) return;
 
         // Register the user on the socket
         // socket.emit('registerUser', userId);

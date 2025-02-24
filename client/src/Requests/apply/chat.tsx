@@ -51,7 +51,7 @@ const Chat = ({id}:props) => {
             socket.emit("registerUser",user?._id)
             socket.emit("joinChat", { userId:user?._id, chatId:id });
             socket.on("receiveMessage", () => {
-                console.log("Received message");
+                // console.log("Received message");
                 queryClient.invalidateQueries({queryKey: ["chatDetails"]});
                 if(data?.data?.type=="apply"){
                     queryClient.invalidateQueries({ queryKey: ['applications'] });
