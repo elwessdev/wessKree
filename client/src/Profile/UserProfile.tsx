@@ -92,14 +92,14 @@ export default function UserProfile(){
                         <div className="contact">
                             {userInfo?.contact && (
                                 <>
-                                    {userInfo?.contact?.phone?.length && (
+                                    {userInfo?.contact?.phone?.length>0 && (
                                         <p>
                                             <FaSquarePhone />
                                             <span>{userInfo?.contact?.phone}</span>
                                             <MdContentCopy onClick={()=>copy(userInfo?.contact?.phone)} className="copy" />
                                         </p>
                                     )}
-                                    {userInfo?.contact?.whatsapp?.length && (
+                                    {userInfo?.contact?.whatsapp?.length>0 && (
                                         <p>
                                             <FaSquareWhatsapp />
                                             <span>{userInfo?.contact?.whatsapp}</span>

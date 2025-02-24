@@ -3,7 +3,7 @@ import { Button, Tooltip, Image, message, Popconfirm, Badge } from 'antd';
 import { NavLink, useNavigate } from "react-router-dom";
 import { formatDistance } from 'date-fns'
 import { featuresList } from "../../Data/features";
-import { memo } from "react";
+import { memo, useState } from "react";
 import { useUser } from "../../hooks/userContext";
 import { addFavorite } from "../../API/property";
 
@@ -14,6 +14,7 @@ import { LuBedSingle } from "react-icons/lu";
 import { BiBath } from "react-icons/bi";
 import { IoTimeOutline } from "react-icons/io5";
 import { IoHeartDislike } from "react-icons/io5";
+import EditProperty from "../../Profile/editProperty";
 
 
 type props = {
@@ -25,6 +26,7 @@ type props = {
 const PropertyItem = ({data,page,delFavBtn}:props)=>{
     const {user} = useUser();
     const navigate = useNavigate();
+    // const [openEdit,setOpenEdit] = useState<boolean>(false);
 
     // Add favorite
     const addToFavorite = async() => {
@@ -45,7 +47,7 @@ const PropertyItem = ({data,page,delFavBtn}:props)=>{
     }
 
     const editProperty = () => {
-        console.log("editProperty");
+        navigate(`/edit-property`, { state: { id: data?._id } });
     }
     const deleteProperty = () => {
         console.log("deleteProperty");
@@ -97,14 +99,15 @@ const PropertyItem = ({data,page,delFavBtn}:props)=>{
                                 <>
                                     <Button color="primary" variant="dashed" onClick={editProperty} className="ed">Edit</Button>
                                     <Popconfirm
-                                    title="Delete Property ?"
-                                    description="Are you sure to delete this property?"
-                                    onConfirm={deleteProperty}
-                                    okText="Yes"
-                                    cancelText="No"
-                                >
-                                    <Button color="danger" variant="dashed" danger className="ed">Delete</Button>
-                                </Popconfirm>
+                                        title="Delete Property ?"
+                                        description="Are you sure to delete this property?"
+                                        onConfirm={deleteProperty}
+                                        okText="Yes"
+                                        cancelText="No"
+                                    >
+                                        <Button color="danger" variant="dashed" danger className="ed">Delete</Button>
+                                    </Popconfirm>
+                                    {/* <EditProperty open={openEdit} setOpenEdit={setOpenEdit} /> */}
                                 </>
                             )}
                         </div>

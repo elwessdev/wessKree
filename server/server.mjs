@@ -1,12 +1,12 @@
 import dotenv from "dotenv";
 import express from "express";
-import connectDB from "./config/db.mjs";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import http from "http";
 import { Server } from "socket.io";
-import { rateLimit } from 'express-rate-limit'
+// import { rateLimit } from 'express-rate-limit'
 
+import connectDB from "./config/db.mjs";
 import authRoutes from "./routes/auth.mjs"
 import propertyRoutes from "./routes/property.mjs"
 import userRoutes from "./routes/user.mjs"
@@ -46,7 +46,6 @@ export const users = new Map();
 export const chatSessions = new Map();
 io.on("connection", (socket) => {
     console.log("A user connected:", socket.id);
-
     // Register user
     socket.on("registerUser", (userId) => {
         users.set(userId, { socketId: socket.id, activeChats: [] });
