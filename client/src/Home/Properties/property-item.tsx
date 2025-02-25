@@ -14,16 +14,17 @@ import { LuBedSingle } from "react-icons/lu";
 import { BiBath } from "react-icons/bi";
 import { IoTimeOutline } from "react-icons/io5";
 import { IoHeartDislike } from "react-icons/io5";
-import EditProperty from "../../Profile/editProperty";
+// import EditProperty from "../../Profile/editProperty";
 
 
 type props = {
     data: any,
     page?:string,
-    delFavBtn?:any
+    delFavBtn?:any,
+    isFavorite?:boolean
 }
 
-const PropertyItem = ({data,page,delFavBtn}:props)=>{
+const PropertyItem = ({data,page,delFavBtn,isFavorite}:props)=>{
     const {user} = useUser();
     const navigate = useNavigate();
     // const [openEdit,setOpenEdit] = useState<boolean>(false);
@@ -126,9 +127,21 @@ const PropertyItem = ({data,page,delFavBtn}:props)=>{
                                 </Popconfirm>
                             ) : (
                                 user?.isActive ? (
-                                    <Tooltip placement="top" title={"Add to Favorite"} arrow={true}>
-                                        <Button onClick={addToFavorite} className="favorite"><FaRegHeart /></Button>
-                                    </Tooltip>
+                                    isFavorite 
+                                        ?<Popconfirm
+                                            title="Remove from Favorites?"
+                                            description="Are you sure to unfavorite this property ?"
+                                            onConfirm={()=>delFavBtn(data?._id)}
+                                            okText="Yes"
+                                            cancelText="No"
+                                        >
+                                            {/* <Tooltip placement="top" title={"Unfavorite"} arrow={true}> */}
+                                                <Button className="favorite"><IoHeartDislike /></Button>
+                                            {/* </Tooltip> */}
+                                        </Popconfirm>
+                                        :<Tooltip placement="top" title={"Add to Favorite"} arrow={true}>
+                                            <Button onClick={addToFavorite} className="favorite"><FaRegHeart /></Button>
+                                        </Tooltip>
                                 ) :(
                                     <Tooltip placement="top" title={"Complete your profile"} arrow={true}>
                                         <Button onClick={()=>navigate("/setup-profile")} className="favorite"><FaRegHeart /></Button>

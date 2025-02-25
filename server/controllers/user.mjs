@@ -12,6 +12,8 @@ export const getUser = async(req,res)=>{
         const user = await User.findOne({_id:id},
             {followers:0,password:0,resetPwd:0})
             .lean();
+        const myFavorites = await Favorite.find({userId:id},{propertyId:1}).lean();
+        user.myFavorites = myFavorites.map(fav => fav.propertyId);
         if(!user){
             return res.status(400).json({ message: 'user not found' });
         }
