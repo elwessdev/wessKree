@@ -1,15 +1,18 @@
 import "./style.scss"
 import Filter from "../Filter/filter"
 import PropertyItem from "./property-item"
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Affix, Empty, Spin } from "antd";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Affix, Empty, message, Spin } from "antd";
 import { getProperties } from "../../API/property";
 import { useEffect, useRef, useState } from "react";
 import { useSearch } from "../../hooks/searchContext";
 import SearchGIF from "../../assets/House searching.gif"
 import { useLocation } from "react-router-dom";
+import { useUser } from "../../hooks/userContext";
+import { deleteFav } from "../../API/user";
 
 export default function Properties(){
+    const {user} = useUser();
     const location = useLocation();
     const {globalSearch} = useSearch();
     const queryClient = useQueryClient();
@@ -108,6 +111,26 @@ export default function Properties(){
             setTimeout(()=>setLoadingSearch(false),150);
         }
     }
+
+    // const mutationDel = useMutation({
+    //     mutationFn: ,
+    //     onSuccess: () => {
+    //         queryClient.invalidateQueries({ queryKey: ['homeProperties'] });
+    //         message.success("Unfavorite Done!");
+    //     },
+    //     onError: () => {
+    //         message.error("Something went wrong, Try again");
+    //     },
+    // });
+    const removeFavorite = async(id:string) => {
+        const res:any = await deleteFav(id);
+        if(res?.status==200){
+            queryClient.invalidateQueries({ queryKey: ['homeProperties'] });
+            message.success("Unfavorite Done!");
+        } else {
+            message.error("Something went wrong, Try again");
+        }
+    }
     
     return (
         <div id="properties">
@@ -126,13 +149,13 @@ export default function Properties(){
                 )}
                 {(!loadingSearch&&filterList==null) && properties?.map((property:any,idx:number)=>(
                     // <Skeleton loading={isLoading} active avatar>
-                        <PropertyItem key={idx} data={property} />
+                        <PropertyItem key={idx} data={property} isFavorite={user?.myFavorites.includes(property?._id)} delFavBtn={removeFavorite} />
                     // </Skeleton> 
                 ))}
                 {(!loadingSearch&&filterList!=null) &&
                     filterList?.map((property:any,idx:number)=>(
                         // <Skeleton loading={isLoading} active avatar>
-                            <PropertyItem key={idx} data={property} />
+                            <PropertyItem key={idx} data={property} isFavorite={user?.myFavorites.includes(property?._id)} delFavBtn={removeFavorite} />
                         // </Skeleton> 
                     ))
                 }

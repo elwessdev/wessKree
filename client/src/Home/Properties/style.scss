@@ -289,6 +289,12 @@
                 position: relative;
                 top: 0;
             }
+            &.still{
+                background-color: #7065ef;
+                svg{
+                    color: #FFF;
+                }
+            }
         }
         .features{
             display: flex;
