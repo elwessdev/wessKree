@@ -1,9 +1,9 @@
-import { Steps } from "antd";
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import Step1 from "../Post-Property/steps/step1";
-import Step2 from "../Post-Property/steps/step2";
-import Step3 from "../Post-Property/steps/step3";
+// import { Steps } from "antd";
+// import { useEffect, useState } from "react";
+// import { useLocation } from "react-router-dom";
+// import Step1 from "../Post-Property/steps/step1";
+// import Step2 from "../Post-Property/steps/step2";
+// import Step3 from "../Post-Property/steps/step3";
 
 
 export default function EditProperty() {
