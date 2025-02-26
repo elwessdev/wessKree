@@ -42,7 +42,7 @@ export default function MyProfile(){
                 {user && (
                     <>
                         <img src={user?.photo} />
-                        <h3>{user?.username}</h3>
+                        <h3>{user?.publicName}</h3>
                         <p><MdOutlineLocationOn /> {user?.state}, {user?.city}</p>
                         <div className="contact">
                             {(user?.contact?.phone.length || user?.contact?.whatsapp.length)
