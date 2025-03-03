@@ -94,3 +94,22 @@ export const propertyDetails = async(req,res) => {
         return res.status(500).send({ message: err });
     }
 }
+// Delete Property
+export const deleteProperty = async(req,res)=> {
+    try {
+        const {id:propertyID} = req.params;
+        const {id:userID} = req.token;
+        const checkOwner = await Property.findOne({_id:propertyID,uid:userID}).lean();
+        if(!checkOwner){
+            return res.status(401).json({message: "Property not found", success: false});
+        }
+        const deleteProp = await Property.findByIdAndDelete(propertyID);
+        if(deleteProp.error){
+            return res.status(400).json({message: "Something wrong, Try again", success: false});
+        }
+        return res.status(200).json({message: "property has been deleted", success: true});
+    } catch(err){
+        console.error("deleteProperty error:",err);
+        return res.status(500).send({ message: err});
+    }
+}
