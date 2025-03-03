@@ -17,7 +17,7 @@ import AuthProtection from './authProtection.tsx';
 import PublicRoute from './publicRoute.tsx';
 import NotFound from '../404/notFound.tsx';
 import ForgotPassword from '../Auth/Forgot-password/forgotPassword.tsx';
-import EditProperty from '../Profile/editProperty.tsx';
+import EditProperty from '../Profile/EditProperty/EditProperty.tsx';
 
 
 const router = createBrowserRouter([
