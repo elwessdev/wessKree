@@ -83,12 +83,14 @@ io.on("connection", (socket) => {
 });
 
 // Connect to Database and Start Server
+let serverGlobal;
+const PORT = process.env.PORT || 3000;
 const startServer = async () => {
     try {
         await connectDB();
         console.log("Database Connected ✅");
-        server.listen(process.env.PORT, () => {
-            console.log(`Server running on http://localhost:${process.env.PORT}`);
+        serverGlobal = app.listen(PORT, () => {
+            console.log(`Server running on http://localhost:${PORT}`);
         });
     } catch (error) {
         console.error("Error in DB Connection:", error);
@@ -107,3 +109,6 @@ app.use("/property", propertyRoutes);
 app.use("/user", userRoutes);
 app.use("/request", requestRoutes);
 app.use("/notification", notificationRoutes);
+
+
+export { app, serverGlobal, startServer };
