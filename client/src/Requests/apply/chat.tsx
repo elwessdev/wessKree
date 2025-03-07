@@ -27,7 +27,7 @@ type props = {
     id: string
 }
 
-const socket = io(import.meta.env.VITE_API_URL);
+// const socket = io(import.meta.env.VITE_API_URL);
 
 const Chat = ({id}:props) => {
     const bottomRef = useRef<any>(null);
@@ -46,27 +46,27 @@ const Chat = ({id}:props) => {
     });
 
     // Socket
-    useEffect(() => {
-        if (user?._id && id) {
-            socket.emit("registerUser",user?._id)
-            socket.emit("joinChat", { userId:user?._id, chatId:id });
-            socket.on("receiveMessage", () => {
-                // console.log("Received message");
-                queryClient.invalidateQueries({queryKey: ["chatDetails"]});
-                if(data?.data?.type=="apply"){
-                    queryClient.invalidateQueries({ queryKey: ['applications'] });
-                }
-                if(data?.data?.type=="tour"){
-                    queryClient.invalidateQueries({ queryKey: ['tours'] });
-                }
-            });
+    // useEffect(() => {
+    //     if (user?._id && id) {
+    //         socket.emit("registerUser",user?._id)
+    //         socket.emit("joinChat", { userId:user?._id, chatId:id });
+    //         socket.on("receiveMessage", () => {
+    //             // console.log("Received message");
+    //             queryClient.invalidateQueries({queryKey: ["chatDetails"]});
+    //             if(data?.data?.type=="apply"){
+    //                 queryClient.invalidateQueries({ queryKey: ['applications'] });
+    //             }
+    //             if(data?.data?.type=="tour"){
+    //                 queryClient.invalidateQueries({ queryKey: ['tours'] });
+    //             }
+    //         });
 
-            return () => {
-                socket.emit("leaveChat", { userId:user?._id, chatId:id });
-                socket.off("receiveMessage");
-            };
-        }
-    }, [user?._id,id]);
+    //         return () => {
+    //             socket.emit("leaveChat", { userId:user?._id, chatId:id });
+    //             socket.off("receiveMessage");
+    //         };
+    //     }
+    // }, [user?._id,id]);
 
     useEffect(()=>{
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });

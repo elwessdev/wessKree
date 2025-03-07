@@ -15,7 +15,7 @@ import { BiBath } from "react-icons/bi";
 import { IoTimeOutline } from "react-icons/io5";
 import { IoHeartDislike } from "react-icons/io5";
 import { useQueryClient } from "@tanstack/react-query";
-// import EditProperty from "../../Profile/editProperty";
+import EditProperty from "../../Profile/EditProperty/EditProperty";
 
 
 type props = {
@@ -74,12 +74,13 @@ const PropertyItem = ({
     }
 
     // Edit Modal
-    const [visible, setVisible] = useState<boolean>(false);
-    const editProperty = () => {
-        setVisible(true);
+    const [editPropertyModel, setEditPropertyModel] = useState<boolean>(false);
+    const handleOpenEdit = (id:string) => {
+        console.log(id);
+        setEditPropertyModel(true);
     }
-    const handleOk = () => {
-        setVisible(false);
+    const handleEditProperty = () => {
+        console.log("Edit Property");
     }
 
     return (
@@ -105,111 +106,115 @@ const PropertyItem = ({
                             ))}
                         </div>
                     </div>
-                        <div className="details">
-                            <h3>{data?.title}</h3>
-                            <p className="address">{data?.state}, {data?.city} {data?.neighborhood} {data?.zip}</p>
-                            <p className="date"><IoTimeOutline /> {formatDistance(new Date(data?.createdAt), new Date(), { addSuffix: true }).replace("about ", "")}</p>
-                            <hr />
-                            <div className="fr">
-                                <span><LuBedSingle /> {data?.rooms} Room</span>
-                                <span><BiBath /> {data?.bathrooms} Bathroom</span>
-                                <span><PiRectangleDashedBold /> {data?.area.width}x{data?.area.length} m²</span>
-                            </div>
-                            <div className="features">
-                                {featuresList?.filter(elm=>data?.features.includes(elm.key)).map((item)=>(
-                                    <Tooltip key={item?.key} title={item?.label}>
-                                        <p>{item?.icon}</p>
-                                    </Tooltip>
-                                ))}
-                            </div>
-                            <hr />
-                            <div className="btns">
-                                <NavLink to={`/property/${data?._id}`} className="explore">Explore</NavLink>
-                                {page=="owner"&&(
-                                    <>
-                                        <Button color="primary" variant="dashed" onClick={editProperty} className="ed">Edit</Button>
-                                        <Popconfirm
-                                            title="Delete Property ?"
-                                            description="Are you sure to delete this property?"
-                                            onConfirm={()=>handleDeleteProperty(data?._id)}
-                                            okText="Yes"
-                                            cancelText="No"
-                                        >
-                                            <Button
-                                                color="danger"
-                                                variant="dashed"
-                                                danger
-                                                className="ed"
-                                            >
-                                                    Delete
-                                            </Button>
-                                        </Popconfirm>
-                                        {/* <EditProperty open={openEdit} setOpenEdit={setOpenEdit} /> */}
-                                    </>
-                                )}
-                            </div>
-                            {
-                                user != null && page !== "owner" ? (
-                                    page == "ownerFav" ? (
-                                        <Popconfirm
-                                            title="Remove from Favorites?"
-                                            description="Are you sure to unfavorite this property ?"
-                                            onConfirm={()=>delFavBtn(data?._id)}
-                                            okText="Yes"
-                                            cancelText="No"
-                                        >
-                                            {/* <Tooltip placement="top" title={"Unfavorite"} arrow={true}> */}
-                                                <Button className="favorite"><IoHeartDislike /></Button>
-                                            {/* </Tooltip> */}
-                                        </Popconfirm>
-                                    ) : (
-                                        user?.isActive ? (
-                                            // user?.myFavorites.includes(data?._id)
-                                            //     ?<Popconfirm
-                                            //         title="Remove from Favorites?"
-                                            //         description="Are you sure to unfavorite this property ?"
-                                            //         onConfirm={()=>delFavBtn(data?._id)}
-                                            //         okText="Yes"
-                                            //         cancelText="No"
-                                            //     >
-                                            //         {/* <Tooltip placement="top" title={"Unfavorite"} arrow={true}> */}
-                                            //             <Button className="favorite"><IoHeartDislike /></Button>
-                                            //         {/* </Tooltip> */}
-                                            //     </Popconfirm>
-                                            //     :<Tooltip placement="top" title={"Add to Favorite"} arrow={true}>
-                                            //         <Button onClick={addToFavorite} className="favorite"><FaRegHeart /></Button>
-                                            //     </Tooltip>
-                                            <Tooltip placement="top" title={"Add to Favorite"} arrow={true}>
-                                                <Button onClick={addToFavorite} className="favorite"><FaRegHeart /></Button>
-                                            </Tooltip>
-                                        ) :(
-                                            <Tooltip placement="top" title={"Complete your profile"} arrow={true}>
-                                                <Button onClick={()=>navigate("/setup-profile")} className="favorite"><FaRegHeart /></Button>
-                                            </Tooltip>
-                                        )
-                                    )
-                                ) : user == null && page !== "owner" ? (
-                                    <Tooltip placement="top" title={"Login first"} arrow={true}>
-                                        <Button className="favorite"><FaRegHeart /></Button>
-                                    </Tooltip>
-                                ) : null
-                            }   
+                    <div className="details">
+                        <h3>{data?.title}</h3>
+                        <p className="address">{data?.state}, {data?.city} {data?.neighborhood} {data?.zip}</p>
+                        <p className="date"><IoTimeOutline /> {formatDistance(new Date(data?.createdAt), new Date(), { addSuffix: true }).replace("about ", "")}</p>
+                        <hr />
+                        <div className="fr">
+                            <span><LuBedSingle /> {data?.rooms} Room</span>
+                            <span><BiBath /> {data?.bathrooms} Bathroom</span>
+                            <span><PiRectangleDashedBold /> {data?.area.width}x{data?.area.length} m²</span>
                         </div>
+                        <div className="features">
+                            {featuresList?.filter(elm=>data?.features.includes(elm.key)).map((item)=>(
+                                <Tooltip key={item?.key} title={item?.label}>
+                                    <p>{item?.icon}</p>
+                                </Tooltip>
+                            ))}
+                        </div>
+                        <hr />
+                        <div className="btns">
+                            <NavLink to={`/property/${data?._id}`} className="explore">Explore</NavLink>
+                            {page=="owner"&&(
+                                <>
+                                    <Button
+                                        color="primary"
+                                        variant="dashed"
+                                        onClick={()=>handleOpenEdit(data?._id)}
+                                        className="ed"
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Popconfirm
+                                        title="Delete Property ?"
+                                        description="Are you sure to delete this property?"
+                                        onConfirm={()=>handleDeleteProperty(data?._id)}
+                                        okText="Yes"
+                                        cancelText="No"
+                                    >
+                                        <Button
+                                            color="danger"
+                                            variant="dashed"
+                                            danger
+                                            className="ed"
+                                        >
+                                                Delete
+                                        </Button>
+                                    </Popconfirm>
+                                    <Modal
+                                        // title={data?.title}
+                                        className="edit-property"
+                                        open={editPropertyModel}
+                                        onOk={handleEditProperty}
+                                        okText="Save"
+                                        onCancel={()=>setEditPropertyModel(false)}
+                                        style={{ top: 20 }}
+                                    >
+                                        <EditProperty />
+                                    </Modal>
+                                </>
+                            )}
+                        </div>
+                        {
+                            user != null && page !== "owner" ? (
+                                page == "ownerFav" ? (
+                                    <Popconfirm
+                                        title="Remove from Favorites?"
+                                        description="Are you sure to unfavorite this property ?"
+                                        onConfirm={()=>delFavBtn(data?._id)}
+                                        okText="Yes"
+                                        cancelText="No"
+                                    >
+                                        {/* <Tooltip placement="top" title={"Unfavorite"} arrow={true}> */}
+                                            <Button className="favorite"><IoHeartDislike /></Button>
+                                        {/* </Tooltip> */}
+                                    </Popconfirm>
+                                ) : (
+                                    user?.isActive ? (
+                                        // user?.myFavorites.includes(data?._id)
+                                        //     ?<Popconfirm
+                                        //         title="Remove from Favorites?"
+                                        //         description="Are you sure to unfavorite this property ?"
+                                        //         onConfirm={()=>delFavBtn(data?._id)}
+                                        //         okText="Yes"
+                                        //         cancelText="No"
+                                        //     >
+                                        //         {/* <Tooltip placement="top" title={"Unfavorite"} arrow={true}> */}
+                                        //             <Button className="favorite"><IoHeartDislike /></Button>
+                                        //         {/* </Tooltip> */}
+                                        //     </Popconfirm>
+                                        //     :<Tooltip placement="top" title={"Add to Favorite"} arrow={true}>
+                                        //         <Button onClick={addToFavorite} className="favorite"><FaRegHeart /></Button>
+                                        //     </Tooltip>
+                                        <Tooltip placement="top" title={"Add to Favorite"} arrow={true}>
+                                            <Button onClick={addToFavorite} className="favorite"><FaRegHeart /></Button>
+                                        </Tooltip>
+                                    ) :(
+                                        <Tooltip placement="top" title={"Complete your profile"} arrow={true}>
+                                            <Button onClick={()=>navigate("/setup-profile")} className="favorite"><FaRegHeart /></Button>
+                                        </Tooltip>
+                                    )
+                                )
+                            ) : user == null && page !== "owner" ? (
+                                <Tooltip placement="top" title={"Login first"} arrow={true}>
+                                    <Button className="favorite"><FaRegHeart /></Button>
+                                </Tooltip>
+                            ) : null
+                        }   
+                    </div>
                 </div>
             </Badge.Ribbon>
-            {/* Edit Modal */}
-            {visible==true && page=="owner" &&
-                <Modal
-                    title="Edit Property"
-                    open={visible}
-                    onOk={handleOk}
-                    onCancel={()=>setVisible(false)}
-                    >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                </Modal>
-            }
         </>
     )
 }

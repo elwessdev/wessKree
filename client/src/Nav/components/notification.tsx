@@ -19,7 +19,7 @@ import { useUser } from "../../hooks/userContext";
 
 
 
-const socket = io(import.meta.env.VITE_API_URL);
+// const socket = io(import.meta.env.VITE_API_URL);
 
 // Types
 type props = {
@@ -46,61 +46,62 @@ const Notification = ({userId}:props)=>{
     }, [data]);
 
 
-    useEffect(() => {
-        console.log(user);
-        if (!userId||user===null) return;
+    // useEffect(() => {
+    //     console.log(user);
+    //     if (!userId||user===null) return;
 
-        // Register the user on the socket
-        // socket.emit('registerUser', userId);
-        socket.emit("registerUser",userId);
+    //     // Register the user on the socket
+    //     // socket.emit('registerUser', userId);
+    //     console.log("test");
+    //     socket.emit("registerUser",userId);
 
-        // socket.on(`notify_${userId}`, (msg) => {
-        //     queryClient.invalidateQueries({ queryKey: ['notifications'] });
-        //     api.open({
-        //         message: 'New Notification',
-        //         description: msg,
-        //         icon: <span className="notif_icon">
-        //             <video
-        //                 autoPlay
-        //                 loop
-        //                 muted
-        //             >
-        //                 <source src={NotiffNew} type="video/webm" />
-        //                 Your browser does not support the video tag.
-        //             </video>
-        //         </span>,
-        //         showProgress: true,
-        //         pauseOnHover: true,
-        //     });
-        //     setNotifCount((prev) => prev + 1);
-        // });
+    //     // socket.on(`notify_${userId}`, (msg) => {
+    //     //     queryClient.invalidateQueries({ queryKey: ['notifications'] });
+    //     //     api.open({
+    //     //         message: 'New Notification',
+    //     //         description: msg,
+    //     //         icon: <span className="notif_icon">
+    //     //             <video
+    //     //                 autoPlay
+    //     //                 loop
+    //     //                 muted
+    //     //             >
+    //     //                 <source src={NotiffNew} type="video/webm" />
+    //     //                 Your browser does not support the video tag.
+    //     //             </video>
+    //     //         </span>,
+    //     //         showProgress: true,
+    //     //         pauseOnHover: true,
+    //     //     });
+    //     //     setNotifCount((prev) => prev + 1);
+    //     // });
 
-        socket.on("notify", (msg) => {
-            queryClient.invalidateQueries({ queryKey: ['notifications'] });
-            api.open({
-                message: 'New Notification',
-                description: msg,
-                icon: <span className="notif_icon">
-                    <video
-                        autoPlay
-                        loop
-                        muted
-                    >
-                        <source src={NotiffNew} type="video/webm" />
-                        Your browser does not support the video tag.
-                    </video>
-                </span>,
-                showProgress: true,
-                pauseOnHover: true,
-            });
-            setNotifCount((prev) => prev + 1);
-        });
+    //     socket.on("notify", (msg) => {
+    //         queryClient.invalidateQueries({ queryKey: ['notifications'] });
+    //         api.open({
+    //             message: 'New Notification',
+    //             description: msg,
+    //             icon: <span className="notif_icon">
+    //                 <video
+    //                     autoPlay
+    //                     loop
+    //                     muted
+    //                 >
+    //                     <source src={NotiffNew} type="video/webm" />
+    //                     Your browser does not support the video tag.
+    //                 </video>
+    //             </span>,
+    //             showProgress: true,
+    //             pauseOnHover: true,
+    //         });
+    //         setNotifCount((prev) => prev + 1);
+    //     });
 
-        return () => {
-            // socket.off(`notify_${userId}`);
-            socket.off("notify");
-        };
-    }, [userId, queryClient]);
+    //     return () => {
+    //         // socket.off(`notify_${userId}`);
+    //         socket.off("notify");
+    //     };
+    // }, [userId, user]);
 
     const handleSeen = async() => {
         try {
