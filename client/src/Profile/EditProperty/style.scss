@@ -1,0 +1,26 @@
+.editPropertyModel{
+    .ant-form-item{
+        margin-bottom: 0px;
+    }
+    .ant-form-item-label{
+        padding: 0 0 3px;
+    }
+}
+.edit-property .ant-modal-content {
+    overflow-y: scroll;
+    max-height: 90vh;
+    position: relative;
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+        background: #ffffffd4; 
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #7165ef; 
+        // border-radius:10px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: #7165ef; 
+    }
+}

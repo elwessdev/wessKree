@@ -36,15 +36,11 @@ app.use(cookieParser());
 
 // Socket
 const server = http.createServer(app);
-export const io = new Server(server, {
-    cors: {
-        origin: ['http://localhost:5173', 'https://wesskree.vercel.app', 'https://dev-wesskree.vercel.app'],
-        credentials: true,
-        methods: ["GET", "POST"],
-    },
-});
+export const io = new Server(server);
+
 export const users = new Map();
 export const chatSessions = new Map();
+
 io.on("connection", (socket) => {
     console.log("A user connected:", socket.id);
     // Register user
@@ -52,6 +48,7 @@ io.on("connection", (socket) => {
         users.set(userId, { socketId: socket.id, activeChats: [] });
         console.log(`User registered: ${userId}`);
     });
+    
     // Join chat
     socket.on("joinChat", ({ chatId, userId }) => {
         socket.join(chatId);
@@ -72,6 +69,7 @@ io.on("connection", (socket) => {
         }
         // console.log(`${userId} left chat ${chatId}`);
     });
+
     // Disconnect user
     socket.on("disconnect", () => {
         users.forEach((userData, userId) => {
@@ -84,14 +82,13 @@ io.on("connection", (socket) => {
 });
 
 // Connect to Database and Start Server
-let serverGlobal;
-const PORT = process.env.PORT || 3000;
+// let serverGlobal;
 const startServer = async () => {
     try {
         await connectDB();
         console.log("Database Connected ✅");
-        serverGlobal = app.listen(PORT, () => {
-            console.log(`Server running on http://localhost:${PORT}`);
+        app.listen((process.env.PORT || 3000), () => {
+            console.log(`Server running on port ${process.env.PORT || 3000}`);
         });
     } catch (error) {
         console.error("Error in DB Connection:", error);
@@ -112,4 +109,4 @@ app.use("/request", requestRoutes);
 app.use("/notification", notificationRoutes);
 
 
-export { app, serverGlobal, startServer };
+// export { app, serverGlobal, startServer };
