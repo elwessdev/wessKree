@@ -19,7 +19,7 @@ export const getProperties = async()=>{
     }
 }
 // Property details
-export const propertyDetails = async(id:number)=>{
+export const propertyDetails = async(id:any)=>{
     try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/property/details/${id}`);
         return res?.data;

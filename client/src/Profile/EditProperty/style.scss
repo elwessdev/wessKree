@@ -1,9 +1,105 @@
 .editPropertyModel{
+    min-height: calc(100vh - 180px);
+    .ant-spin-spinning{
+        position: absolute;
+        display: block;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
     .ant-form-item{
         margin-bottom: 0px;
     }
     .ant-form-item-label{
         padding: 0 0 3px;
+    }
+    .prices{
+        // position: absolute;
+        // left: 5px;
+        // top: 5px;
+        // display: grid;
+        // grid-template-columns: repeat(1, 1fr);
+        // gap: 5px;
+        p{
+            width: 110px;
+            display: flex;
+            margin: 0;
+            color: #FFF;
+            font-weight: 800;
+            font-size: 14px;
+            background: #7065efe8;
+            border-radius: 30px;
+            padding: 7px 0px 2px 0;
+            justify-content: center;
+            span{
+                font-size: 12px;
+                color: #FFF;
+                position: relative;
+                top: 0px;
+                margin-left: 14px;
+                text-transform: capitalize;
+                font-weight: 700;
+                &:after{
+                    content: "DT";
+                    position: absolute;
+                    top: -2px;
+                    left: -13px;
+                    text-transform: capitalize;
+                    font-size: 8px;
+                }
+            }
+        }
+    }
+    .features{
+        display: flex;
+        flex-wrap: wrap;
+        grid-gap: 10px 5px;
+        margin-top: 5px;
+        .f{
+            border-radius: 30px;
+            border: 1px solid #7065ef;
+            display: flex;
+            width: 150px;
+            position: relative;
+            user-select: none;
+            cursor: pointer;
+            .icon{
+                width: 30px;
+                height: 30px;
+                background-color: #7065ef;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                left: -1px;
+                svg{
+                    color: #FFF;
+                    font-size: 16px;
+                }
+            }
+            p{
+                margin: 0;
+                font-size: 12px;
+                margin-left: 5px;
+                position: relative;
+                top: 6px;
+                height: fit-content;
+                font-weight: 700;
+            }
+            .ok{
+                position: absolute;
+                right: 7px;
+                top: 57%;
+                transform: translateY(-50%);
+                svg{
+                    color: #7065ef;
+                    font-size: 14px;
+                    position: relative;
+                    top: 1px;
+                }
+            }
+        }
     }
 }
 .edit-property .ant-modal-content {
@@ -23,4 +119,7 @@
     &::-webkit-scrollbar-thumb:hover {
         background: #7165ef; 
     }
+}
+.ant-form-item-label{
+    padding: 0 0 3px !important;
 }
