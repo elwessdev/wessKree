@@ -3,7 +3,7 @@ import { Button, Tooltip, Image, message, Popconfirm, Badge, Modal } from 'antd'
 import { NavLink, useNavigate } from "react-router-dom";
 import { formatDistance } from 'date-fns'
 import { featuresList } from "../../Data/features";
-import { memo, useState } from "react";
+import { memo, useRef, useState } from "react";
 import { useUser } from "../../hooks/userContext";
 import { addFavorite, deleteProperty } from "../../API/property";
 
@@ -75,13 +75,12 @@ const PropertyItem = ({
 
     // Edit Modal
     const [editPropertyModel, setEditPropertyModel] = useState<boolean>(false);
+    const editFormRef = useRef<any>(null);
     const handleOpenEdit = (id:string) => {
-        console.log(id);
+        // console.log(id);
         setEditPropertyModel(true);
     }
-    const handleEditProperty = () => {
-        console.log("Edit Property");
-    }
+    const handleEditProperty = () => editFormRef.current?.submit();
 
     return (
         <>
@@ -161,7 +160,7 @@ const PropertyItem = ({
                                         onCancel={()=>setEditPropertyModel(false)}
                                         style={{ top: 20 }}
                                     >
-                                        <EditProperty />
+                                        <EditProperty formRef={editFormRef} propertyID={data?._id} />
                                     </Modal>
                                 </>
                             )}
