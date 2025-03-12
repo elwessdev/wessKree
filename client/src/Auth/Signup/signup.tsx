@@ -156,7 +156,7 @@ export default function Signup(){
             <div className="l-s">
                 <div className="txt">
                     <h3>Welcome to wessKree</h3>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos recusandae beatae saepe consectetur ut illum expedita modi excepturi, ab obcaecati et commodi blanditiis officia nesciunt consequatur est consequuntur. Quasi, exercitationem!</p>
+                    <p>Join our community and explore endless possibilities. Create your account today and be part of something amazing.</p>
                 </div>
             </div>
         </div>
