@@ -1,9 +1,9 @@
 import axios from "axios";
 
 // Create notification
-export const createNotification = async(msg:string,user:string)=>{
+export const createNotification = async(msg:string,user:string,link:string)=>{
     try {
-        const res:any = await axios.post(`${import.meta.env.VITE_API_URL}/notification/create`,{msg,user});
+        const res:any = await axios.post(`${import.meta.env.VITE_API_URL}/notification/create`,{msg,user,link});
         return res;
     } catch(err){
         return err;

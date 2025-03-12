@@ -14,7 +14,7 @@ import requestRoutes from "./routes/request.mjs"
 import notificationRoutes from "./routes/notification.mjs"
 
 dotenv.config();
-const app = express();
+export const app = express();
 
 app.use(express.json());
 app.use(cors({
@@ -36,7 +36,12 @@ app.use(cookieParser());
 
 // Socket
 const server = http.createServer(app);
-export const io = new Server(server);
+export const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:5173",
+        methods: ["GET", "POST"]
+    }
+});
 
 export const users = new Map();
 export const chatSessions = new Map();
@@ -82,12 +87,12 @@ io.on("connection", (socket) => {
 });
 
 // Connect to Database and Start Server
-// let serverGlobal;
+let serverGlobal;
 const startServer = async () => {
     try {
         await connectDB();
         console.log("Database Connected ✅");
-        app.listen((process.env.PORT || 3000), () => {
+        server.listen((process.env.PORT || 3000), () => {
             console.log(`Server running on port ${process.env.PORT || 3000}`);
         });
     } catch (error) {
@@ -96,9 +101,10 @@ const startServer = async () => {
 };
 startServer();
 
+
 // Testing Endpoint
 app.get("/", (req, res) => {
-    res.send("<h1>Server is running!</h1>");
+    res.status(200).send("<h1>Server is running!</h1>");
 });
 
 // Routes
@@ -107,6 +113,3 @@ app.use("/property", propertyRoutes);
 app.use("/user", userRoutes);
 app.use("/request", requestRoutes);
 app.use("/notification", notificationRoutes);
-
-
-// export { app, serverGlobal, startServer };
