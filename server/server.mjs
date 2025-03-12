@@ -38,7 +38,7 @@ app.use(cookieParser());
 const server = http.createServer(app);
 export const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: ['http://localhost:5173', 'https://wesskree.vercel.app', 'https://dev-wesskree.vercel.app'],
         methods: ["GET", "POST"]
     }
 });
