@@ -64,7 +64,8 @@ const Apply = ({price,id,name,username,title,status}:props) => {
         }
         await createNotification(
             `${user?.publicName} request a Tour to your property ${title}`,
-            username
+            username,
+            "/requests"
         );
         message.success("Tour sent successfully, wait response");
         setTourType(null);
@@ -95,7 +96,8 @@ const Apply = ({price,id,name,username,title,status}:props) => {
             }
             await createNotification(
                 `${user?.publicName} Apply to your property ${title}`,
-                username
+                username,
+                "/requests"
             );
             message.success("Apply sent successfully, wait response");
         } catch (err:any){

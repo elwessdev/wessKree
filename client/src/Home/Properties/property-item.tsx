@@ -76,10 +76,6 @@ const PropertyItem = ({
     // Edit Modal
     const [editPropertyModel, setEditPropertyModel] = useState<boolean>(false);
     const editFormRef = useRef<any>(null);
-    const handleOpenEdit = (id:string) => {
-        // console.log(id);
-        setEditPropertyModel(true);
-    }
     const handleEditProperty = () => editFormRef.current?.submit();
 
     return (
@@ -130,7 +126,7 @@ const PropertyItem = ({
                                     <Button
                                         color="primary"
                                         variant="dashed"
-                                        onClick={()=>handleOpenEdit(data?._id)}
+                                        onClick={()=>setEditPropertyModel(true)}
                                         className="ed"
                                     >
                                         Edit

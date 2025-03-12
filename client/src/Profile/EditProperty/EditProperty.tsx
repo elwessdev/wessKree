@@ -36,8 +36,8 @@ const getBase64 = (file: any): Promise<string> =>
 });
 
 type props = {
-    propertyID: string;
-    formRef: any;
+    propertyID?: string;
+    formRef?: any;
 }
 
 const EditProperty = ({propertyID,formRef}: props) => {
@@ -52,6 +52,7 @@ const EditProperty = ({propertyID,formRef}: props) => {
     });
 
     useEffect(()=>{
+        console.log(priceLease);
         form.setFieldsValue({
             title: data?.title,
             type: data?.type,
@@ -92,7 +93,7 @@ const EditProperty = ({propertyID,formRef}: props) => {
     const [previewImage, setPreviewImage] = useState('');
     const handlePreview = async (file: UploadFile) => {
         if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj as FileType);
+            file.preview = await getBase64(file.originFileObj as any);
         }
         setPreviewImage(file.url || (file.preview as string));
         setPreviewOpen(true);
@@ -431,7 +432,7 @@ const EditProperty = ({propertyID,formRef}: props) => {
                                         placeholder="Search..."
                                         optionFilterProp="label"
                                         filterSort={(optionA, optionB) =>
-                                            (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                                            String(optionA?.label ?? '').toLowerCase().localeCompare(String(optionB?.label ?? '').toLowerCase())
                                         }
                                         // onChange={handleStateChange}
                                         // options={stateOptions}
@@ -451,7 +452,7 @@ const EditProperty = ({propertyID,formRef}: props) => {
                                         placeholder="Search..."
                                         optionFilterProp="label"
                                         filterSort={(optionA, optionB) =>
-                                            (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                                            String(optionA?.label ?? '').toLowerCase().localeCompare(String(optionB?.label ?? '').toLowerCase())
                                         }
                                         // options={delegations}
                                         // value={delegationValue}
