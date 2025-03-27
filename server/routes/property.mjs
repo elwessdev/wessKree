@@ -5,7 +5,8 @@ import {
     postProperty,
     getProperties,
     propertyDetails,
-    deleteProperty
+    deleteProperty,
+    editProperty
 } from "../controllers/property.mjs";
 
 const router = Router();
@@ -18,6 +19,8 @@ router.get("/",getProperties);
 router.get("/details/:id",propertyDetails);
 // Delete Property
 router.delete('/delete/:id',verifyToken,validID,deleteProperty);
+// Edit Property
+router.put("/edit",verifyToken,validID,editProperty);
 
 
 export default router;

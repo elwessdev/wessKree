@@ -113,3 +113,22 @@ export const deleteProperty = async(req,res)=> {
         return res.status(500).send({ message: err});
     }
 }
+// Edit Property
+export const editProperty = async(req,res) => {
+    try {
+        const {data,propID} = req.body;
+        const userID = req.token.id;
+        const check = await Property.findById(propID).lean();
+        if(!check){
+            return res.status(404).json({message: "Property not found"});
+        }
+        if(check.uid !== userID){
+            return res.status(401).json({message: "You are not allowed to edit this property"});
+        }
+        await Property.findByIdAndUpdate(propID,{$set:data},{new:true});
+        return res.status(200).json({message: "Property has been updated"});
+    } catch(err){
+        console.error("editProperty error:",err);
+        return res.status(500).send({ message: err});
+    }
+}
