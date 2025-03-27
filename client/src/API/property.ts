@@ -45,3 +45,12 @@ export const deleteProperty = async(id:string|undefined)=>{
         return err;
     }
 }
+// Edit Property
+export const editProperty = async(data:any,propID:any)=>{
+    try {
+        const res = await axios.put(`${import.meta.env.VITE_API_URL}/property/edit`,{data,propID});
+        return res.data;
+    } catch(err){
+        return err;
+    }
+}
