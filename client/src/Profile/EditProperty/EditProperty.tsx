@@ -1,15 +1,17 @@
 import "./style.scss";
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { Form, Input, Select, Space, Flex, Spin } from 'antd';
+import { Form, Input, Select, Space, Flex, Spin, message } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { propertyDetails } from "../../API/property";
-import { useQuery } from "@tanstack/react-query";
+import { editProperty, propertyDetails } from "../../API/property";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { featuresList } from "../../Data/features";
+import { useUser } from "../../hooks/userContext";
 
 import { FaWhatsapp } from 'react-icons/fa';
 import { MdPhone } from 'react-icons/md';
 import { VscQuestion } from "react-icons/vsc";
 import { IoIosCheckmarkCircle } from "react-icons/io";
-import { featuresList } from "../../Data/features";
+
 
 
 type featureProps = {
@@ -28,9 +30,12 @@ const FeatureItem = ({ feature, checked, onClick }: featureProps) => (
 type props = {
     propertyID?: string;
     formRef?: any;
+    closeModel?: any;
 }
 
-const EditProperty = ({propertyID,formRef}: props) => {
+const EditProperty = ({propertyID,formRef,closeModel}: props) => {
+    const {user} = useUser();
+    const queryClient = useQueryClient();   
     const [form] = Form.useForm();
     const [priceLease, setPriceLease] = useState<string[]>([]);
 
@@ -41,7 +46,7 @@ const EditProperty = ({propertyID,formRef}: props) => {
         enabled: !!propertyID
     });
     useLayoutEffect(()=>{
-        console.log(data);
+        // console.log(data);
         form.setFieldsValue({
             title: data?.title,
             type: data?.type,
@@ -68,7 +73,7 @@ const EditProperty = ({propertyID,formRef}: props) => {
             status: data?.status
         });
         setPriceLease(Object.keys(data?.price||{}));
-    },[data,propertyID])
+    },[data, propertyID, form])
 
     // Price Lease
     const handlePrice = (values:string[]) => {
@@ -96,25 +101,29 @@ const EditProperty = ({propertyID,formRef}: props) => {
     },[data])
 
     // Submit
-    const handleSubmit = (values: any) => {
+    const handleSubmit = async(values: any) => {
         let updatedData = {};
-        console.log('Updated Values:', values);
+        // console.log('Updated Values:', values);
         Object.entries(values).forEach((value:any)=>{
             if(value[0]=="leaseDuration"||value[0]=="price"||value[0]=="category"){
                 updatedData = {...updatedData, [value[0]]:value[1]};
                 return;
             }
             if(value[0]=="contact"){
-                let newContact = {};
-                if(value[1]["phone"]!=data[value[0]]["phone"]){
-                    newContact = {"phone":value[1]["phone"]};
-                }
-                if(value[1]["whatsapp"]!=data[value[0]]["whatsapp"]){
-                    newContact = {...newContact,"whatsapp":value[1]["whatsapp"]};
-                }
-                if(Object.entries(newContact).length){
-                    updatedData = {...updatedData,[value[0]]:newContact};
-                }
+                // let newContact = {};
+                // if(data[value[0]]["phone"]==undefined||value[1]["phone"]!=data[value[0]]["phone"]){
+                //     newContact = {"phone":value[1]["phone"]};
+                // }
+                // if(data[value[0]]["whatsapp"]==undefined||value[1]["whatsapp"]!=data[value[0]]["whatsapp"]){
+                //     newContact = {...newContact,"whatsapp":value[1]["whatsapp"]};
+                // }
+                // if(Object.entries(newContact).length){
+                //     updatedData = {...updatedData,[value[0]]:newContact};
+                // }
+                updatedData = {...updatedData,"contact":{
+                    "phone":value[1]["phone"],
+                    "whatsapp":value[1]["whatsapp"]
+                }};
                 return;
             }
             if (data[value[0]] && value[1]!=data[value[0]]) {
@@ -125,7 +134,20 @@ const EditProperty = ({propertyID,formRef}: props) => {
             ...updatedData, 
             "features":Object.entries(checkedFeatures).filter((feature:any)=>feature[1]==true).map((feature:any)=>feature[0])
         };
-        console.log(updatedData);
+        try {
+            const res = await editProperty(updatedData,data._id,);
+            if (data?._id) {
+                queryClient.invalidateQueries({queryKey: ["propertyDetails", data._id]});
+            }
+            if (user?.username) {
+                queryClient.invalidateQueries({queryKey: ["MyProperties", user.username]});
+            }
+            closeModel(false);
+            message.success(res.message);
+        } catch(err) {
+            console.log(err);
+            message.error("Something went wrong");
+        }
     }
 
     return (

@@ -135,7 +135,7 @@ export default function Properties(){
     
     return (
         <div id="properties">
-            <Affix offsetTop={0} style={{width:"100%"}}>
+            <Affix offsetTop={10} style={{width:"100%"}}>
                 <Filter sRef={searchRef} onClick={handleSearch} onReset={handleReset}/>
             </Affix>
             <div className="items">

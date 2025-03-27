@@ -156,7 +156,7 @@ const PropertyItem = ({
                                         onCancel={()=>setEditPropertyModel(false)}
                                         style={{ top: 20}}
                                     >
-                                        <EditProperty formRef={editFormRef} propertyID={data?._id} />
+                                        <EditProperty formRef={editFormRef} propertyID={data?._id} closeModel={setEditPropertyModel} />
                                     </Modal>
                                 </>
                             )}

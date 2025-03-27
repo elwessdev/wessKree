@@ -83,6 +83,7 @@ export default function Property(){
                             />
                             <Owner
                                 userInfo={data?.user}
+                                contact={data?.contact}
                             />
                             <div className="line"></div>
                             <Nearby
@@ -92,7 +93,7 @@ export default function Property(){
                                 postCity={data?.city}
                             />
                         </div>
-                        <Affix offsetTop={10}>
+                        <Affix offsetTop={10} className="ddf">
                             <Apply
                                 price={Object.entries(data?.price)}
                                 id={data?._id}

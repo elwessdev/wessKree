@@ -568,4 +568,54 @@
         display: block;
         margin-top: 60px;
     }
+    .contact{
+        margin: 0 auto;
+        width: 100%;
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        h3{
+            width: 100%;
+            margin-bottom: 0;
+        }
+        p{
+            border: 1px solid #7065ef;
+            min-width: 140px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 13px;
+            color: #0d133a;
+            position: relative;
+            display: flex;
+            justify-content: start;
+            margin: 0;
+            user-select: none;
+            svg{
+                margin-right: 5px;
+                font-size: 16px;
+                position: relative;
+                top: 0px;
+                margin-top: -1px;
+            }
+            span{
+                position: relative;
+                top: 2px;
+            }
+            .copy{
+                position: absolute;
+                top: 55%;
+                transform: translateY(-50%);
+                right: 0;
+                left: auto;
+                cursor: pointer;
+                transition: all .2s;
+                &:hover{
+                    color: #7065ef;
+                }
+                // color: #7065ef;
+            }
+        }
+    }
 }
