@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import http from "http";
 import { Server } from "socket.io";
 // import { rateLimit } from 'express-rate-limit'
+import swaggerUi from 'swagger-ui-express';
+import {specs} from './swagger.mjs';
 
 import connectDB from "./config/db.mjs";
 import authRoutes from "./routes/auth.mjs"
@@ -23,6 +25,8 @@ app.use(cors({
 }));
 app.use(cookieParser());
 
+// Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // // Rate Limiting
 // const limiter = rateLimit({
@@ -87,8 +91,7 @@ io.on("connection", (socket) => {
 });
 
 // Connect to Database and Start Server
-let serverGlobal;
-const startServer = async () => {
+export const startServer = async () => {
     try {
         await connectDB();
         console.log("Database Connected ✅");
@@ -113,3 +116,6 @@ app.use("/property", propertyRoutes);
 app.use("/user", userRoutes);
 app.use("/request", requestRoutes);
 app.use("/notification", notificationRoutes);
+
+// Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));

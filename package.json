@@ -1,0 +1,24 @@
+{
+  "name": "wesskree",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elwessdev/kree.tn.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/elwessdev/kree.tn/issues"
+  },
+  "homepage": "https://github.com/elwessdev/kree.tn#readme",
+  "devDependencies": {
+    "cypress": "^14.3.2"
+  }
+}

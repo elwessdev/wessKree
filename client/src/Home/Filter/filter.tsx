@@ -74,6 +74,7 @@ export default function Filter({sRef,onClick,onReset}:any){
                     }
                     options={stateOptions}
                     value={filter?.state}
+                    id='state_filter'
                 />
             </div>
             <div className="p_s">
@@ -156,12 +157,12 @@ export default function Filter({sRef,onClick,onReset}:any){
                 />
             </div>
             <div className='btns'>
-                <Button type="primary" block onClick={onClick}>
+                <Button type="primary" className='submit_search' block onClick={onClick}>
                     {/* <TbHomeSearch /> */}
                     Search
                 </Button>
                 <Tooltip placement="top" title={"Reset filter"} arrow={true}>
-                    <Button type="primary" className='reset' block onClick={onReset}><RiResetRightFill /></Button>
+                    <Button type="primary" className='reset search_test' block onClick={onReset}><RiResetRightFill /></Button>
                 </Tooltip>
             </div>
         </div>

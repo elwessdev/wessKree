@@ -156,7 +156,6 @@ const Apply = ({price,id,name,username,title,status}:props) => {
                     ?   <Button disabled={(user?.username==username||status=="unavailable")  ?true :false} loading={loading}>
                             <FaRegFileLines className="ico" /> Apply now
                         </Button>
-                    
                     :   user?.isActive
                         ?   <Button onClick={handleApply} disabled={user?.username==username ?true :false} loading={loading}>
                                 {loading ?"" :(<><FaRegFileLines className="ico" /> Apply now</>)}

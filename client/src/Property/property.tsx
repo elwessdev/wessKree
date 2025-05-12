@@ -49,7 +49,7 @@ export default function Property(){
             )}
             {data&&!loading && (
                 <>
-                    <Title 
+                    <Title
                         title={data?.title}
                         createdAt={data?.createdAt}
                         state={data?.state}

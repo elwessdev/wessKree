@@ -30,6 +30,13 @@
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
     "socket.io": "^4.8.1",
-    "supertest": "^7.0.0"
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "chai": "^5.2.0",
+    "mocha": "^11.2.2",
+    "sinon": "^20.0.0",
+    "supertest": "^7.1.1"
   }
 }
